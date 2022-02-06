@@ -1,0 +1,904 @@
+<?xml version="1.0" encoding="UTF-8"  ?>
+<!-- Created with iReport - A designer for JasperReports -->
+<!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
+<jasperReport
+		 name="SparesAndServiceOffer"
+		 columnCount="1"
+		 printOrder="Vertical"
+		 orientation="Portrait"
+		 pageWidth="595"
+		 pageHeight="842"
+		 columnWidth="535"
+		 columnSpacing="0"
+		 leftMargin="30"
+		 rightMargin="30"
+		 topMargin="20"
+		 bottomMargin="20"
+		 whenNoDataType="NoPages"
+		 isTitleNewPage="false"
+		 isSummaryNewPage="false">
+	<property name="ireport.scriptlethandling" value="0" />
+	<property name="ireport.encoding" value="UTF-8" />
+	<import value="java.util.*" />
+	<import value="net.sf.jasperreports.engine.*" />
+	<import value="net.sf.jasperreports.engine.data.*" />
+
+	<parameter name="DOCUMENT_ID" isForPrompting="true" class="java.lang.String"/>
+	<parameter name="SUBREPORT_DIR" isForPrompting="true" class="java.lang.String">
+		<defaultValueExpression ><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<queryString><![CDATA[SELECT complaint_register.customer_name as bpname,
+complaint_register.address1 as billing_address, 
+complaint_register.address2 as delivery_address,
+complaint_register.mobileno as mobileno,
+service_spares_register.created_at as offerdate,
+complaint_register.seqno as sno,
+case when service_spares_product.description is null then service_spares_product.prd_description else service_spares_product.description end as prd_description,
+service_spares_product.unit_price,
+service_spares_product.quantity,
+service_spares_product.net_amt as lineamt,
+service_spares_product.tax_amt,
+service_spares_product.total_price,
+service_charge.hsn,
+case when service_spares_register.complaint_type = 0 then "E-mail : service@megawin.co.in, PH.No : 0427-2330288, 2330498.   Toll Free : 1800 425 8088"
+else "E-mail : spares@megawin.co.in, PH.No : 0427-2330288, 2330498.   Toll Free : 1800 425 8088" end as header1,
+case when product.code = "" || product.code is null then service_charge.code else product.code end as prdcode
+
+from service_spares_register,
+complaint_register,
+service_spares_product
+   left join service_charge on service_charge.id = service_spares_product.product_id and isserviceproduct = 1	
+   left join product on product.id = service_spares_product.product_id and isserviceproduct = 0
+
+where complaint_register.id = service_spares_register.complaint_register_id
+and service_spares_register.id = service_spares_product.service_spares_register_id
+and service_spares_register.id = $P{DOCUMENT_ID}
+and service_spares_product.invoicable=0]]></queryString>
+
+	<field name="bpname" class="java.lang.String"/>
+	<field name="billing_address" class="java.lang.String"/>
+	<field name="delivery_address" class="java.lang.String"/>
+	<field name="mobileno" class="java.lang.String"/>
+	<field name="offerdate" class="java.sql.Timestamp"/>
+	<field name="sno" class="java.lang.String"/>
+	<field name="prd_description" class="java.lang.String"/>
+	<field name="unit_price" class="java.lang.String"/>
+	<field name="quantity" class="java.lang.String"/>
+	<field name="lineamt" class="java.math.BigDecimal"/>
+	<field name="tax_amt" class="java.math.BigDecimal"/>
+	<field name="total_price" class="java.lang.String"/>
+	<field name="hsn" class="java.lang.String"/>
+	<field name="header1" class="java.lang.String"/>
+	<field name="prdcode" class="java.lang.String"/>
+
+	<variable name="totalamt" class="java.math.BigDecimal" resetType="Report" calculation="Sum">
+		<variableExpression><![CDATA[new BigDecimal($F{total_price})]]></variableExpression>
+	</variable>
+	<variable name="totallineamt" class="java.math.BigDecimal" resetType="Report" calculation="Sum">
+		<variableExpression><![CDATA[$F{lineamt}]]></variableExpression>
+	</variable>
+		<background>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</background>
+		<title>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</title>
+		<pageHeader>
+			<band height="174"  isSplitAllowed="true" >
+				<rectangle radius="5" >
+					<reportElement
+						x="0"
+						y="0"
+						width="535"
+						height="174"
+						key="rectangle-1"/>
+					<graphicElement stretchType="NoStretch"/>
+				</rectangle>
+				<staticText>
+					<reportElement
+						x="1"
+						y="-160"
+						width="68"
+						height="15"
+						key="staticText-1"/>
+					<box></box>
+					<textElement>
+						<font pdfFontName="Helvetica-Bold" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Consignee :]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="4"
+						y="87"
+						width="214"
+						height="14"
+						key="staticText-94"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="SansSerif" pdfFontName="Helvetica-Bold" size="10" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Customer]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						mode="Opaque"
+						x="2"
+						y="1"
+						width="531"
+						height="22"
+						forecolor="#000000"
+						backcolor="#FFFF33"
+						key="staticText-101"/>
+					<box>					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="SansSerif" pdfFontName="Helvetica-Bold" size="14" isBold="true" isUnderline="false"/>
+					</textElement>
+				<text><![CDATA[MEGAWIN SWITCHGEAR-P-LIMITED]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						mode="Opaque"
+						x="2"
+						y="23"
+						width="531"
+						height="14"
+						backcolor="#FFFF99"
+						key="staticText-102"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="SansSerif" pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+					</textElement>
+				<text><![CDATA[2/18. 2/19, Narasothipatti, Perumal Malai Adivaram, Salem - 636 004, TAMIL NADU, INDIA.]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="1"
+						y="67"
+						width="534"
+						height="0"
+						key="line-52"/>
+					<graphicElement stretchType="NoStretch">
+					<pen lineWidth="0.0" lineStyle="Dotted"/>
+</graphicElement>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="1"
+						y="67"
+						width="534"
+						height="0"
+						forecolor="#000000"
+						key="line-53"/>
+					<graphicElement stretchType="NoStretch">
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+</graphicElement>
+				</line>
+				<staticText>
+					<reportElement
+						mode="Opaque"
+						x="2"
+						y="51"
+						width="531"
+						height="14"
+						backcolor="#FFFF99"
+						key="staticText-116"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="SansSerif" pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+					</textElement>
+				<text><![CDATA[PAN No   :  AAECM4516E    GSTIN    :   33AAECM4516E1ZW]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						mode="Opaque"
+						x="2"
+						y="66"
+						width="532"
+						height="21"
+						forecolor="#FFFFFF"
+						backcolor="#0033CC"
+						key="staticText-129"/>
+					<box>					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="SansSerif" pdfFontName="Helvetica-Bold" size="10" isBold="true"/>
+					</textElement>
+				<text><![CDATA[OFFER FOR SPARES AND SERVICE]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="251"
+						y="88"
+						width="98"
+						height="14"
+						key="staticText-130"/>
+					<box rightPadding="4"></box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="SansSerif" pdfFontName="Helvetica-Bold" size="10" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Offer No / Date :]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="251"
+						y="102"
+						width="284"
+						height="0"
+						key="line-69"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="11"
+						y="102"
+						width="224"
+						height="18"
+						key="textField"/>
+					<box></box>
+					<textElement>
+						<font fontName="SansSerif" size="9"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{bpname}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="11"
+						y="119"
+						width="224"
+						height="54"
+						key="textField"/>
+					<box></box>
+					<textElement>
+						<font fontName="SansSerif" size="9"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{billing_address}]]></textFieldExpression>
+				</textField>
+				<line direction="TopDown">
+					<reportElement
+						x="251"
+						y="86"
+						width="0"
+						height="88"
+						key="line-73"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="420"
+						y="88"
+						width="84"
+						height="14"
+						key="textField"/>
+					<box rightPadding="4"></box>
+					<textElement>
+						<font fontName="SansSerif"/>
+					</textElement>
+				<textFieldExpression   class="java.sql.Timestamp"><![CDATA[$F{offerdate}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="349"
+						y="88"
+						width="71"
+						height="14"
+						key="textField"/>
+					<box rightPadding="4"></box>
+					<textElement>
+						<font fontName="SansSerif"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{sno}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Opaque"
+						x="2"
+						y="37"
+						width="531"
+						height="14"
+						backcolor="#FFFF99"
+						key="textField-1"/>
+					<box></box>
+					<textElement textAlignment="Center">
+						<font fontName="SansSerif" pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{header1}]]></textFieldExpression>
+				</textField>
+			</band>
+		</pageHeader>
+		<columnHeader>
+			<band height="23"  isSplitAllowed="true" >
+				<rectangle radius="5" >
+					<reportElement
+						x="0"
+						y="0"
+						width="535"
+						height="23"
+						key="rectangle-4"/>
+					<graphicElement stretchType="NoStretch"/>
+				</rectangle>
+				<staticText>
+					<reportElement
+						x="81"
+						y="0"
+						width="227"
+						height="23"
+						key="staticText-27"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="SansSerif" pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+					</textElement>
+				<text><![CDATA[ITEM-DESCRIPTION]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="4"
+						y="0"
+						width="77"
+						height="23"
+						key="staticText-28"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="SansSerif" pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+					</textElement>
+				<text><![CDATA[ITEM-CODE]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="355"
+						y="0"
+						width="45"
+						height="23"
+						key="staticText-29"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="SansSerif" pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+					</textElement>
+				<text><![CDATA[QTY]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="400"
+						y="0"
+						width="64"
+						height="23"
+						key="staticText-96"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="SansSerif" pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+					</textElement>
+				<text><![CDATA[UNIT PRICE]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="464"
+						y="0"
+						width="69"
+						height="23"
+						key="staticText-131"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="SansSerif" pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+					</textElement>
+				<text><![CDATA[TOTAL.PRICE]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="308"
+						y="0"
+						width="47"
+						height="23"
+						key="staticText-132"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="SansSerif" pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+					</textElement>
+				<text><![CDATA[HSN]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="81"
+						y="0"
+						width="0"
+						height="23"
+						key="line-75"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="308"
+						y="0"
+						width="0"
+						height="23"
+						key="line-77"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="355"
+						y="0"
+						width="0"
+						height="23"
+						key="line-79"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="400"
+						y="0"
+						width="0"
+						height="23"
+						key="line-81"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="464"
+						y="0"
+						width="0"
+						height="23"
+						key="line-83"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+			</band>
+		</columnHeader>
+		<detail>
+			<band height="23"  isSplitAllowed="true" >
+				<rectangle radius="5" >
+					<reportElement
+						x="0"
+						y="0"
+						width="535"
+						height="23"
+						key="rectangle-2"/>
+					<graphicElement stretchType="NoStretch"/>
+				</rectangle>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="81"
+						y="0"
+						width="227"
+						height="23"
+						key="textField"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="9"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{prd_description}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="355"
+						y="0"
+						width="45"
+						height="23"
+						key="textField"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="9"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{quantity}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="400"
+						y="0"
+						width="64"
+						height="23"
+						key="textField"/>
+					<box></box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="9"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{unit_price}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="#,##0" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="464"
+						y="0"
+						width="69"
+						height="23"
+						key="textField"/>
+					<box></box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="9"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{lineamt}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="308"
+						y="0"
+						width="47"
+						height="23"
+						key="textField"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{hsn}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="4"
+						y="0"
+						width="77"
+						height="23"
+						key="textField"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{prdcode}]]></textFieldExpression>
+				</textField>
+				<line direction="TopDown">
+					<reportElement
+						x="81"
+						y="0"
+						width="0"
+						height="23"
+						key="line-76"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="308"
+						y="0"
+						width="0"
+						height="23"
+						key="line-78"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="355"
+						y="0"
+						width="0"
+						height="23"
+						key="line-80"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="400"
+						y="0"
+						width="0"
+						height="23"
+						key="line-82"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="464"
+						y="0"
+						width="0"
+						height="23"
+						key="line-84"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+			</band>
+		</detail>
+		<columnFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</columnFooter>
+		<pageFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</pageFooter>
+		<summary>
+			<band height="174"  isSplitAllowed="true" >
+				<rectangle radius="5" >
+					<reportElement
+						x="0"
+						y="0"
+						width="535"
+						height="174"
+						key="rectangle-3"/>
+					<graphicElement stretchType="NoStretch"/>
+				</rectangle>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="21"
+						width="535"
+						height="0"
+						key="line-46"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="36"
+						width="308"
+						height="1"
+						key="line-47"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="400"
+						y="0"
+						width="0"
+						height="21"
+						key="line-48"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<staticText>
+					<reportElement
+						x="6"
+						y="22"
+						width="293"
+						height="14"
+						key="staticText-98"/>
+					<box></box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="SansSerif" pdfFontName="Helvetica-Bold" size="9" isBold="true" isUnderline="true"/>
+					</textElement>
+				<text><![CDATA[Our Bank Account]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="6"
+						y="68"
+						width="293"
+						height="10"
+						key="staticText-100"/>
+					<box></box>
+					<textElement textAlignment="Left">
+						<font fontName="SansSerif" size="7"/>
+					</textElement>
+				<text><![CDATA[Prices quoted are ex-works(Salem) and valid for 90 days.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="5"
+						y="39"
+						width="303"
+						height="14"
+						key="staticText-124"/>
+					<box leftPadding="2"></box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="SansSerif" pdfFontName="Helvetica" size="8" isBold="false"/>
+					</textElement>
+				<text><![CDATA[SBI,Commercial Branch, Erode-638 003.A/c.No.30039300268, IFSC : SBIN0004061]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="55"
+						width="308"
+						height="0"
+						key="line-64"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<staticText>
+					<reportElement
+						x="400"
+						y="1"
+						width="64"
+						height="20"
+						key="staticText-127"/>
+					<box leftPadding="2" rightPadding="3"></box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="SansSerif" pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[TOTAL]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="6"
+						y="56"
+						width="293"
+						height="12"
+						key="staticText-137"/>
+					<box></box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="SansSerif" pdfFontName="Helvetica-Bold" size="8" isBold="true" isUnderline="true"/>
+					</textElement>
+				<text><![CDATA[Terms of Offer]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="6"
+						y="77"
+						width="293"
+						height="10"
+						key="staticText-138"/>
+					<box></box>
+					<textElement textAlignment="Left">
+						<font fontName="SansSerif" size="7"/>
+					</textElement>
+				<text><![CDATA[Taxes will be charged as per rates on the date of invoice.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="6"
+						y="86"
+						width="293"
+						height="10"
+						key="staticText-139"/>
+					<box></box>
+					<textElement textAlignment="Left">
+						<font fontName="SansSerif" size="7"/>
+					</textElement>
+				<text><![CDATA[Freight Prepaid as per offer.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="6"
+						y="95"
+						width="293"
+						height="10"
+						key="staticText-140"/>
+					<box></box>
+					<textElement textAlignment="Left">
+						<font fontName="SansSerif" size="7"/>
+					</textElement>
+				<text><![CDATA[All taxes and statutory dues will be to your account.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="6"
+						y="104"
+						width="293"
+						height="10"
+						key="staticText-141"/>
+					<box></box>
+					<textElement textAlignment="Left">
+						<font fontName="SansSerif" size="7"/>
+					</textElement>
+				<text><![CDATA[100% advance payment against proforma invoice.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="6"
+						y="113"
+						width="293"
+						height="10"
+						key="staticText-142"/>
+					<box></box>
+					<textElement textAlignment="Left">
+						<font fontName="SansSerif" size="7"/>
+					</textElement>
+				<text><![CDATA[Delivery from the date of receipt of Purchase Order.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="6"
+						y="122"
+						width="293"
+						height="10"
+						key="staticText-143"/>
+					<box></box>
+					<textElement textAlignment="Left">
+						<font fontName="SansSerif" size="7"/>
+					</textElement>
+				<text><![CDATA[Pl.indicate Invoice address and delivery address with GSTno in Po.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="6"
+						y="131"
+						width="293"
+						height="10"
+						key="staticText-144"/>
+					<box></box>
+					<textElement textAlignment="Left">
+						<font fontName="SansSerif" size="7"/>
+					</textElement>
+				<text><![CDATA[LD and Guarentee are not applicable for spares.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="6"
+						y="140"
+						width="298"
+						height="10"
+						key="staticText-145"/>
+					<box></box>
+					<textElement textAlignment="Left">
+						<font fontName="SansSerif" size="7"/>
+					</textElement>
+				<text><![CDATA[Deviation in the PO will not be binding on Megawin unless specifically accepted by Megawin.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="6"
+						y="150"
+						width="299"
+						height="21"
+						key="staticText-146"/>
+					<box></box>
+					<textElement textAlignment="Left">
+						<font fontName="SansSerif" size="7"/>
+					</textElement>
+				<text><![CDATA[Pl.send PO to support@megawin.co.in, We will always send an acceptance mail after registering the PO if the PO is as per offer.]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true" pattern="#,##0" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="464"
+						y="1"
+						width="69"
+						height="20"
+						key="textField"/>
+					<box rightPadding="3"></box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="SansSerif" pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{totallineamt}]]></textFieldExpression>
+				</textField>
+				<subreport  isUsingCache="true">
+					<reportElement
+						x="400"
+						y="22"
+						width="135"
+						height="34"
+						key="subreport-1"/>
+					<subreportParameter  name="DOCUMENT_ID">
+						<subreportParameterExpression><![CDATA[$P{DOCUMENT_ID}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="totlineamt">
+						<subreportParameterExpression><![CDATA[$V{totallineamt}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "tax_name.jasper"]]></subreportExpression>
+				</subreport>
+				<line direction="TopDown">
+					<reportElement
+						x="464"
+						y="-1"
+						width="0"
+						height="22"
+						key="line-85"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="308"
+						y="-1"
+						width="0"
+						height="175"
+						key="line-86"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<staticText>
+					<reportElement
+						x="314"
+						y="98"
+						width="219"
+						height="14"
+						key="staticText-147"/>
+					<box leftPadding="2"></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="SansSerif" pdfFontName="Helvetica-Bold" size="10" isBold="true"/>
+					</textElement>
+				<text><![CDATA[MEGAWIN SWITCHGEAR-P-LIMITED]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="344"
+						y="158"
+						width="163"
+						height="12"
+						key="staticText-148"/>
+					<box></box>
+					<textElement textAlignment="Center">
+						<font fontName="SansSerif" size="8"/>
+					</textElement>
+				<text><![CDATA[Authorized Signatory]]></text>
+				</staticText>
+			</band>
+		</summary>
+</jasperReport>
