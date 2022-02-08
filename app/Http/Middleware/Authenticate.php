@@ -16,7 +16,7 @@ class Authenticate extends Middleware
      * @return string|null
      */
     
-    public function handle($request, Closure $next)
+    public function handle($request, Closure $next, ...$guards)
     {
        
         $token = session()->get('token');
