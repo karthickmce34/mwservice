@@ -122,7 +122,7 @@ and service_spares_product.invoicable=0]]></queryString>
 						key="staticText-63"/>
 					<box></box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+						<font fontName="SansSerif" pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
 				<text><![CDATA[TOTAL  ]]></text>
 				</staticText>
@@ -587,7 +587,7 @@ and service_spares_product.invoicable=0]]></queryString>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 </box>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font fontName="Times New Roman" pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+						<font fontName="SansSerif" pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
 					</textElement>
 				<text><![CDATA[OFFER NO. :]]></text>
 				</staticText>
@@ -604,7 +604,7 @@ and service_spares_product.invoicable=0]]></queryString>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 </box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Times New Roman" pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+						<font fontName="SansSerif" pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
 					</textElement>
 				<text><![CDATA[DATE :]]></text>
 				</staticText>
@@ -769,7 +769,7 @@ and service_spares_product.invoicable=0]]></queryString>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 </box>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font fontName="Times New Roman" size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 				<text><![CDATA[M/S]]></text>
 				</staticText>
@@ -786,7 +786,7 @@ and service_spares_product.invoicable=0]]></queryString>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 </box>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font fontName="Times New Roman" pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+						<font fontName="SansSerif" pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
 				<text><![CDATA[To]]></text>
 				</staticText>
@@ -946,7 +946,7 @@ and service_spares_product.invoicable=0]]></queryString>
 					<rightPen lineWidth="0.0"/>
 </box>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font fontName="Times New Roman" pdfFontName="Helvetica-Bold" size="12" isBold="true" isUnderline="false"/>
+						<font fontName="SansSerif" pdfFontName="Helvetica-Bold" size="12" isBold="true" isUnderline="false"/>
 					</textElement>
 				<text><![CDATA[MEGAWIN SWITCHGEAR-P-LIMITED]]></text>
 				</staticText>
@@ -960,7 +960,7 @@ and service_spares_product.invoicable=0]]></queryString>
 						key="staticText-69"/>
 					<box></box>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font fontName="Times New Roman" pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+						<font fontName="SansSerif" pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
 					</textElement>
 				<text><![CDATA[2/18. 2/19, Narasothipatti, Perumal Malai Adivaram,]]></text>
 				</staticText>
@@ -974,7 +974,7 @@ and service_spares_product.invoicable=0]]></queryString>
 						key="staticText-70"/>
 					<box></box>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font fontName="Times New Roman" pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+						<font fontName="SansSerif" pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
 					</textElement>
 				<text><![CDATA[Salem - 636 004,]]></text>
 				</staticText>
@@ -988,7 +988,7 @@ and service_spares_product.invoicable=0]]></queryString>
 						key="staticText-71"/>
 					<box></box>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font fontName="Times New Roman" pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+						<font fontName="SansSerif" pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
 					</textElement>
 				<text><![CDATA[TAMIL NADU, INDIA.]]></text>
 				</staticText>
@@ -1002,7 +1002,7 @@ and service_spares_product.invoicable=0]]></queryString>
 						key="staticText-73"/>
 					<box></box>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font fontName="Times New Roman" pdfFontName="Helvetica" size="9" isBold="false"/>
+						<font fontName="SansSerif" pdfFontName="Helvetica" size="9" isBold="false"/>
 					</textElement>
 				<text><![CDATA[0427-2330288, 2330498]]></text>
 				</staticText>
@@ -1052,7 +1052,7 @@ and service_spares_product.invoicable=0]]></queryString>
 						key="staticText-76"/>
 					<box></box>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font fontName="Times New Roman" pdfFontName="Helvetica" size="9" isBold="false"/>
+						<font fontName="SansSerif" pdfFontName="Helvetica" size="9" isBold="false"/>
 					</textElement>
 				<text><![CDATA[1800 425 8088]]></text>
 				</staticText>
@@ -1066,7 +1066,7 @@ and service_spares_product.invoicable=0]]></queryString>
 						key="staticText-77"/>
 					<box></box>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font fontName="Times New Roman" pdfFontName="Helvetica" size="9" isBold="false"/>
+						<font fontName="SansSerif" pdfFontName="Helvetica" size="9" isBold="false"/>
 					</textElement>
 				<text><![CDATA[33AAECM4516E1ZW]]></text>
 				</staticText>
@@ -1080,7 +1080,7 @@ and service_spares_product.invoicable=0]]></queryString>
 						key="staticText-78"/>
 					<box></box>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font fontName="Times New Roman" pdfFontName="Helvetica" size="9" isBold="false"/>
+						<font fontName="SansSerif" pdfFontName="Helvetica" size="9" isBold="false"/>
 					</textElement>
 				<text><![CDATA[AAECM4516E]]></text>
 				</staticText>
@@ -1094,7 +1094,7 @@ and service_spares_product.invoicable=0]]></queryString>
 						key="textField-66"/>
 					<box></box>
 					<textElement>
-						<font fontName="Times New Roman"/>
+						<font fontName="SansSerif"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{email1}]]></textFieldExpression>
 				</textField>
@@ -1107,7 +1107,7 @@ and service_spares_product.invoicable=0]]></queryString>
 						key="textField-67"/>
 					<box rightPadding="4"></box>
 					<textElement verticalAlignment="Middle">
-						<font fontName="Times New Roman" size="9"/>
+						<font fontName="SansSerif" size="9"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{sno}]]></textFieldExpression>
 				</textField>
@@ -1120,7 +1120,7 @@ and service_spares_product.invoicable=0]]></queryString>
 						key="textField-68"/>
 					<box rightPadding="4"></box>
 					<textElement verticalAlignment="Middle">
-						<font fontName="Times New Roman" size="9"/>
+						<font fontName="SansSerif" size="9"/>
 					</textElement>
 				<textFieldExpression   class="java.sql.Timestamp"><![CDATA[$F{offerdate}]]></textFieldExpression>
 				</textField>
@@ -1133,7 +1133,7 @@ and service_spares_product.invoicable=0]]></queryString>
 						key="textField-69"/>
 					<box></box>
 					<textElement>
-						<font fontName="Times New Roman" pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+						<font fontName="SansSerif" pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{bpname}]]></textFieldExpression>
 				</textField>
@@ -1146,7 +1146,7 @@ and service_spares_product.invoicable=0]]></queryString>
 						key="textField-70"/>
 					<box></box>
 					<textElement markup="html">
-						<font fontName="Times New Roman" pdfFontName="Helvetica" size="9" isBold="false"/>
+						<font fontName="SansSerif" pdfFontName="Helvetica" size="9" isBold="false"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{billing_address}]]></textFieldExpression>
 				</textField>
@@ -1159,7 +1159,7 @@ and service_spares_product.invoicable=0]]></queryString>
 						key="textField"/>
 					<box></box>
 					<textElement verticalAlignment="Middle">
-						<font fontName="Times New Roman" size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{contactperson}]]></textFieldExpression>
 				</textField>
@@ -1172,7 +1172,7 @@ and service_spares_product.invoicable=0]]></queryString>
 						key="textField"/>
 					<box></box>
 					<textElement verticalAlignment="Middle">
-						<font fontName="Times New Roman" size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{gstin}]]></textFieldExpression>
 				</textField>
@@ -1185,7 +1185,7 @@ and service_spares_product.invoicable=0]]></queryString>
 						key="textField"/>
 					<box></box>
 					<textElement verticalAlignment="Middle">
-						<font fontName="Times New Roman" size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{mobileno}]]></textFieldExpression>
 				</textField>
@@ -1198,7 +1198,7 @@ and service_spares_product.invoicable=0]]></queryString>
 						key="textField"/>
 					<box></box>
 					<textElement verticalAlignment="Middle">
-						<font fontName="Times New Roman" size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{emailid}]]></textFieldExpression>
 				</textField>
@@ -1533,7 +1533,7 @@ and service_spares_product.invoicable=0]]></queryString>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 </box>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+						<font fontName="SansSerif" pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
 				<text><![CDATA[Terms & Conditions :]]></text>
 				</staticText>
@@ -1572,7 +1572,7 @@ and service_spares_product.invoicable=0]]></queryString>
 						key="textField"/>
 					<box></box>
 					<textElement>
-						<font size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{terms}]]></textFieldExpression>
 				</textField>
