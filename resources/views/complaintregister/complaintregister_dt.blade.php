@@ -15,7 +15,7 @@
                                             @if($record->document_status == 0)
                                             <button type="button" data-id="{{$record->id}}" data-type="{{$record->complaint_type}}" data-mode="{{$record->mode_of_complaint}}" class="btn btn-primary bgm-green waves-effect invsolve m-t-25"><i class="zmdi zmdi-refresh"> </i> Complete</button>                                    
                                             @endif
-                                            @if($record->document_status != 1)
+                                            @if($record->document_status != 1 && $record->document_status != 2)
                                             <button type="button" data-id="{{$record->id}}" class="btn btn-primary bgm-red waves-effect invcancel m-t-25"><i class="zmdi zmdi-close"> </i> Cancel</button>                                    
                                             @endif
                                             
@@ -309,9 +309,49 @@
 
                                                                                     </div>
                                                                                 </form>
-                                                                                                              <div class="form-row m-t-25 pull-right">
+                                                                                <div class="form-row m-t-25 pull-right">
                                                                                     <button type="button" class="addspline btn bgm-green"><i class="zmdi zmdi-plus"></i></button>
                                                                                 </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-group col-sm-12">
+                                                                            <div class="card card-body">
+                                                                                <div class="row">
+                                                                                    <div class="col-sm-12 text-center">
+                                                                                        <h4>Offer Details</h4>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <form>
+                                                                                    <div class="offersecond" >
+                                                                                        <div class="modal-body">
+                                                                                            <div class="row m-l-10" role="form">
+                                                                                                <div class="form-group col-sm-4">
+                                                                                                    <label for="offervalidity" class="control-label col-sm-4 required">Validity</label>
+                                                                                                    <div class="col-sm-8">
+                                                                                                        <div class="fg-line">
+                                                                                                            <input type="hidden" name="revision_no" id="revision_no" value="0">
+                                                                                                            <select class="form-control input-sm" placeholder="Validity" aria-describedby="basic-addon1" data-validation="required" required="required" id="offervalidity" name="offervalidity">
+                                                                                                                @foreach($offervalidity as $offerval=>$offername)
+                                                                                                                    <option value="{{$offerval}}">{{$offername}}</option>
+                                                                                                                @endforeach
+                                                                                                            </select>  
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="form-group col-sm-8">
+                                                                                                    <label for="terms" class="control-label col-sm-1">Terms</label>
+                                                                                                    <div class="col-sm-11">
+                                                                                                        <div class="fg-line">
+                                                                                                            <textarea class="form-control input-sm" cols="20" rows="13" placeholder="Terms" name="terms" id="terms"  >{{$terms}}</textarea>                                        
+                                                                                                        </div>
+                                                                                                        <div class="termsdiv hide">{{$terms}}</div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>    
+                                                                                                            
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </form>
                                                                             </div>
                                                                         </div>
                                                                     </div>

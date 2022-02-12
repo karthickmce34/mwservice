@@ -157,6 +157,10 @@
                     product();
                     productreset();
                 });
+                $("#modal3").find(".prdclose").on('click',function(){
+                    $(this).closest(".row").remove();
+                    productreset();
+                });
                 product();
                 productreset();
                 function product()

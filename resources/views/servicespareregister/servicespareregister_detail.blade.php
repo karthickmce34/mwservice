@@ -538,23 +538,27 @@
             $(".offerprint").click(function()
             {
                 var id = $(this).data('id');
-                $("#offerprintform").modal();
-                return false;
-                
-                var controller = 'servicespareregister/';
-                $(".loader").show();
-                
-                $.ajax({
+                $("#modalprint").find("#modalofferprint1").remove();
+                var print_offer = $("#modalofferprint").find("#modalofferprint1").clone();
+                $("#modalprint").append(print_offer);
+                $("#modalprint").find("button#printoffernew").on("click",function()
+                {
+                    $(this).hide();
+                    var print_id = $("#modalprint").find("#offerid option:selected").val();
+                    
+                    var controller = 'servicespareregister/';
+                    //$(".loader").show();
+                    $.ajax({
                     method: "POST",
                     url: _site_url + controller + "offerprint",
-                    data: {id:id},
+                    data: {id:print_id},
 
                     }).done( function( data, textStatus, jqXHR ) {
                     console.log( " ajax done " );
                     if(data.status == 1)
                     {
                         $(".loader").hide();
-                        
+                        $("#modalprint").find("button#printoffernew").show();
                         setTimeout(function() {
                             var win = window.open(data.filepath, '_blank');
                             //$('.container').find("#elabelloader #loader").css("display","none");
@@ -567,7 +571,7 @@
                                 //Browser has blocked it
                                 alert('Please allow popups for this website');
                             }
-                        }, 6000);
+                        }, 8000);
                     }    
                     else
                     {
@@ -582,6 +586,12 @@
                         $(".loader").hide();
                         console.log( data_jqXHR, textStatus, jqXHR_errorThrown );
                     });
+                });
+                $("#modalprint").find("#offerprintform").modal();
+                
+                
+                
+                
                 
             });
               //invperformaprint  

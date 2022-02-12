@@ -1083,7 +1083,7 @@
 
                                                             <div class="form-row m-t-25">
                                                                 <div class="col-sm-3 m-t-25">
-                                                                    <button type="button" id="print_offer" class="print_offer btn bgm-cyan"><i>Print</i></button>
+                                                                    <button type="button" id="printoffernew" class="printoffernew btn bgm-cyan"><i>Print</i></button>
                                                                 </div>
                                                             </div>                 
                                                         </div>

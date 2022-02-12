@@ -82,8 +82,16 @@ class ComplaintRegisterController extends Controller {
         $record->STATUS_VALUES = $model->getStaticVar('STATUS_VALUES');
         $record->COMPLAINT_MODE_VALUES = $model->getStaticVar('COMPLAINT_MODE_VALUES');
         $record->COMPLAINT_TYPE_VALUES = $model->getStaticVar('COMPLAINT_TYPE_VALUES');
+        $offervalidity   = Config::get('constant.OFFERVALIDITY');
+        
+        $SegmentModel = new $this->modelSegment();
+        $segmentData = $SegmentModel->where('segment_id',$record->complaint_type)->first();
+        $terms = $segmentData->terms;
+        
         $this->data['record'] = $record;
         $this->data['modelData'] = $modelData;
+        $this->data['offervalidity'] = $offervalidity;
+        $this->data['terms'] = $terms;
         $this->data['baseName'] = $this->baseName;
         $this->data['basePath'] = $this->basePath;
         return view($this->basePath . $this->baseName . '_detail', $this->data);
@@ -306,7 +314,6 @@ class ComplaintRegisterController extends Controller {
         $inputs = request()->all();
         $model = new $this->modelName();
        
-        
         //for($)
              
         $modelData = $model->find($inputs['id']);
@@ -381,7 +388,7 @@ class ComplaintRegisterController extends Controller {
                     $offer['deliveryperiod']=0;
                     $offer['paymentterms']=0;
                     $offer['dayscredit']=0;
-                    $offer['terms']=$segmentData->terms;
+                    $offer['terms']=$inputs['terms'];
                     $offer['created_by_id'] = session()->get('user_id');
                     $offer['status'] = 1;
                     $offerModel = new $this->modelOfferdeatils();

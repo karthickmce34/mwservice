@@ -310,8 +310,8 @@ class HomeController extends Controller
             $mobile = $inputs['mobileno'];
             $usr = $inputs['mobileno'];
             $message = "Dear Customer, Thanks for contacting Megawin. Your Service request is registered in our portal(Ref Id: " . $inputs['seqno'] . ")";
-            $apirequest = new SmsHelper();
-            $smspush = $apirequest->smsToCustomer($mobile, $message);
+            //$apirequest = new SmsHelper();
+            ////$smspush = $apirequest->smsToCustomer($mobile, $message);
             return response()->json($this->data);
         }
               

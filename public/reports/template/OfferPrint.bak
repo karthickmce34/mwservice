@@ -58,21 +58,23 @@ service_spares_product.tax_amt,
 service_spares_product.total_price,
 service_charge.hsn,
 service_spares_register.complaint_type,
-case when service_spares_register.terms is null then segment.terms else service_spares_register.terms end as terms,
+case when offer_details.terms is null then segment.terms else offer_details.terms end as terms,
 case when service_spares_register.complaint_type = 0 then "service@megawin.co.in" else "spares@megawin.co.in" end as email1,
 case when product.code = "" || product.code is null then service_charge.code else product.code end as prdcode
 
 from service_spares_register,
 complaint_register,
 segment,
+offer_details,
 service_spares_product
    left join service_charge on service_charge.id = service_spares_product.product_id and isserviceproduct = 1	
    left join product on product.id = service_spares_product.product_id and isserviceproduct = 0
 
 where complaint_register.id = service_spares_register.complaint_register_id
 and service_spares_register.id = service_spares_product.service_spares_register_id
+and offer_details.service_spares_register_id = service_spares_register.id
 and segment.segment_id = complaint_register.complaint_type
-and service_spares_register.id = $P{DOCUMENT_ID}
+and offer_details.id = $P{DOCUMENT_ID}
 and service_spares_product.invoicable=0]]></queryString>
 
 	<field name="bpname" class="java.lang.String"/>
@@ -410,7 +412,7 @@ and service_spares_product.invoicable=0]]></queryString>
 					<reportElement
 						style="Report_Footer"
 						x="0"
-						y="202"
+						y="201"
 						width="567"
 						height="1"
 						key="line-2"/>
@@ -1148,7 +1150,7 @@ and service_spares_product.invoicable=0]]></queryString>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{billing_address}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="336"
 						y="144"
@@ -1161,7 +1163,7 @@ and service_spares_product.invoicable=0]]></queryString>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{contactperson}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="336"
 						y="117"
@@ -1174,7 +1176,7 @@ and service_spares_product.invoicable=0]]></queryString>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{gstin}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="336"
 						y="130"
@@ -1187,7 +1189,7 @@ and service_spares_product.invoicable=0]]></queryString>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{mobileno}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="336"
 						y="160"
@@ -1353,7 +1355,7 @@ and service_spares_product.invoicable=0]]></queryString>
 					<reportElement
 						style="Report_Footer"
 						x="0"
-						y="20"
+						y="21"
 						width="567"
 						height="1"
 						key="line-57"
