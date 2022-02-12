@@ -1169,8 +1169,8 @@ class ServiceSpareRegisterController extends Controller
             array($filetype),
             $parameter,
             $connection
-        )->execute();
-        //print_r($jasper1);die;
+        )->output();
+        print_r($jasper1);die;
         $data['name'] = 'Proformainvoice';
         $data['ext'] = $filetype;
         $data['path'] = $UPLOAD_PATH_RESULT_URL;
