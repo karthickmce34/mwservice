@@ -10,7 +10,7 @@ namespace App\Libraries\Helpers;
 
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Http;
+//use Illuminate\Support\Facades\Http;
 
 /**
  * Description of FileUploadHelper
@@ -62,7 +62,7 @@ class SmsHelper {
     {
         $base_url = Config::get('constant.API_REQUEST_DATA');
         
-        $response = Http::get($base_url['sms-url'], [
+        /*$response = Http::get($base_url['sms-url'], [
             'user' => $base_url['sms-user'],
             'apikey' => $base_url['sms-apiKey'],
             'mobile' =>  $mobile,
@@ -70,7 +70,7 @@ class SmsHelper {
             'senderid' => $base_url['sms-senderid'],
             'type' =>  $base_url['sms-cType'],
             'tid' => $base_url['sms-tid'],
-        ]);
+        ]);*/
         
         //print_r($response);die;
     }
