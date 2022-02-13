@@ -23,7 +23,7 @@
                                                     <div class="dropdown pull-right">
                                                         <a href="#" class="dropdown-toggle btn bgm-pink waves-effect" data-toggle="dropdown" aria-expanded="false" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Email"><i class="zmdi zmdi-email"> </i></a>
                                                         <ul class="dropdown-menu dm-icon bgm-blue" role="menu">
-                                                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#" data-id="{{$record->id}}" data-compid="{{$record->compreg->id}}"  data-mode="{{$record->compreg->mode_of_complaint}}" class="offeremail "><i class="zmdi zmdi-email"> </i> Offer </a></li>
+                                                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#" data-id="{{$record->id}}" data-compid="{{$record->compreg->id}}"  data-mode="{{$record->compreg->mode_of_complaint}}" data-offer="{{$record->final_offer_id}}" class="offeremail "><i class="zmdi zmdi-email"> </i> Offer </a></li>
                                                         </ul>
 
                                                     </div>
@@ -46,7 +46,7 @@
                                                     <div class="dropdown pull-right">
                                                         <a href="#" class="dropdown-toggle btn bgm-pink waves-effect" data-toggle="dropdown" aria-expanded="false" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Email"><i class="zmdi zmdi-email"> </i></a>
                                                         <ul class="dropdown-menu dm-icon bgm-blue" role="menu">
-                                                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#" data-id="{{$record->id}}" data-compid="{{$record->compreg->id}}"  data-mode="{{$record->compreg->mode_of_complaint}}" class="offeremail "><i class="zmdi zmdi-email"> </i> Offer </a></li>
+                                                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#" data-id="{{$record->id}}" data-compid="{{$record->compreg->id}}"  data-mode="{{$record->compreg->mode_of_complaint}}" data-offer="{{$record->final_offer_id}}" class="offeremail "><i class="zmdi zmdi-email"> </i> Offer </a></li>
                                                             <li class="divider"></li>
                                                         </ul>
 
@@ -65,7 +65,7 @@
                                                     <div class="dropdown pull-right">
                                                         <a href="#" class="dropdown-toggle btn bgm-pink waves-effect" data-toggle="dropdown" aria-expanded="false" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Email"><i class="zmdi zmdi-email"> </i></a>
                                                         <ul class="dropdown-menu dm-icon bgm-blue" role="menu">
-                                                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#" data-id="{{$record->id}}" data-compid="{{$record->compreg->id}}"  data-mode="{{$record->compreg->mode_of_complaint}}" class="offeremail "><i class="zmdi zmdi-email"> </i> Offer </a></li>
+                                                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#" data-id="{{$record->id}}" data-compid="{{$record->compreg->id}}"  data-mode="{{$record->compreg->mode_of_complaint}}" data-offer="{{$record->final_offer_id}}" class="offeremail "><i class="zmdi zmdi-email"> </i> Offer </a></li>
                                                             <li class="divider"></li>
                                                             <li role="presentation"><a role="menuitem" tabindex="-1" href="#" data-id="{{$record->id}}" data-compid="{{$record->compreg->id}}"  data-mode="{{$record->compreg->mode_of_complaint}}" class="invperformaemail "><i class="zmdi zmdi-email"> </i> Performa Invoice</a></li>
                                                         </ul>
@@ -93,7 +93,7 @@
                                                     <div class="dropdown pull-right">
                                                         <a href="#" class="dropdown-toggle btn bgm-pink waves-effect" data-toggle="dropdown" aria-expanded="false" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Email"><i class="zmdi zmdi-email"> </i></a>
                                                         <ul class="dropdown-menu dm-icon bgm-blue" role="menu">
-                                                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#" data-id="{{$record->id}}" data-compid="{{$record->compreg->id}}"  data-mode="{{$record->compreg->mode_of_complaint}}" class="offeremail "><i class="zmdi zmdi-email"> </i> Offer </a></li>
+                                                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#" data-id="{{$record->id}}" data-compid="{{$record->compreg->id}}"  data-mode="{{$record->compreg->mode_of_complaint}}" data-offer="{{$record->final_offer_id}}" class="offeremail "><i class="zmdi zmdi-email"> </i> Offer </a></li>
                                                             <li class="divider"></li>
                                                             <li role="presentation"><a role="menuitem" tabindex="-1" href="#" data-id="{{$record->id}}" data-compid="{{$record->compreg->id}}"  data-mode="{{$record->compreg->mode_of_complaint}}" class="invperformaemail "><i class="zmdi zmdi-email"> </i> Performa Invoice</a></li>
                                                         </ul>
@@ -138,7 +138,7 @@
                                                 <div class="dropdown pull-right">
                                                     <a href="#" class="dropdown-toggle btn bgm-pink waves-effect" data-toggle="dropdown" aria-expanded="false" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Email"><i class="zmdi zmdi-email"> </i></a>
                                                     <ul class="dropdown-menu dm-icon bgm-blue" role="menu">
-                                                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#" data-id="{{$record->id}}" data-compid="{{$record->compreg->id}}"  data-mode="{{$record->compreg->mode_of_complaint}}" class="offeremail "><i class="zmdi zmdi-email"> </i> Offer </a></li>
+                                                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#" data-id="{{$record->id}}" data-compid="{{$record->compreg->id}}"  data-mode="{{$record->compreg->mode_of_complaint}}" data-offer="{{$record->final_offer_id}}" class="offeremail "><i class="zmdi zmdi-email"> </i> Offer </a></li>
                                                     </ul>
                                                 </div>
                                                 <div class="dropdown pull-right">
@@ -156,7 +156,7 @@
                                                 <div class="dropdown pull-right">
                                                     <a href="#" class="dropdown-toggle btn bgm-pink waves-effect" data-toggle="dropdown" aria-expanded="false" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Email"><i class="zmdi zmdi-email"> </i></a>
                                                     <ul class="dropdown-menu dm-icon bgm-blue" role="menu">
-                                                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#" data-id="{{$record->id}}" data-compid="{{$record->compreg->id}}"  data-mode="{{$record->compreg->mode_of_complaint}}" class="offeremail "><i class="zmdi zmdi-email"> </i> Offer </a></li>
+                                                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#" data-id="{{$record->id}}" data-compid="{{$record->compreg->id}}"  data-mode="{{$record->compreg->mode_of_complaint}}" data-offer="{{$record->final_offer_id}}" class="offeremail "><i class="zmdi zmdi-email"> </i> Offer </a></li>
                                                         <li class="divider"></li>
                                                         <li role="presentation"><a role="menuitem" tabindex="-1" href="#" data-id="{{$record->id}}" data-compid="{{$record->compreg->id}}"  data-mode="{{$record->compreg->mode_of_complaint}}" class="invperformaemail "><i class="zmdi zmdi-email"> </i> Performa Invoice</a></li>
                                                     </ul>
@@ -178,7 +178,7 @@
                                                 <div class="dropdown pull-right">
                                                     <a href="#" class="dropdown-toggle btn bgm-pink waves-effect" data-toggle="dropdown" aria-expanded="false" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Email"><i class="zmdi zmdi-email"> </i></a>
                                                     <ul class="dropdown-menu dm-icon bgm-blue" role="menu">
-                                                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#" data-id="{{$record->id}}" data-compid="{{$record->compreg->id}}"  data-mode="{{$record->compreg->mode_of_complaint}}" class="offeremail "><i class="zmdi zmdi-email"> </i> Offer </a></li>
+                                                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#" data-id="{{$record->id}}" data-compid="{{$record->compreg->id}}"  data-mode="{{$record->compreg->mode_of_complaint}}" data-offer="{{$record->final_offer_id}}" class="offeremail "><i class="zmdi zmdi-email"> </i> Offer </a></li>
                                                         <li class="divider"></li>
                                                         <li role="presentation"><a role="menuitem" tabindex="-1" href="#" data-id="{{$record->id}}" data-compid="{{$record->compreg->id}}"  data-mode="{{$record->compreg->mode_of_complaint}}" class="invperformaemail "><i class="zmdi zmdi-email"> </i> Performa Invoice</a></li>
                                                     </ul>
@@ -201,7 +201,7 @@
                                                 <div class="dropdown pull-right">
                                                     <a href="#" class="dropdown-toggle btn bgm-pink waves-effect" data-toggle="dropdown" aria-expanded="false" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Email"><i class="zmdi zmdi-email"> </i></a>
                                                     <ul class="dropdown-menu dm-icon bgm-blue" role="menu">
-                                                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#" data-id="{{$record->id}}" data-compid="{{$record->compreg->id}}"  data-mode="{{$record->compreg->mode_of_complaint}}" class="offeremail "><i class="zmdi zmdi-email"> </i> Offer </a></li>
+                                                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#" data-id="{{$record->id}}" data-compid="{{$record->compreg->id}}"  data-mode="{{$record->compreg->mode_of_complaint}}" data-offer="{{$record->final_offer_id}}" class="offeremail "><i class="zmdi zmdi-email"> </i> Offer </a></li>
                                                         <li class="divider"></li>
                                                         <li role="presentation"><a role="menuitem" tabindex="-1" href="#" data-id="{{$record->id}}" data-compid="{{$record->compreg->id}}"  data-mode="{{$record->compreg->mode_of_complaint}}" class="invperformaemail "><i class="zmdi zmdi-email"> </i> Performa Invoice</a></li>
                                                     </ul>

@@ -1681,7 +1681,7 @@
             $(".offeremail").on('click',function()
             {
                 $("#emailmodal").find("#modalsent2").remove();
-                var id = $(this).data('id');
+                var id = $(this).data('offer');
                 var compid = $(this).data('compid');
                 var mdsent = $("#modalsent").find("#modalsent2").clone();
                 $("#emailmodal").append(mdsent);

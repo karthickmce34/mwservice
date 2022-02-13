@@ -23,7 +23,7 @@ class ComplaintRegisterController extends Controller {
     public $modelSSPrdName  = 'App\Models\ServiceSpareProductModel';
     public $modelSSPrdTax   = 'App\Models\ServiceProductTaxModel';
     public $modelDocseq     = 'App\Models\DocseqModel';
-    public $modelOfferdeatils   = 'App\Models\OfferDetailsModel';
+    public $modelOfferdetails   = 'App\Models\OfferDetailsModel';
     public $modelRegion     = 'App\Models\RegionModel';
     public $modelSegment    = 'App\Models\SegmentModel';
     public $baseRedirect    = 'complaintregister.index';
@@ -391,7 +391,7 @@ class ComplaintRegisterController extends Controller {
                     $offer['terms']=$inputs['terms'];
                     $offer['created_by_id'] = session()->get('user_id');
                     $offer['status'] = 1;
-                    $offerModel = new $this->modelOfferdeatils();
+                    $offerModel = new $this->modelOfferdetails();
                     $storedoffer = $offerModel->addRecord($offer);
                     
                     if ($storedoffer && is_array($storedoffer)) 
