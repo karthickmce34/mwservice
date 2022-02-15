@@ -173,7 +173,7 @@
                                                 <button type="button" data-id="{{$record->id}}"  class="btn btn-primary bgm-cyan waves-effect orderstatus pull-right">S</button>                                    
                                             </div>
                                             @endif
-                                            @if($record->order_status == 3)
+                                            @if($record->order_status == 3 || $record->order_status == 4)
                                             <div class="header_button ">
                                                 <div class="dropdown pull-right">
                                                     <a href="#" class="dropdown-toggle btn bgm-pink waves-effect" data-toggle="dropdown" aria-expanded="false" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Email"><i class="zmdi zmdi-email"> </i></a>
@@ -223,7 +223,7 @@
 
                                             </div>
                                             @endif
-                                            @if($record->order_status > 3)
+                                            @if($record->order_status > 4)
                                                  @if($record->site_depute == 0)
                                                     <button type="button" data-id="{{$record->id}}" data-compid="{{$record->compreg->id}}"  data-mode="{{$record->compreg->mode_of_complaint}}"  class="btn btn-primary bgm-lightblue waves-effect depute pull-right" title="Site Deputation"><i class="zmdi zmdi-account"> </i></button>                                    
                                                  @endif

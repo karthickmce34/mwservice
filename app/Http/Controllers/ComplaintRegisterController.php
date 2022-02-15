@@ -407,6 +407,7 @@ class ComplaintRegisterController extends Controller {
                         
                         if($cnt > 0)
                         {
+                            $totalamt = 0;
                             for($i=1;$i<=$cnt;$i++)
                             {
                                 if($inputs['product_id'][$i] = "" && $inputs['product'][$i] = "" && $inputs['qty'][$i] == "")
@@ -430,6 +431,9 @@ class ComplaintRegisterController extends Controller {
                                     $prd['invoicable'] = 0;
                                     $prd['isserviceproduct'] = 1;
                                     $prd['status'] = 1;
+                                    
+                                    $totalamt=$totalamt+$inputs['total'][$i];
+                                            
                                     $modelprd = new $this->modelSSPrdName();
                                     $storedprd = $modelprd->addRecord($prd);
                                     if ($storedprd && is_array($storedprd)) {
@@ -439,6 +443,9 @@ class ComplaintRegisterController extends Controller {
                                     } 
                                     else
                                     {
+                                        $modelRegister->total_gross_amt=$totalamt;
+                                        $modelRegister->save();
+                                        
                                         $modelTax = new $this->modelTax();
                                         $taxdata = $modelTax->find($inputs['tax_id'][$i]);
                                         foreach($taxdata->taxgroup as $taxgroup)

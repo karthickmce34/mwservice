@@ -1205,6 +1205,7 @@ class ServiceSpareRegisterController extends Controller
     {
         $inputs = request()->all();
         $id = $inputs['id'];
+        $regid = $inputs['regid'];
         $compModel = new $this->modelCompName();
         $compData = $compModel->find($inputs['compid']);
         
@@ -1253,6 +1254,7 @@ class ServiceSpareRegisterController extends Controller
     public function postEmailsend()
     {
         $inputs = request()->all();
+        
         $mail = new PHPMailer(true);
         $UPLOAD_PATH_RESULT_URL   = Config::get('constant.UPLOAD_PATH_RESULT_URL');
 
@@ -1355,7 +1357,12 @@ class ServiceSpareRegisterController extends Controller
             }
             
             else {
-		$this->data['message']='Email has been sent.';
+                $model = new $this->modelName();
+                $modeldata = $model->find($inputs['regid']);
+                $modeldata->offer_date=date('Y-m-d');
+                $modeldata->order_status=1;
+                $modeldata->save();
+                $this->data['message']='Email has been sent.';
                 $this->data['status']=1;
                 return response()->json($this->data);
             }

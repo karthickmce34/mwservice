@@ -46,7 +46,7 @@ Route::get('home/taxcalc', 'HomeController@getTaxcalc');
 Route::get('home/docseq', 'HomeController@getDocseq');
 Route::get('home/attend_detail', 'HomeController@getAttendDetails');
 Route::get('home/attendadd', 'HomeController@getAttendadd');
-
+Route::get('home/calender', 'HomeController@getCalender');
 
 Route::resource('serviceengineer', 'ServiceEngineerController');
 Route::get('serviceengineer/delete/{id}', 'ServiceEngineerController@destroy');

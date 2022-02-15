@@ -774,6 +774,8 @@
 <script>
 
     $(function () {
+       
+                    var _site_url = "{{url('/')}}/";
 
                    $("#pending_enq").dataTable(
                            {
@@ -799,7 +801,7 @@
                             center: 'prev, title, next',
                             left: ''
                         },
-                        defaultDate: '2021-07-09',
+                        defaultDate: $.datepicker.formatDate('yy-mm-dd', new Date()),
                         selectable: true,
                         editable: false,
                         dateClick: function(info) {
@@ -809,8 +811,8 @@
                         events: [
                             /*{
                                 title: 'AT Coimbatore',
-                                start: '2021-01-01',
-                                end: '2021-01-01',
+                                start: '2022-02-15',
+                                end: '2022-02-16',
                                 className: 'bgm-cyan'
                             },
                             {
@@ -856,15 +858,15 @@
                         ]
 
                     }); 
-                    setTimeout(calwid, 10000);
+                    /*setTimeout(calwid, 10000);
                     setTimeout(calwid2, 7000);
                    function calwid()
                    {
                        var event = {
-                            /*title: 'New Event',
+                            title: 'New Event',
                             start: Date(Date.now()),
                             backgroundColor: App.getLayoutColorCode('purple'),
-                            allDay: false*/
+                            allDay: false
                             title: 'AT Chennai',
                             start: '2021-07-21',
                             end: '2021-07-26',
@@ -872,23 +874,32 @@
                         }
                         jQuery('#calendar-widget1').fullCalendar('renderEvent',event,true);
                         //console.log("cal");
-                   }
-                   function calwid2()
-                   {
-                       var event = {
-                            /*title: 'New Event',
-                            start: Date(Date.now()),
-                            backgroundColor: App.getLayoutColorCode('purple'),
-                            allDay: false*/
-                            title: 'AT Coimbatore',
-                            start: '2021-07-13',
-                            end: '2021-07-14',
-                            className: 'bgm-red'
-                        }
-                        jQuery('#calendar-widget1').fullCalendar('renderEvent',event,true);
-                        //console.log("cal");
-                   }
+                   }*/
+                   
                     
+                    var controller = 'home/';
+                    
+                    $.ajax({
+                            method: "GET",
+                            url: _site_url + controller + "calender",
+
+                            }).done( function( data, textStatus, jqXHR ) {
+                            console.log( " ajax done " );
+                            console.log( data.calender);
+                                var len=data.calender.length;
+                                for(var i=0;i<len;i++)
+                                {
+                                    var event = data.calender[i];
+                                    jQuery('#calendar-widget1').fullCalendar('renderEvent',event,true);
+                                }
+
+                            }).fail( function( jqXHR, textStatus, errorThrown ) {
+                                console.log( " ajax fail " );
+                                console.log( jqXHR, textStatus, errorThrown );
+                            }).always ( function( data_jqXHR, textStatus, jqXHR_errorThrown ) {
+                                console.log( " ajax always " );
+                                console.log( data_jqXHR, textStatus, jqXHR_errorThrown );
+                            });
 
     });
 </script>

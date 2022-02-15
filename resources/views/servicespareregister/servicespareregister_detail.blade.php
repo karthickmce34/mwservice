@@ -271,16 +271,15 @@
                         $("#modal3").find('#engineer_id :selected').each(function(i, sel){
                             engineer_id.push($(sel).val());
                         });
-                        var date_of_depature = $(".se_date_of_depature").val();
-                        var date_of_return = $(".se_date_of_return").val();
+                        var date_of_depature = $("#modal3").find(".se_date_of_depature").val();
+                        var date_of_return = $("#modal3").find(".se_date_of_return").val();
                     }
                     else
                     {
                         agent_id = $("#modal3").find('#agent_id :selected').val();
-                        var date_of_depature = $(".sa_date_of_depature").val();
-                        var date_of_return = $(".sa_date_of_return").val();
+                        var date_of_depature = $("#modal3").find(".sa_date_of_depature").val();
+                        var date_of_return = $("#modal3").find(".sa_date_of_return").val();
                     }
-                    
                     var dataConfig = {
                      depute_engineer: depute_engineer,
                      engineer_id:engineer_id,
@@ -1682,6 +1681,7 @@
             {
                 $("#emailmodal").find("#modalsent2").remove();
                 var id = $(this).data('offer');
+                var regid = $(this).data('id');
                 var compid = $(this).data('compid');
                 var mdsent = $("#modalsent").find("#modalsent2").clone();
                 $("#emailmodal").append(mdsent);
@@ -1714,7 +1714,8 @@
                 var dataConfig = {
                      compid: compid,
                      id: id,
-                     type:0,  //offer
+                     type:0,
+                     regid:regid,//offer
                  };
 
                     var controller = 'servicespareregister/';
@@ -1771,7 +1772,7 @@
                                                 "<span class='c-blue'>Mail: spares@megawin.co.in   Web:www.megawinswitchgear.com</span>";
                             }
                             $("#emailmodal").find(".summernote").code(detail);
-                            $("#emailmodal").find(".emailattach").closest("div").append("<input type='text' class='form-control col-sm-6' readonly name='attachname' value='"+data.filename+"'><input type='hidden' name='mailattach' value='"+data.filepath+"'>");
+                            $("#emailmodal").find(".emailattach").closest("div").append("<input type='hidden' class='form-control col-sm-6' readonly name='regid' value='"+regid+"'><input type='text' class='form-control col-sm-6' readonly name='attachname' value='"+data.filename+"'><input type='hidden' name='mailattach' value='"+data.filepath+"'>");
                             //$("#emailmodal").find(".emailattach .email_attach").val(data.filename);
                             //$("#emailmodal").find(".mailattach  .fileinput-filename").html("SericeOffer.pdf");
 

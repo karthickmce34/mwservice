@@ -14,7 +14,7 @@
                                     <div class="pull-right">
                                         <div class="">
                                             @if($record->visit_status==0)
-                                            <button type="button" data-id="{{$record->id}}" class="btn btn-primary bgm-orange waves-effect completed "><i class="zmdi zmdi-check"> </i> Complete</button>                                    
+                                            <button type="button" data-id="{{$record->id}}" class="btn btn-primary bgm-orange waves-effect completed "><i class="zmdi zmdi-check"> </i> Assign</button>                                    
                                             @endif
                                         
                                             <button type="button" data-id="{{$record->id}}" class="btn btn-primary bgm-purple waves-effect complaint "><i class="zmdi zmdi-search"> </i> Details</button>                                    

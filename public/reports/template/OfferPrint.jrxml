@@ -47,6 +47,7 @@ complaint_register.address2 as delivery_address,
 complaint_register.mobileno as mobileno,
 complaint_register.gstin as gstin,
 complaint_register.emailid as emailid,
+service_spares_register.id,
 complaint_register.contact_person as contactperson,
 service_spares_register.created_at as offerdate,
 complaint_register.seqno as sno,
@@ -83,6 +84,7 @@ and service_spares_product.invoicable=0]]></queryString>
 	<field name="mobileno" class="java.lang.String"/>
 	<field name="gstin" class="java.lang.String"/>
 	<field name="emailid" class="java.lang.String"/>
+	<field name="id" class="java.lang.Integer"/>
 	<field name="contactperson" class="java.lang.String"/>
 	<field name="offerdate" class="java.sql.Timestamp"/>
 	<field name="sno" class="java.lang.String"/>
@@ -158,7 +160,7 @@ and service_spares_product.invoicable=0]]></queryString>
 						height="34"
 						key="subreport-1"/>
 					<subreportParameter  name="DOCUMENT_ID">
-						<subreportParameterExpression><![CDATA[$P{DOCUMENT_ID}]]></subreportParameterExpression>
+						<subreportParameterExpression><![CDATA[$F{id}.toString()]]></subreportParameterExpression>
 					</subreportParameter>
 					<subreportParameter  name="totlineamt">
 						<subreportParameterExpression><![CDATA[$V{totallineamt}]]></subreportParameterExpression>

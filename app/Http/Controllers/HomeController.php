@@ -149,7 +149,7 @@ class HomeController extends Controller
                         ->orderBy('complaint_register.complaint_date','desc')->get();
         
         
-
+        
         
         /*foreach($modeldatas as $modeldata)
          {
@@ -717,6 +717,34 @@ class HomeController extends Controller
         
         
         $this->data['status'] = 1;
+        
+        return response()->json($this->data);
+    }
+    
+    public function getCalender(Request $request)
+    {
+        $status = 1;
+        $message = "success";
+        
+        $calenders = DB::Select("SELECT complaint_register.customer_name,visit_plan.date_of_depature as startdate,visit_plan.date_of_return as enddate,service_engineer.name,service_engineer.id 
+                                FROM visit_plan,visitplan_engineer,complaint_register,service_engineer 
+                                WHERE complaint_register.id = visit_plan.complaint_register_id
+                                and visit_plan.id = visitplan_engineer.visitplan_id
+                                and visitplan_engineer.engineer_id = service_engineer.id
+                                and visit_status = 1
+                                and visit_plan.date_of_depature is not null");
+        
+        $calenderdata=array();
+        foreach($calenders as $calender)
+        {
+            $caldata['title'] = $calender->customer_name;
+            $caldata['start'] = $calender->startdate;
+            $caldata['end'] = $calender->enddate;
+            $caldata['className'] = 'bgm-green';
+            $calenderdata[]=$caldata;
+        }
+        $this->data['status'] = 1;
+        $this->data['calender'] = $calenderdata;
         
         return response()->json($this->data);
     }
