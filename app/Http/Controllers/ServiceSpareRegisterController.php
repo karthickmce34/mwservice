@@ -1053,7 +1053,7 @@ class ServiceSpareRegisterController extends Controller
     public function postOfferprint()
     {
         $inputs = request()->all();
-        print_r($inputs);
+        
         $status = 1;
         
         //$user_branch_id = session()->get('user-branch-id');
