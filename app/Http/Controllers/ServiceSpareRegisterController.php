@@ -1053,7 +1053,7 @@ class ServiceSpareRegisterController extends Controller
     public function postOfferprint()
     {
         $inputs = request()->all();
-
+        print_r($inputs);
         $status = 1;
         
         //$user_branch_id = session()->get('user-branch-id');
@@ -1093,7 +1093,7 @@ class ServiceSpareRegisterController extends Controller
         
         $jasper1= $jasper->process(
             public_path($UPLOAD_PATH_REPORT_URL).'/'.$jaspername.'.jasper',
-            public_path($UPLOAD_PATH_RESULT_URL).'/'."SparesAndServiceOffer",
+            public_path($UPLOAD_PATH_RESULT_URL).'/'."SparesAndServiceOffer".$id,
             array($filetype),
             $parameter,
             $connection
@@ -1103,8 +1103,8 @@ class ServiceSpareRegisterController extends Controller
         $data['ext'] = $filetype;
         $data['path'] = $UPLOAD_PATH_RESULT_URL;
         ////**********download in  server ends *******************/////
-        $filepath = url($UPLOAD_PATH_RESULT_URL).'/'."SparesAndServiceOffer".'.'.$filetype;
-        $filename = public_path($UPLOAD_PATH_RESULT_URL).'/'."SparesAndServiceOffer".'.'.$filetype;
+        $filepath = url($UPLOAD_PATH_RESULT_URL).'/'."SparesAndServiceOffer".$id.'.'.$filetype;
+        $filename = public_path($UPLOAD_PATH_RESULT_URL).'/'."SparesAndServiceOffer".$id.'.'.$filetype;
         
         //$filename= $filename;
         $file_headers = $this->UR_exists($filepath);
