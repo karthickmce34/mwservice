@@ -157,18 +157,22 @@
                     product();
                     productreset();
                 });
-                $("#modal3").find(".prdclose").on('click',function(){
-                    $(this).closest(".row").remove();
-                    productreset();
-                });
+                
                 product();
                 productreset();
                 function product()
                 {
                     $("#modal3").find(".appserfirst").show();
                     var prd = $("#modal3").find(".appserfirst .row").clone();
-                    $("#modal3").find(".appsersecond").append(prd);
+                    $("#modal3").find(".appsersecond").append(prd).unbind().on('click','.prdclose',function(event){
+                            event.preventDefault();
+                            alert();
+                            $(this).closest(".row").remove();
+                            productreset();
+                            });
                     $("#modal3").find(".appserfirst").hide();
+                   
+                        
                     
                 }
                 

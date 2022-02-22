@@ -136,7 +136,7 @@
                 <div class="panel-heading color-block bgm-teal" role="tab" id="headingThingtodo">
                     <h4 class="panel-title">
                         <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThingtotaken" aria-expanded="false" aria-controls="collapseThree">
-                            Things To Taken (Non - Invoice Items)
+                            Tools And Tackles
                         </a>
                     </h4>
                 </div>

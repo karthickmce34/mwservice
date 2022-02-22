@@ -559,7 +559,6 @@ class ServiceSpareRegisterController extends Controller
         $status = 1;
         $message = "success";
         $inputs = request()->all();
-        
         $modelthings = new $this->modelThingstodo();
         $modelData = $modelthings->find($inputs['id']);
         
@@ -719,6 +718,7 @@ class ServiceSpareRegisterController extends Controller
         $regData['travel_expenses']=$inputs['travel_expenses'];
         $regData['local_conveyance']=$inputs['local_conveyance'];
         $regData['contact_person']=$inputs['contact_person'];
+        
         $regData['status']=1;
         //print_r($regData);die;
         $stored = $modelvisits->addRecord($regData);

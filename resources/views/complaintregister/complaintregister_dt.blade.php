@@ -4,9 +4,11 @@
                                         <div>
                                             &nbsp;<em class="m-r-25 m-l-25">Seqno : {{$record->seqno}}</em>
                                             
-                                            &nbsp;<em class="m-r-25 m-l-25">MODE : {{$record->COMPLAINT_MODE_VALUES[$record->mode_of_complaint]}}</em>
+                                            &nbsp;<em class="m-r-25">MODE : {{$record->COMPLAINT_MODE_VALUES[$record->mode_of_complaint]}}</em>
 
-                                            &nbsp;<em class="m-l-25">Registered Date : <?= date('d-m-Y', strtotime($record->complaint_date)) ?></em>
+                                            &nbsp;<em class="m-r-25">Order Type : {{$record->ORDER_TYPE_VALUES[$record->order_type]}}</em>
+                                            
+                                            &nbsp;<em class="m-r-25">Registered Date : <?= date('d-m-Y', strtotime($record->complaint_date)) ?></em>
                                         </div> 
 
                                     </div>
@@ -85,6 +87,10 @@
                                                         <div class="col-sm-8"><?=nl2br($record->panel_descrption)?></div>
                                                     </div>
                                                     <div class="row" style="    padding: 8px 0 8px 0px;">       
+                                                        <div class="col-sm-4"><i class="zmdi "></i><b>Site Location</b></div>
+                                                        <div class="col-sm-8"><?=nl2br($record->site_location)?></div>
+                                                    </div>
+                                                    <!--div class="row" style="    padding: 8px 0 8px 0px;">       
                                                         <div class="col-sm-4"><i class="zmdi "></i><b>Created By</b></div>
                                                         <div class="col-sm-8"><?=nl2br($record->usr->name)?></div>
                                                     </div>
@@ -96,7 +102,7 @@
                                                     <div class="row" style="    padding: 8px 0 8px 0px;">       
                                                         <div class="col-sm-4"><i class="zmdi "></i><b>Last Updated</b></div>
                                                         <div class="col-sm-8"><?=date('d-m-Y h:i A', strtotime($record->updated_at))?></div>
-                                                    </div>
+                                                    </div-->
 
                                                 </div>
                                             </div>

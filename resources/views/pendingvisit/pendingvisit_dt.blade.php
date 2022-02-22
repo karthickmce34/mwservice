@@ -16,12 +16,152 @@
                                             @if($record->visit_status==1)
                                             <button type="button" data-id="{{$record->id}}" class="btn btn-primary bgm-orange waves-effect completed "><i class="zmdi zmdi-check"> </i> Visit Completed</button>                                    
                                             @endif
-                                            <button type="button" data-id="{{$record->id}}" class="btn btn-primary bgm-purple waves-effect complaint "><i class="zmdi zmdi-search"> </i> Details</button>                                    
                                         </div>
                                     </div>
                                 </div>
                                 
-                                
+                                <div class="row">
+                                    <div class="pti-body text-left">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="card">
+                                                    <div class="card-header ch-alt">
+                                                        <h2>Contact Information</h2>
+                                                    </div>
+                                                    <div class="card-body card-padding pd-10-20">
+                                                        <div class="pmo-contact">        
+                                                            <ul>
+                                                                <li class="ng-binding"><i class="zmdi zmdi-smartphone-iphone"></i> {{$record->compreg->mobileno}}</li>
+                                                                <li class="ng-binding"><i class="zmdi zmdi-account-box-phone"></i> {{$record->compreg->contact_person}}</li>
+
+                                                                <li>
+                                                                    <i class="zmdi zmdi-pin"></i>
+                                                                    <address class="m-b-0 ng-binding">
+                                                                        {{$record->compreg->site_location}}                                   
+                                                                    </address>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="card">
+                                                    <div class="card-header ch-alt">
+                                                        <h2>
+                                                            Other Information 
+                                                        </h2>
+                                                    </div>
+                                                    <div class="card-body card-padding pd-10-20">
+                                                        <div class="row" style="    padding: 8px 0 8px 0px;">       
+                                                            <div class="col-sm-4"><i class="zmdi "></i><b>Serial No</b></div>
+                                                            <div class="col-sm-8"><?=nl2br($record->compreg->serial_no)?></div>
+                                                        </div>
+                                                        <div class="row" style="    padding: 8px 0 8px 0px;">       
+                                                            <div class="col-sm-4"><i class="zmdi "></i><b>Product Description</b></div>
+                                                            <div class="col-sm-8"><?=nl2br($record->compreg->panel_descrption)?></div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-12">
+                                                <div class="card">
+                                                    <div class="card-header ch-alt">
+                                                        <h2>
+                                                            Registered Information 
+                                                        </h2>
+                                                    </div>
+
+                                                    <div class="col-sm-6">
+                                                        <div class="card-body card-padding pd-10-20">
+                                                            <div class="row" style="    padding: 8px 0 8px 0px;">       
+                                                                <div class="col-sm-6"><i class="zmdi "></i><b>Date of Commissioned</b></div>
+                                                                <div class="col-sm-6"><?=date('d-m-Y', strtotime($record->compreg->commissioned_date))?></div>
+                                                            </div>
+                                                            <div class="row" style="    padding: 8px 0 8px 0px;">       
+                                                                <div class="col-sm-6"><i class="zmdi "></i><b>Customer Complaint</b></div>
+                                                                <div class="col-sm-6">{!! nl2br(e($record->compreg->complaint_nature)) !!}</div>
+                                                            </div>
+                                                            <div class="row" style="    padding: 8px 0 8px 0px;">       
+                                                                <div class="col-sm-6"><i class="zmdi "></i><b>Outgoing Load</b></div>
+                                                                <div class="col-sm-6"><?=nl2br($record->compreg->outgoing_load)?></div>
+                                                            </div>
+                                                            <div class="row" style="    padding: 8px 0 8px 0px;">       
+                                                                <div class="col-sm-6"><i class="zmdi "></i><b>Relay Make&Type</b></div>
+                                                                <div class="col-sm-6"><?=nl2br($record->compreg->relay_make_type)?></div>
+                                                            </div>
+                                                            <div class="row" style="    padding: 8px 0 8px 0px;">       
+                                                                <div class="col-sm-6"><i class="zmdi "></i><b>Relay Status</b></div>
+                                                                <div class="col-sm-6"><?=nl2br($record->compreg->relay_status)?></div>
+                                                            </div>
+                                                            <div class="row" style="    padding: 8px 0 8px 0px;">       
+                                                                <div class="col-sm-6"><i class="zmdi "></i><b>Cable Length</b></div>
+                                                                <div class="col-sm-6">{{$record->compreg->cable_length}}</div>
+                                                            </div>
+                                                            <div class="row" style="    padding: 8px 0 8px 0px;">       
+                                                                <div class="col-sm-6"><i class="zmdi "></i><b>Fault Current</b></div>
+                                                                <div class="col-sm-6"><?=nl2br($record->compreg->fault_current)?></div>
+                                                            </div>
+                                                            <div class="row" style="    padding: 8px 0 8px 0px;">       
+                                                                <div class="col-sm-6"><i class="zmdi "></i><b>VCB Interlock Condition</b></div>
+                                                                <div class="col-sm-6">{!! nl2br(e($record->compreg->vcb_interlock)) !!}</div>
+                                                            </div>
+                                                            <div class="row" style="    padding: 8px 0 8px 0px;">       
+                                                                <div class="col-sm-6"><i class="zmdi "></i><b>Any Mod. Aftr Commisioning</b></div>
+                                                                <div class="col-sm-6"><?=nl2br($record->compreg->after_commissioned)?></div>
+                                                            </div>
+                                                            <div class="row" style="    padding: 8px 0 8px 0px;">       
+                                                                <div class="col-sm-6"><i class="zmdi "></i><b>Event Before Failure</b></div>
+                                                                <div class="col-sm-6"><?=nl2br($record->compreg->event_before_failure)?></div>
+                                                            </div>
+                                                            <div class="row" style="    padding: 8px 0 8px 0px;">       
+                                                                <div class="col-sm-6"><i class="zmdi "></i><b>Warranty</b></div>
+                                                                <div class="col-sm-6"><?php if($record->compreg->warrenty == 0){echo'With Warranty';}else{echo' Without Warranty';} ?></div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+
+                                                        <div class="card-body card-padding pd-10-20">
+
+                                                            <div class="row" style="    padding: 8px 0 8px 0px;">       
+                                                                <div class="col-sm-6"><i class="zmdi "></i><b>Panel Supply Date</b></div>
+                                                                <div class="col-sm-6"><?=date('d-m-Y', strtotime($record->compreg->date_supply))?></div>
+                                                            </div>
+                                                            <div class="row" style="    padding: 8px 0 8px 0px;">       
+                                                                <div class="col-sm-6"><i class="zmdi "></i><b>Remark/Comments</b></div>
+                                                                <div class="col-sm-6">{!! nl2br(e($record->compreg->remark)) !!}</div>
+                                                            </div>
+                                                            <div class="row" style="    padding: 8px 0 8px 0px;">       
+                                                                <div class="col-sm-6"><i class="zmdi "></i><b>Probable Cause of Failure</b></div>
+                                                                <div class="col-sm-6">{!! nl2br(e($record->servicespare->failure_cause)) !!}</div>
+                                                            </div>
+                                                            <div class="row" style="    padding: 8px 0 8px 0px;">       
+                                                                <div class="col-sm-6"><i class="zmdi "></i><b>Scope of Work</b></div>
+
+                                                                <?php  
+                                                                    $scope = "";
+                                                                    if ($record->servicespare->scope_of_work) {
+                                                                        $scope = implode(",<br>",(array) json_decode($record->servicespare->scope_of_work));
+                                                                    }
+                                                                ?>
+                                                                <div class="col-sm-6">{!! $scope !!} </div>
+                                                            </div>
+
+                                                        </div>
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
 
                                 <div class="pti-body text-left">
                                     <div class="row">
@@ -74,16 +214,13 @@
                                                             <div class="col-sm-4"><i class="zmdi "></i><b>Days In Site</b></div>
                                                             <div class="col-sm-8"><?=nl2br($record->days_site)?></div>
                                                         </div>
-                                                        <div class="row" style="    padding: 8px 0 8px 0px;">       
-                                                            <div class="col-sm-4"><i class="zmdi "></i><b>Contact Person</b></div>
-                                                            <div class="col-sm-8"><?=nl2br($record->contact_person)?></div>
-                                                        </div>
                                                         
                                                     </div>
                                                 </div>
                                                 
                                                 
                                                 @else
+                                                
                                                 <div class="col-sm-6">
                                                     <div class="card-body card-padding pd-10-20">
                                                         
@@ -110,11 +247,11 @@
                                                         <!--div class="row" style="    padding: 8px 0 8px 0px;">       
                                                             <div class="col-sm-4"><i class="zmdi "></i><b>Total Expenses</b></div>
                                                             <div class="col-sm-8"><?=nl2br($record->total_expenses)?></div>
-                                                        </div-->
+                                                        </div>
                                                         <div class="row" style="    padding: 8px 0 8px 0px;">       
                                                             <div class="col-sm-4"><i class="zmdi "></i><b>Contact Person</b></div>
                                                             <div class="col-sm-8"><?=nl2br($record->contact_person)?></div>
-                                                        </div>
+                                                        </div-->
                                                         
                                                     </div>
                                                 </div>

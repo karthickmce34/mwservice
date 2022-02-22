@@ -54,4 +54,9 @@ class ServiceSpareRegisterModel extends BaseModel {
     {
         return $this->hasMany('App\Models\OfferDetailsModel','service_spares_register_id','id');
     }
+    
+    public function visitplan()
+    {
+        return $this->hasMany('App\Models\VisitplanModel','servicespare_id','id');
+    }
 }

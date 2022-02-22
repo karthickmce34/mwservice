@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\DB;
 
 
 use App\Models\ServiceSpareRegisterModel;
@@ -34,9 +36,35 @@ class VisitplansummaryController extends Controller
      */
     public function index()
     {
-        $model = new $this->modelName();
-        $registerData = $model->get();
-        
+        $user_type = session()->get('user_type');
+        $user_id = session()->get('user_id');
+       
+        if($user_type == 0 || $user_type == 2)
+        {
+           
+            $model = new $this->modelName();
+            $registerData = $model->all();
+            //print_r($registerData);die;
+        }
+        else if ($user_type == 4)
+        {
+            $servicedatas = DB::select("SELECT distinct visitplan_summary.id FROM visitplan_summary,visit_plan,visitplan_engineer,service_engineer
+                                        WHERE visit_plan.id = visitplan_engineer.visitplan_id
+                                        and visit_plan.id = visitplan_summary.visitplan_id
+                                        and visitplan_engineer.engineer_id = service_engineer.id
+                                        and visitplan_engineer.engineer_id = '$user_id'
+                                        and visitplan_engineer.deleted_at is null");
+            $id = array();
+             foreach($servicedatas as $servicedata)
+             {
+              $id[]=$servicedata->id;
+             }
+
+            $model = new $this->modelName();
+            $registerData = $model->whereIn('id',$id)                    
+                    ->get();
+            
+        }
         $data['data'] = $registerData;
         $data['baseName'] = $this->baseName;
         $data['basePath'] = $this->basePath;

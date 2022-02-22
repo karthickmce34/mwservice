@@ -27,7 +27,7 @@ class BaseModel extends Model
     static $COMPLAINT_TYPE_SERVICE = 1;
     static $COMPLAINT_TYPE_SPARES_SERVICE = 1;
     static $COMPLAINT_TYPE_VALUES = array('0' => 'Service', '1' => 'Spares', '2' => 'Spares & Service');
-    
+    static $ORDER_TYPE_VALUES = array('0' => 'Standard', '1' => 'Industry', '2' => 'Utility' , '3' => 'Projects' ,'4'=>'Railway');
     
     
     use SoftDeletes;

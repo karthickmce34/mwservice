@@ -875,20 +875,50 @@
                                                     </div>
                                                 </div>
                                             </div>
-
                                             <div class="form-group col-sm-6">
-                                                <label for="panel_descrption" class="control-label col-sm-4">Product Description</label>
+                                                <label for="site_location" class="control-label col-sm-4 required">Site Location</label>
                                                 <div class="col-sm-8">
                                                     <div class="fg-line">
-                                                        <input class="form-control input-sm" placeholder="Panel Description" name="panel_descrption" type="text" id="panel_descrption" autocomplete="off">                                        
+                                                        <textarea class="form-control input-sm" cols="20" rows="3" placeholder="Site Location" required name="site_location" id="site_location"  ></textarea>                                        
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="form-group col-sm-6">
-                                                <label for="commissioned_date" class="control-label col-sm-4">Commissioned Date</label>
+                                                <label for="order_type" class="control-label col-sm-4 required">Order Type</label>
                                                 <div class="col-sm-8">
                                                     <div class="fg-line">
-                                                        <input type='text' class="form-control input-sm" id="commissioned_date" name="commissioned_date" value="{{$currentdate}}">
+                                                        <select class="form-control input-sm" placeholder="Order Type" aria-describedby="basic-addon1" required   id="order_type" name="order_type">
+                                                            <option value="">=== Select Order Type ===</option>
+                                                            <option value="0">Standard</option>
+                                                            <option value="1">Industry</option>
+                                                            <option value="2">Utility</option>
+                                                            <option value="3">Projects</option>
+                                                            <option value="4">Railway</option>
+                                                        </select>   
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-sm-6">
+                                                <label for="warrenty" class="control-label col-sm-4 required">Warranty</label>
+                                                <div class="col-sm-8">
+                                                    <div class="fg-line">
+                                                        <select class="form-control input-sm" placeholder="Warranty" aria-describedby="basic-addon1" required   id="warranty" name="warranty">
+                                                            <option value="">=== Select Warranty ===</option>
+                                                            <option value="0">With Warranty</option>
+                                                            <option value="1">Out of Warranty</option>
+                                                        </select>   
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-sm-6">
+                                                <label for="region_id" class="control-label col-sm-4 required">Region</label>
+                                                <div class="col-sm-8">
+                                                    <div class="fg-line">
+                                                        <div class="serviceregionselect0">
+                                                            <div class="serviceregionselect1">
+
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -900,6 +930,31 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="form-group col-sm-6">
+                                                <label for="panel_descrption" class="control-label col-sm-4">Product Description</label>
+                                                <div class="col-sm-8">
+                                                    <div class="fg-line">
+                                                        <input class="form-control input-sm" placeholder="Panel Description" name="panel_descrption" type="text" id="panel_descrption" autocomplete="off">                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-sm-6">
+                                                <label for="date_supply" class="control-label col-sm-4">Date of Supply</label>
+                                                <div class="col-sm-8">
+                                                    <div class="fg-line">
+                                                        <input type='text' class="form-control input-sm" id="date_supply" name="date_supply" value="{{$currentdate}}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-sm-6">
+                                                <label for="commissioned_date" class="control-label col-sm-4">Commissioned Date</label>
+                                                <div class="col-sm-8">
+                                                    <div class="fg-line">
+                                                        <input type='text' class="form-control input-sm" id="commissioned_date" name="commissioned_date" value="{{$currentdate}}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
                                             <div class="form-group col-sm-6">
                                                 <label for="outgoing_load" class="control-label col-sm-4">Outgoing Load</label>
                                                 <div class="col-sm-8">
@@ -957,38 +1012,9 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="form-group col-sm-6">
-                                                <label for="warrenty" class="control-label col-sm-4 required">Warranty</label>
-                                                <div class="col-sm-8">
-                                                    <div class="fg-line">
-                                                        <select class="form-control input-sm" placeholder="Warranty" aria-describedby="basic-addon1" required   id="warranty" name="warranty">
-                                                            <option value="">=== Select Warranty ===</option>
-                                                            <option value="0">With Warranty</option>
-                                                            <option value="1">Out of Warranty</option>
-                                                        </select>   
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group col-sm-6">
-                                                <label for="date_supply" class="control-label col-sm-4">Date of Supply</label>
-                                                <div class="col-sm-8">
-                                                    <div class="fg-line">
-                                                        <input type='text' class="form-control input-sm" id="date_supply" name="date_supply" value="{{$currentdate}}">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group col-sm-6">
-                                                <label for="region_id" class="control-label col-sm-4">Region</label>
-                                                <div class="col-sm-8">
-                                                    <div class="fg-line">
-                                                        <div class="serviceregionselect0">
-                                                            <div class="serviceregionselect1">
-
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            
+                                            
+                                            
                                             <!--div class="form-group col-sm-6">
                                                 <label for="status" class="control-label col-sm-4 required">Status</label>
                                                 <div class="col-sm-8">
@@ -1448,6 +1474,7 @@
 @section('js')
 
          <script type="text/javascript" src="{{asset('/')}}static/js/jquery-1.12.0.js"></script>
+         
         <!--jQuery UI-->
         <script type="text/javascript" src="{{asset('/')}}jquery-ui-1.11.4/jquery-ui.js" ></script>
         

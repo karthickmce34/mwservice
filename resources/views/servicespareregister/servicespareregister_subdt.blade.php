@@ -94,7 +94,9 @@
                                                     <!--a href="{{url('servicespareregister/addprd', $record->id)}}" target="_self">
                                                         <button class="btn bgm-lime btn-icon waves-effect waves-circle waves-float"><i class="zmdi zmdi-plus"></i></button>                                    
                                                     </a-->
+                                                    @if(($record->site_depute != 1))
                                                         <button class="btn btn-info btn-icon waves-effect waves-circle waves-float prdct" data-offerid='{{$offerdata->id}}'><i class="zmdi zmdi-plus"></i></button>                                    
+                                                    @endif
                                                 </div>
                                                 <div class="row ">  
                                                     <div class="col-sm-12">
@@ -434,6 +436,76 @@
                     
                 
         @if($record->complaint_type != 1)
+            @if(($record->site_depute == 1))
+            <div class="panel-group" data-collapse-color="yellow" role="tablist" aria-multiselectable="true">
+                @foreach($record->visitplan as $visitplan)
+                <div class="panel panel-collapse">
+                    <div class="panel-heading color-block bgm-lightblue" role="tab" id="headingThingtodo">
+                        <h4 class="panel-title">
+                            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseEngineer" aria-expanded="false" aria-controls="collapseOne">
+                                Site Engineer &nbsp; - &nbsp; Duration : &nbsp; {{$visitplan->date_of_depature}} &nbsp; to &nbsp; {{$visitplan->date_of_return}}
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseEngineer" class="collapse" role="tabpanel" aria-labelledby="headingEngineer">
+                        <div class="panel-body p-10">
+                            <div class="p-5 pull-right mm-55-0">
+                                <a href="{{url('visitplan')}}/{{$visitplan->id}}/edit" target="_self">
+                                    <button type="button" class="btn bgm-lime btn-icon waves-effect waves-circle waves-float engineeredit"><i class="zmdi zmdi-edit"></i></button>                                    
+                                </a>
+                            </div>
+                             <div class="row">  
+                                 <div class="col-sm-12">
+                                     
+                                 </div>
+                             </div>
+                            <div class="row engineerdetail">  
+                                <div class="col-sm-12">
+                                    <?php
+                                    $crrDate = date("Y-m-d");
+                                    $activestatus = "";
+                                    $active = "";
+                                    $n = 0;
+                                    ?>
+                                    <div class="panel card" data-collapse-color="cyan" id="accordionCyan" role="tablist" aria-multiselectable="true">
+
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="card">
+                                                    <div class="card-body card-padding pd-10-20">
+                                                        <div class="contacts clearfix row">
+                                                            @if($visitplan->visitengs)
+                                                                @foreach($visitplan->visitengs as $visiteng)
+                                                                    <?php $n++; ?>
+                                                                        <div class="col-md-2 col-sm-4 col-xs-6">
+                                                                            <div class="c-item">
+                                                                                <a href="" class="ci-avatar">
+                                                                                    <img src="{{url('/')}}/{{$visiteng->engineer->file_path}}/{{$visiteng->engineer->file_name}}" alt="">
+                                                                                </a>
+                                                                                <div class="c-info">
+                                                                                    <strong>{{$visiteng->engineer->name}}</strong>
+                                                                                    <small>{{$visiteng->engineer->mobileno}}</small>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                @endforeach
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                @endforeach
+                
+            </div>
+            @endif
+
         <div class="panel-group" data-collapse-color="yellow" role="tablist" aria-multiselectable="true">
             <div class="panel panel-collapse">
                 <div class="panel-heading color-block bgm-lightblue" role="tab" id="headingThingtodo">
@@ -588,7 +660,7 @@
                 <div class="panel-heading color-block bgm-cyan" role="tab" id="headingThingtodo">
                     <h4 class="panel-title">
                         <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThingtotaken" aria-expanded="false" aria-controls="collapseThree">
-                            Tools To Be Taken (Non - Invoice Items)
+                            Tools and Tackles
                         </a>
                     </h4>
                 </div>

@@ -44,7 +44,7 @@
                     <h2 class="c-black f-500">Welcome {{ strtoupper(session()->get('name')) }}</h2>
             </div>
             <div class="card-body card-padding" >
-                <div class="mini-charts">
+                <!--div class="mini-charts">
                         @if(session()->get('user_type') == 0 )
                         <div class="row">
                             <div class="col-sm-6 col-md-3">
@@ -53,7 +53,6 @@
                                         <div class="chart stats-bar"></div>
                                         <div class="count">
                                             <small>Total Enquiry</small>
-                                            <!--h2>₹ 200</h2-->
                                             <h2>{{$enq}}</h2>
                                         </div>
                                     </div>
@@ -103,7 +102,6 @@
                                         <div class="chart stats-bar"></div>
                                         <div class="count">
                                             <small>Total Call</small>
-                                            <!--h2>₹ 200</h2-->
                                             <h2>{{$sprphone}}</h2>
                                         </div>
                                     </div>
@@ -155,7 +153,6 @@
                                             <div class="chart stats-bar"></div>
                                             <div class="count">
                                                 <small>Total Enquiry</small>
-                                                <!--h2>₹ 200</h2-->
                                                 <h2>{{$enq}}</h2>
                                             </div>
                                         </div>
@@ -206,7 +203,6 @@
                                             <div class="chart stats-bar"></div>
                                             <div class="count">
                                                 <small>Total Call</small>
-                                                <!--h2>₹ 200</h2-->
                                                 <h2>{{$serphone}}</h2>
                                             </div>
                                         </div>
@@ -251,237 +247,43 @@
                             </div>
                             @endif
                         @endif
-                    </div>
+                    </div-->
                     <div class="dash-widgets">
                         <div class="row">
-                            <!--div class="col-md-3 col-sm-6">
-                                <div id="site-visits" class="dash-widget-item bgm-teal">
-                                    <div class="dash-widget-header">
-                                        <div class="p-20">
-                                            <div class="dash-widget-visits"></div>
-                                        </div>
-
-                                        <div class="dash-widget-title">For the past 30 days</div>
-
-                                        <ul class="actions actions-alt">
-                                            <li class="dropdown">
-                                                <a href="" data-toggle="dropdown">
-                                                    <i class="zmdi zmdi-more-vert"></i>
-                                                </a>
-
-                                                <ul class="dropdown-menu dropdown-menu-right">
-                                                    <li>
-                                                        <a href="">Refresh</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="">Manage Widgets</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="">Widgets Settings</a>
-                                                    </li>
-                                                </ul>
-                                            </li>
-                                        </ul>
-                                    </div>
-
-                                    <div class="p-20">
-
-                                        <small>Spares</small>
-                                        <h3 class="m-0 f-400">{{$spare}}</h3>
-
-                                        <br/>
-
-                                        <small>Service</small>
-                                        <h3 class="m-0 f-400">{{$service}}</h3>
-
-                                        <br/>
-
-                                        <small>Spares & Service</small>
-                                        <h3 class="m-0 f-400">{{$serviceandspares}}</h3>
-
-                                        <br/>
-
-
-                                    </div>
-                                </div>
-                            </div-->
-                            <!--a href="" data-model-name="Register" data-target="#blankModal" data-toggle="modal" title="Register" data-placement="bottom"  data-backdrop="static" data-keyboard="false">
-
-                                <i class="tm-icon zmdi zmdi-account-box-phone"></i>
-                            </a-->
-                            <!--div class="col-md-3 col-sm-6">
-                                <div id="site-visits" class="dash-widget-item bgm-teal">
-                                    <div class="dash-widget-header">
-
-
-                                        <div class="dash-widget-title"><small>Outstanding on Suppliers and Customer</small></div>
-
-                                        <ul class="actions actions-alt">
-                                            <li class="dropdown">
-                                                <a href="" data-toggle="dropdown">
-                                                    <i class="zmdi zmdi-more-vert"></i>
-                                                </a>
-
-                                                <ul class="dropdown-menu dropdown-menu-right">
-                                                    <li>
-                                                        <a href="">Refresh</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="">Manage Widgets</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="">Widgets Settings</a>
-                                                    </li>
-                                                </ul>
-                                            </li>
-                                        </ul>
-                                    </div>
-
-                                    <div class="p-20">
-
-                                        <small>Vendor Outstading</small>
-                                        <h3 class="m-0 f-400">600</h3>
-
-                                        <br/>
-
-                                        <small>Customer Outstanding</small>
-                                        <h3 class="m-0 f-400">800</h3>
-
-                                        <br/>
-
-
-                                    </div>
-                                </div>
-                            </div-->
-
-                            <!-- Recent Items -->
                             @if(session()->get('user_type') == 2  || session()->get('user_type') == 0)
-                            <!--div class="col-md-5">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h2>Recent Visits <small>Recently Visited</small></h2>
-                                        <ul class="actions">
-                                            <li class="dropdown">
-                                                <a href="" data-toggle="dropdown">
-                                                    <i class="zmdi zmdi-more-vert"></i>
-                                                </a>
-
-                                                <ul class="dropdown-menu dropdown-menu-right">
-                                                    <li>
-                                                        <a href="">Refresh</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="">Settings</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="">Other Settings</a>
-                                                    </li>
-                                                </ul>
-                                            </li>
-                                        </ul>
+                                        <h2>Order Status </h2>
+                                        
                                     </div>
 
                                     <div class="card-body m-t-0">
                                         <table class="table table-inner table-vmiddle">
                                             <thead>
                                                 <tr>
-                                                    <th>Name</th>
-                                                    <th>Place</th>
-                                                    <th>From Date</th>
-                                                    <th>To Date</th>
-                                                    <th>No of Days</th>
+                                                    <th>Status</th>
+                                                    <th>No. of Order</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-
+                                                @foreach($orderstatus as $status)
                                                 <tr>
-                                                    <td class="f-500 c-cyan">Yuvaraj</td>
-                                                    <td class="f-500 c-cyan">Coimbatore</td>
-                                                    <td>05-04-2021</td>
-                                                    <td>06-04-2021</td>
-                                                    <td>5</td>
+                                                    
+                                                    <td class="f-500 c-cyan">{{$status->order_status}}</td>
+                                                    <td class="f-500 c-cyan">{{$status->ordercount}}</td>
+                                                    
                                                 </tr>
-                                                <tr>
-                                                    <td class="f-500 c-cyan">Senthil</td>
-                                                    <td class="f-500 c-cyan">Chennai</td>
-                                                    <td>01-04-2021</td>
-                                                    <td>05-04-2021</td>
-                                                    <td>5</td>
-                                                </tr>
-
+                                                @endforeach
                                             </tbody>
                                         </table>
                                     </div>
 
                                 </div>
-                            </div--->
+                            </div>
                             @endif
                             @if(session()->get('user_type') == 1  || session()->get('user_type') == 0)
-                            <!--div class="col-md-7">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h2>Recent Sales <small>Recently Spares Sold</small></h2>
-                                        <ul class="actions">
-                                            <li class="dropdown">
-                                                <a href="" data-toggle="dropdown">
-                                                    <i class="zmdi zmdi-more-vert"></i>
-                                                </a>
-
-                                                <ul class="dropdown-menu dropdown-menu-right">
-                                                    <li>
-                                                        <a href="">Refresh</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="">Settings</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="">Other Settings</a>
-                                                    </li>
-                                                </ul>
-                                            </li>
-                                        </ul>
-                                    </div>
-
-                                    <div class="card-body m-t-0">
-                                        <table class="table table-inner table-vmiddle">
-                                            <thead>
-                                                <tr>
-                                                    <th>Customer</th>
-                                                    <th>product</th>
-                                                    <th>Price</th>
-                                                    <th>Qty</th>
-                                                    <th>Total</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-
-                                                <tr>
-                                                    <td class="f-500 c-cyan">Yuvaraj Agencies</td>
-                                                    <td class="f-500 c-cyan">TRIPPING SHAFT ASSEMBLY CHANNEL</td>
-                                                    <td>250</td>
-                                                    <td>2</td>
-                                                    <td>500</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="f-500 c-cyan">Yuvaraj Agencies</td>
-                                                    <td class="f-500 c-cyan">TRIPPING SHAFT ASSEMBLY CHANNEL</td>
-                                                    <td>250</td>
-                                                    <td>2</td>
-                                                    <td>500</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="f-500 c-cyan">Yuvaraj Agencies</td>
-                                                    <td class="f-500 c-cyan">TRIPPING SHAFT ASSEMBLY CHANNEL</td>
-                                                    <td>250</td>
-                                                    <td>2</td>
-                                                    <td>500</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-
-                                </div>
-                            </div-->
+                            
                             @endif
                         </div>
                         @if(session()->get('user_type') == 1 || session()->get('user_type') == 0)
@@ -557,81 +359,7 @@
                         <!-- Calendar -->
                         <div id="calendar-widget1"></div>
 
-                        <!-- Recent Posts -->
-                        <!--div class="card">
-                            <div class="card-header ch-alt m-b-20">
-                                <h2>Minimum Stock <small>Minimum Stock List</small></h2>
-                                <ul class="actions">
-                                    <li>
-                                        <a href="">
-                                            <i class="zmdi zmdi-refresh-alt"></i>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="">
-                                            <i class="zmdi zmdi-download"></i>
-                                        </a>
-                                    </li>
-                                    <li class="dropdown">
-                                        <a href="" data-toggle="dropdown">
-                                            <i class="zmdi zmdi-more-vert"></i>
-                                        </a>
-
-                                        <ul class="dropdown-menu dropdown-menu-right">
-                                            <li>
-                                                <a href="">Change Date Range</a>
-                                            </li>
-                                            <li>
-                                                <a href="">Change Graph Type</a>
-                                            </li>
-                                            <li>
-                                                <a href="">Other Settings</a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                </ul>
-
-                            </div>
-
-                            <div class="card-body">
-                                <table class="table table-inner table-vmiddle">
-                                    <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Particulars</th>
-                                            <th style="width: 60px">Stock</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td class="f-500 c-cyan">2569</td>
-                                            <td>Samsung Galaxy Mega</td>
-                                            <td class="f-500 c-cyan">10 Nos</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="f-500 c-cyan">9658</td>
-                                            <td>Huawei Ascend P6</td>
-                                            <td class="f-500 c-cyan">12 Nos</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="f-500 c-cyan">1101</td>
-                                            <td>HTC One M8</td>
-                                            <td class="f-500 c-cyan">5 Nos</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="f-500 c-cyan">6598</td>
-                                            <td>Samsung Galaxy Alpha</td>
-                                            <td class="f-500 c-cyan">20 Nos</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="f-500 c-cyan">4562</td>
-                                            <td>LG G3</td>
-                                            <td class="f-500 c-cyan">8 Nos</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div-->
+                        
                     </div>
                     <div class="row">
                         <div class="col-sm-12">

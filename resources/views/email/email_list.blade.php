@@ -1,32 +1,63 @@
                     <div class="card">
                         <div class="card-header">
-                            <h2>Product Details</h2>
+                            <h2>Details</h2>
                         </div>
-                        
-                            <table id="data-table-command" class="table table-striped table-vmiddle"  >
-                            <thead>
-                                <tr>
-                                    <th data-column-id="id" data-type="numeric" data-visible="false">ID</th>
-                                    <th data-column-id="emailid">Emailid</th>
-                                    <th data-column-id="name" data-type="string">Name</th>                                    
-                                    <th data-column-id="recievedate" data-order="desc"  >Received Dt</th>
-                                    <th data-column-id="subject" >Subject</th>
-                                    <th data-column-id="commands" data-formatter="commands" data-sortable="false">Commands</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($data as $item)
-                                    <tr>
-                                        <td>{{$item->id}}</td>
-                                        <td>{{$item->emailaddress}}</td>
-                                        <td>{{$item->name}}</td>
-                                        <td>{{$item->recieved_datetime}}</td>
-                                        <td>{{$item->subject}}</td>
-                                    </tr>
-                                @endforeach
+                        <div class="card-body card-padding">
+                            <div class="table-responsive">
+                                <table id="data-table-command" class="display wrap table table-striped f-10" cellspacing="0" width="100%" >
+                                    <thead>
+                                        <tr>
+                                            <th data-column-id="id" data-type="numeric" data-visible="false">ID</th>
+                                            <th data-column-id="isread" data-type="numeric" data-visible="false">IsRead</th>
+                                            <th data-column-id="commands" data-formatter="commands" data-sortable="false">Commands</th>
+                                            <th data-column-id="emailid">Emailid</th>
+                                            <th data-column-id="name" data-type="string" data-visible="false">Name</th>                                    
+                                            <th data-column-id="recievedate" data-order="desc"  >Received Dt</th>
+                                            <th data-column-id="subject" >Subject</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($data as $item)
+                                            @if($item->isread == 0)
+                                            <tr class="c-red">
+                                                    <td>{{$item->id}}</td>
+                                                    <td>{{$item->isread}}</td>
+                                                    <td>
+                                                        <div class="pti-footer lnk-wh-inh">
+                                                        <a href="{{url($basePath)}}/{{$item->id}}" target="_self" class="btn bgm-lightblue btn-icon waves-effect waves-circle"><i class="zmdi zmdi-view-web"></i>
+                                                        </a>                                                
+                                                        </div>
+                                                    </td>
+                                                    <td>{{$item->emailaddress}}</td>
+                                                    <td>{{$item->name}}</td>
+                                                    <td>{{$item->recieved_datetime}}</td>
+                                                    <td>{{$item->subject}}</td>
+                                                    
+                                                </tr>
+                                            @else
+                                                <tr>
+                                                    <td>{{$item->id}}</td>
+                                                    <td>{{$item->isread}}</td>
+                                                    <td>
+                                                        <div class="pti-footer lnk-wh-inh">
+                                                        <a href="{{url($basePath)}}/{{$item->id}}" target="_self" class="btn bgm-lightblue btn-icon waves-effect waves-circle"><i class="zmdi zmdi-view-web"></i>
+                                                        </a>                                                
+                                                        </div>
+                                                    </td>
+                                                    <td>{{$item->emailaddress}}</td>
+                                                    <td>{{$item->name}}</td>
+                                                    <td>{{$item->recieved_datetime}}</td>
+                                                    <td>{{$item->subject}}</td>
+                                                    
+                                                </tr>
+                                            @endif
+                                        @endforeach
+
+                                    </tbody>
+                                </table>
+                            </div>
                                 
-                            </tbody>
-                        </table>
+                        </div>
                     </div>
                     <div id="modalproduct">
                         <div id="modalproduct1">
@@ -42,6 +73,7 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
                                     
   
     @section('js')
@@ -50,7 +82,8 @@
                 $(document).ready(function(){
                     
                     //Command Buttons
-                    $("#data-table-command").bootgrid({
+                    var table = $("#data-table-command").DataTable({"sorting":false,"responsive": true,});
+                    /*$("#data-table-command").bootgrid({
                         css: {
                             icon: 'zmdi icon',
                             iconColumns: 'zmdi-view-module',
@@ -69,7 +102,7 @@
                                 
                             }
                         }
-                    });
+                    });*/
                 });
             </script>
         @stop

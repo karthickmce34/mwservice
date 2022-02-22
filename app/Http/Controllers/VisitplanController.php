@@ -143,6 +143,7 @@ class VisitplanController extends Controller
         }
         $model = new $this->modelName();
         $modelData = $model->find($id);
+        $serviceregisterid = $modelData->servicespare_id;
         
         if(!$modelData)
         {
@@ -153,7 +154,7 @@ class VisitplanController extends Controller
         {
             return redirect()->back()->withErrors($saved)->withInput();
         }
-        return redirect()->route($this->baseName.'.show',$id);
+        return redirect()->action('ServiceSpareRegisterController@show',$serviceregisterid );
 
     }
         

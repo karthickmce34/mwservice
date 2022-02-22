@@ -416,7 +416,7 @@
                             $.ajax({
                                 method: "POST",
                                 url: _site_url + controller + "thingsupdate",
-                                data: $("#thingsform").find('form').serializeArray(),
+                                data: $("#modalthings3 #thingsform").find('form').serializeArray(),
 
                                 }).done( function( data, textStatus, jqXHR ) {
                                 console.log( " ajax done " );

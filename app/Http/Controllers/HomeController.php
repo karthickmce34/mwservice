@@ -148,7 +148,25 @@ class HomeController extends Controller
                         ->select('complaint_register.seqno','complaint_register.complaint_date','complaint_register.customer_name','complaint_register.mobileno')
                         ->orderBy('complaint_register.complaint_date','desc')->get();
         
-        
+        $orderstatus = DB::Select("select Count(a.order_status) as ordercount,
+                                            a.order_status as order_status from
+                                            (select 
+                                            case when service_spares_register.order_status = 0 then 'Enquiry Received' else 
+                                            case when service_spares_register.order_status = 1 then 'OfferSent' else 
+                                            case when service_spares_register.order_status = 2 then 'Poreceived' else 
+                                            case when service_spares_register.order_status = 3 then 'PiSent' else 
+                                            case when service_spares_register.order_status = 4 then 'Advance Received' else 
+                                            case when service_spares_register.order_status = 5 then 'Payment Received' else
+                                            case when service_spares_register.order_status = 6 then 'DI Sent' else
+                                            case when service_spares_register.order_status = 7 then 'Partial Completed' else
+                                            case when service_spares_register.order_status = 8 then 'Completed' else
+                                            case when service_spares_register.order_status = 9 then 'Cancelled' else
+                                            case when service_spares_register.order_status = 10 then 'Deputed' End End End End End End End End End End End as Order_status
+
+                                            from complaint_register,service_spares_register
+                                            where complaint_register.id = service_spares_register.complaint_register_id
+                                            and complaint_register.document_status != 3 )a
+                                            group by a.order_status");
         
         
         /*foreach($modeldatas as $modeldata)
@@ -260,6 +278,7 @@ class HomeController extends Controller
         $data['spare']=$spare;
         $data['penenqs']=$pendenqs;
         $data['newenqs']=$newenqs;
+        $data['orderstatus']=$orderstatus;
         $data['serviceandspares']=$serviceandspares;
         
         return view('home',$data);
@@ -726,7 +745,7 @@ class HomeController extends Controller
         $status = 1;
         $message = "success";
         
-        $calenders = DB::Select("SELECT complaint_register.customer_name,visit_plan.date_of_depature as startdate,visit_plan.date_of_return as enddate,service_engineer.name,service_engineer.id 
+        $calenders = DB::Select("SELECT distinct complaint_register.customer_name,visit_plan.date_of_depature as startdate,visit_plan.date_of_return as enddate  
                                 FROM visit_plan,visitplan_engineer,complaint_register,service_engineer 
                                 WHERE complaint_register.id = visit_plan.complaint_register_id
                                 and visit_plan.id = visitplan_engineer.visitplan_id
@@ -737,9 +756,10 @@ class HomeController extends Controller
         $calenderdata=array();
         foreach($calenders as $calender)
         {
+            $NewDate=date ("Y-m-d", strtotime($calender->enddate ."+1 days"));
             $caldata['title'] = $calender->customer_name;
             $caldata['start'] = $calender->startdate;
-            $caldata['end'] = $calender->enddate;
+            $caldata['end'] = $NewDate;
             $caldata['className'] = 'bgm-green';
             $calenderdata[]=$caldata;
         }

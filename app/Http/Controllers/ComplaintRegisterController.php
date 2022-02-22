@@ -82,6 +82,7 @@ class ComplaintRegisterController extends Controller {
         $record->STATUS_VALUES = $model->getStaticVar('STATUS_VALUES');
         $record->COMPLAINT_MODE_VALUES = $model->getStaticVar('COMPLAINT_MODE_VALUES');
         $record->COMPLAINT_TYPE_VALUES = $model->getStaticVar('COMPLAINT_TYPE_VALUES');
+        $record->ORDER_TYPE_VALUES = $model->getStaticVar('ORDER_TYPE_VALUES');
         $offervalidity   = Config::get('constant.OFFERVALIDITY');
         
         $SegmentModel = new $this->modelSegment();

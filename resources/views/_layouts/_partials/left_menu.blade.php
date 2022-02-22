@@ -30,9 +30,9 @@
                     <li >
                         <a class="@yield('page_servicespareregister_li_cls')" href="{{ route('servicespareregister.index') }}"><i class="zmdi zmdi-assignment"></i>&nbsp;&nbsp; Service/Spares  Register </a>
                     </li>
-                    <li >
+                    <!--li >
                         <a class="@yield('page_visitplan_li_cls')" href="{{ route('visitplan.index') }}"><i class="zmdi zmdi-case"></i>&nbsp;&nbsp; Visits Plan </a>
-                    </li>
+                    </li-->
                     <li >
                         <a class="@yield('page_pendingvisit_li_cls')" href="{{ route('pendingvisit.index') }}"><i class="zmdi zmdi-case"></i>&nbsp;&nbsp; Pending Visits </a>
                     </li>
@@ -42,6 +42,15 @@
                     <li >
                         <a class="@yield('page_email_li_cls')" href="{{ route('email.index') }}"><i class="zmdi zmdi-email"></i>&nbsp;&nbsp; Email</a>
                     </li>
+                </ul>
+            </li>
+            <li class="sub-menu @yield('page_report_li_cls')">
+                <a href="" data-ma-action="submenu-toggle"><i class="zmdi zmdi-collection-item"></i> Report</a>
+                <ul>
+                    <li >
+                        <a class="@yield('page_servicereport_li_cls')" href="{{ route('servicereport.index') }}"><i class="zmdi zmdi-assignment-o"></i>&nbsp;&nbsp; Service Report </a>
+                    </li>
+                    
                 </ul>
             </li>
             @else 

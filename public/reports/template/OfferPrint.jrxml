@@ -414,7 +414,7 @@ and service_spares_product.invoicable=0]]></queryString>
 					<reportElement
 						style="Report_Footer"
 						x="0"
-						y="201"
+						y="202"
 						width="567"
 						height="1"
 						key="line-2"/>
