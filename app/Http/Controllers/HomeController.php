@@ -165,7 +165,8 @@ class HomeController extends Controller
 
                                             from complaint_register,service_spares_register
                                             where complaint_register.id = service_spares_register.complaint_register_id
-                                            and complaint_register.document_status != 3 )a
+                                            and complaint_register.document_status != 3 
+                                            and complaint_register.complaint_type = 0)a
                                             group by a.order_status");
         
         
