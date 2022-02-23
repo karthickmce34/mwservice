@@ -718,7 +718,7 @@ class ServiceSpareRegisterController extends Controller
         $regData['travel_expenses']=$inputs['travel_expenses'];
         $regData['local_conveyance']=$inputs['local_conveyance'];
         $regData['contact_person']=$inputs['contact_person'];
-        
+        $regData['visit_status']=1;
         $regData['status']=1;
         //print_r($regData);die;
         $stored = $modelvisits->addRecord($regData);

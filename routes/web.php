@@ -137,3 +137,4 @@ Route::post('email/appdata', 'EmailController@postAppdata');
 Route::post('email/emailstatus', 'EmailController@postEmailstatus');
 
 Route::resource('servicereport', 'ServiceReportController');
+Route::post('servicereport/servicedata', 'ServiceReportController@servicedata');
