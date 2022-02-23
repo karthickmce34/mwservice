@@ -121,6 +121,7 @@ class ServiceReportController extends Controller
                                             a.warrentytype,
                                             a.complaintmode,
                                             a.orderstatus,
+                                            a.isagent,
                                             a.serviceagent,
                                             a.attendeddate,
                                             a.workdecription");
