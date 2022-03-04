@@ -55,8 +55,7 @@ class EmailController extends Controller
 	{
 		if($usrtype == 2)
 		{
-                        $m = DB::select("select * from email_header where id < 20");
-                        print_r($m);die;
+                        
 			$modelData = $model->where('isspares',$usrtype)->orderBy('recieved_datetime','desc')->get();
 		}
 		else
