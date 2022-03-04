@@ -17,6 +17,7 @@ use App\Models\VisitplanAssetModel;
 class VisitplansummaryController extends Controller
 {
     public $modelName       = 'App\Models\VisitplanSummaryModel';
+    public $modelSummaryAssetName  = 'App\Models\VisitplanSummaryAssetModel';
     public $modelLnName     = 'App\Models\VisitplanSummaryLineModel';
     public $modelProduct    = 'App\Models\VisitplanSummaryProductModel';
     public $baseRedirect    = 'visitplansummary.index';
@@ -95,7 +96,111 @@ class VisitplansummaryController extends Controller
         return view($this->basePath . $this->baseName . '_detail', $this->data); 
     }
     
+    public function addphoto($id)
+    {
+        $data['modeName'] = "Add";
+        
+        $data['moduleName'] = $this->baseName;
+        $data['id'] = $id;
+        $this->data['modeName'] = $data['modeName'];
+        
+        return view($this->basePath . $this->baseName . '_addphoto', $data); 
+
+    }
     
+    public function editphoto($id)
+    {
+        $data['modeName'] = "Add";
+        $model = new $this->modelSummaryAssetName();
+        $modelData = $model->find($id);
+        $data['moduleName'] = $this->baseName;
+        $data['modelData'] = $modelData;
+        
+        return view($this->basePath . $this->baseName . '_editphoto', $data); 
+
+    }
+    
+    public function postStorephoto()
+    {
+         $status = 1;
+        $message = "success";
+        $inputs = request()->all();
+        
+        $id = $inputs['visitplansummary_id'];
+        
+        $inputs['visitplan_summary_id'] = $id;
+        $inputs['file_type'] = $inputs['doc_type'];
+        $inputs['name'] = $inputs['doc_name'];
+        $assetUpload = $this->postImageuploadAsset($id);
+        if($this->created_by)
+        {
+            $inputs['created_by_id'] = session()->get('user_id');
+        }
+        if($assetUpload['uploaded'])
+        {
+            $inputs['file_path'] = $assetUpload['file_path'];
+            $inputs['file_name'] = $assetUpload['file_name'];
+            $inputs['file_ext'] = $assetUpload['file_ext'];
+        }
+        else
+        {
+            return redirect()->back()->withErrors($inputs)->withInput();
+        }
+        $model = new $this->modelSummaryAssetName();
+
+        $stored = $model->addRecord($inputs);
+        
+        if($stored && is_array($stored))
+        {
+            return redirect()->back()->withErrors($stored)->withInput();
+        }
+        return redirect()->route($this->baseName.'.show',$id);
+              
+    }
+    
+    public function updatephoto(Request $request, $id)
+    {
+        $status = 1;
+        $message = "success";
+        if( !isset($id) ||  (!($id > 0)) )
+        {
+            return redirect()->route($this->baseRedirect);    
+        }
+        
+        $inputs = $request->all();
+        $docid = $inputs['visitplan_summary_id'];
+        $inputs['visitplan_summary_id'] = $docid;
+        $inputs['file_type'] = $inputs['doc_type'];
+        $inputs['name'] = $inputs['doc_name'];
+        $assetUpload = $this->postImageuploadAsset($docid);
+        
+        $model = new $this->modelSummaryAssetName();
+        $modelData = $model->find($id);
+        if(!$modelData)
+        {
+            return redirect()->route($this->baseRedirect);   
+        }
+        if($assetUpload['uploaded'])
+        {
+            if($modelData->file_name <> $assetUpload['file_name'])
+            {
+                $inputs['file_path'] = $assetUpload['file_path'];
+                $inputs['file_name'] = $assetUpload['file_name'];
+                $inputs['file_ext'] = $assetUpload['file_ext'];
+            }
+        }
+        else
+        {
+            return redirect()->back()->withErrors($saved)->withInput();
+        }
+        $saved = $modelData->updateData($inputs);
+        if($saved && is_array($saved))
+        {
+            return redirect()->back()->withErrors($saved)->withInput();
+        }
+        return redirect()->route($this->baseName.'.show',$docid);
+
+    }
     
         
     public function imageUploadFile($docid,$fileObj,$basePath,$baseURL)
@@ -116,8 +221,8 @@ class VisitplansummaryController extends Controller
             $inputs = request()->all();
 
             $model = new $this->modelName();
-            $assetBasePath = $basePath .'ServiceSpare/'.$docid;
-            $baseAssetURL = $baseURL .'ServiceSpare/'.$docid;
+            $assetBasePath = $basePath .'VisitPlanSummary/'.$docid;
+            $baseAssetURL = $baseURL .'VisitPlanSummary/'.$docid;
             if (!is_dir($assetBasePath)) 
             {
                 $this->createPath($assetBasePath);

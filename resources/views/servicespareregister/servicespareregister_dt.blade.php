@@ -281,10 +281,12 @@
                                                     </h2>
                                                 </div>
                                                 <div class="card-body card-padding pd-10-20">
+                                                    @if($record->compreg->gstin != "")
                                                     <div class="row" style="    padding: 8px 0 8px 0px;">       
                                                         <div class="col-sm-4"><i class="zmdi "></i><b>GSTIN :</b></div>
                                                         <div class="col-sm-8"><?=nl2br($record->compreg->gstin)?></div>
                                                     </div>
+                                                    @endif
                                                     @if($record->complaint_type == 0)
                                                     <div class="row" style="    padding: 8px 0 8px 0px;">       
                                                         <div class="col-sm-4"><i class="zmdi "></i><b>Panel :</b></div>
@@ -304,24 +306,32 @@
                                                             <div class="col-sm-4"><i class="zmdi "></i><b>Region :</b></div>
                                                             <div class="col-sm-8">@if($record->compreg->region)<?=nl2br($record->compreg->region->region_name)?>@endif</div>
                                                         </div>  
+                                                        @if($record->offer_date != "")
                                                         <div class="col-sm-6" style="    padding: 8px 0 8px 0px;">
                                                             <div class="col-sm-4"><i class="zmdi "></i><b>Offer Date :</b></div>
                                                             <div class="col-sm-8">@if($record->offer_date == "") @else<?=date('d-m-Y', strtotime($record->offer_date))?> @endif</div>
                                                         </div>
-                                                        @if($record->order_status != 1 || $record->order_status != 2 )
-                                                        <div class="col-sm-6" style="    padding: 8px 0 8px 0px;">
-                                                            <div class="col-sm-4"><i class="zmdi "></i><b>PI Date :</b></div>
-                                                            <div class="col-sm-8">@if($record->pi_date == "") @else<?=date('d-m-Y', strtotime($record->pi_date))?> @endif</div>
-                                                        </div>
-                                                        @endif    
+                                                        @endif
+                                                        @if($record->pi_date != "")
+                                                            @if($record->order_status != 1 || $record->order_status != 2 )
+                                                            <div class="col-sm-6" style="    padding: 8px 0 8px 0px;">
+                                                                <div class="col-sm-4"><i class="zmdi "></i><b>PI Date :</b></div>
+                                                                <div class="col-sm-8">@if($record->pi_date == "") @else<?=date('d-m-Y', strtotime($record->pi_date))?> @endif</div>
+                                                            </div>
+                                                            @endif 
+                                                        @endif
+                                                        @if($record->po_ref != "")
                                                         <div class="col-sm-6" style="    padding: 8px 0 8px 0px;">
                                                             <div class="col-sm-4"><i class="zmdi "></i><b>Po Ref :</b></div>
                                                             <div class="col-sm-8"><?=nl2br($record->po_ref)?></div>
                                                         </div>
+                                                        @endif
+                                                        @if($record->po_date != "")
                                                         <div class="col-sm-6" style="    padding: 8px 0 8px 0px;">
                                                             <div class="col-sm-4"><i class="zmdi "></i><b>PO Date :</b></div>
                                                             <div class="col-sm-8">@if($record->po_date == "") @else<?=date('d-m-Y', strtotime($record->po_date))?> @endif</div>
                                                         </div>
+                                                        @endif
                                                         <div class="col-sm-6" style="    padding: 8px 0 8px 0px;">
                                                             <div class="col-sm-4"><i class="zmdi "></i><b>Total Amt :</b></div>
                                                             <div class="col-sm-8"><?=nl2br($record->total_gross_amt)?></div>
@@ -331,11 +341,12 @@
                                                             <div class="col-sm-8"><?=nl2br($record->advance_amt)?></div>
                                                         </div>
                                                     </div>
-                                                    
+                                                    @if($record->paid_date != "")
                                                     <div class="row" style="    padding: 8px 0 8px 0px;">       
                                                         <div class="col-sm-4"><i class="zmdi "></i><b>Last Payment :</b></div>
                                                         <div class="col-sm-8">@if($record->paid_date == "") @else<?=date('d-m-Y', strtotime($record->paid_date))?> @endif</div>
                                                     </div>
+                                                    @endif
                                                     @if($record->complaint_type == 1)
                                                     <div class="row" style="    padding: 8px 0 8px 0px;">       
                                                         <div class="col-sm-4"><i class="zmdi "></i><b>Complaint Status</b></div>
@@ -359,42 +370,58 @@
                                                 <div class="row">
                                                     <div class="col-sm-5">
                                                         <div class="card-body card-padding pd-10-20">
+                                                            @if($record->compreg->date_supply != "")
                                                             <div class="row" style="    padding: 8px 0 8px 0px;">       
                                                                 <div class="col-sm-6 f-12"><i class="zmdi "></i><b>Panel Supply Date</b></div>
                                                                 <div class="col-sm-6 f-14"><?=date('d-m-Y', strtotime($record->compreg->date_supply))?></div>
                                                             </div>
+                                                            @endif
+                                                            @if($record->compreg->commissioned_date != "")
                                                             <div class="row" style="    padding: 8px 0 8px 0px;">       
                                                                 <div class="col-sm-6 f-12"><i class="zmdi "></i><b>Date of Commissioned</b></div>
                                                                 <div class="col-sm-6 f-14"><?=date('d-m-Y', strtotime($record->compreg->commissioned_date))?></div>
                                                             </div>
+                                                            @endif
                                                             <div class="row" style="    padding: 8px 0 8px 0px;">       
                                                                 <div class="col-sm-6 f-12"><i class="zmdi "></i><b>Customer Complaint</b></div>
                                                                 <div class="col-sm-6 f-14">{!! nl2br(e($record->compreg->complaint_nature)) !!}</div>
                                                             </div>
+                                                            @if($record->compreg->outgoing_load != "")
                                                             <div class="row" style="    padding: 8px 0 8px 0px;">       
                                                                 <div class="col-sm-6 f-12"><i class="zmdi "></i><b>Outgoing Load</b></div>
                                                                 <div class="col-sm-6 f-14"><?=nl2br($record->compreg->outgoing_load)?></div>
                                                             </div>
+                                                            @endif
+                                                            @if($record->compreg->relay_make_type != "")
                                                             <div class="row" style="    padding: 8px 0 8px 0px;">       
                                                                 <div class="col-sm-6 f-12"><i class="zmdi "></i><b>Relay Make&Type</b></div>
                                                                 <div class="col-sm-6 f-14"><?=nl2br($record->compreg->relay_make_type)?></div>
                                                             </div>
+                                                            @endif
+                                                            @if($record->compreg->relay_status != "")
                                                             <div class="row" style="    padding: 8px 0 8px 0px;">       
                                                                 <div class="col-sm-6 f-12"><i class="zmdi "></i><b>Relay Status</b></div>
                                                                 <div class="col-sm-6 f-14"><?=nl2br($record->compreg->relay_status)?></div>
                                                             </div>
+                                                            @endif
+                                                            @if($record->compreg->cable_length != "")
                                                             <div class="row" style="    padding: 8px 0 8px 0px;">       
                                                                 <div class="col-sm-6 f-12"><i class="zmdi "></i><b>Cable Length</b></div>
                                                                 <div class="col-sm-6 f-14">{{$record->compreg->cable_length}}</div>
                                                             </div>
+                                                            @endif
+                                                            @if($record->compreg->fault_current != "")
                                                             <div class="row" style="    padding: 8px 0 8px 0px;">       
                                                                 <div class="col-sm-6 f-12"><i class="zmdi "></i><b>Fault Current</b></div>
                                                                 <div class="col-sm-6 f-14"><?=nl2br($record->compreg->fault_current)?></div>
                                                             </div>
+                                                            @endif
+                                                            @if($record->compreg->vcb_interlock != "")
                                                             <div class="row" style="   padding: 8px 0 8px 0px;">       
                                                                 <div class="col-sm-6 f-12"><i class="zmdi "></i><b>VCB Interlock Condition</b></div>
                                                                 <div class="col-sm-6 f-14">{!! nl2br(e($record->compreg->vcb_interlock)) !!}</div>
                                                             </div>
+                                                            @endif
 
                                                             
 
@@ -417,10 +444,12 @@
                                                                 <div class="col-sm-4 f-12"><i class="zmdi "></i><b>Probable Cause of Failure</b></div>
                                                                 <div class="col-sm-8 f-14">{!! nl2br(e($record->failure_cause)) !!}</div>
                                                             </div>
+                                                            @if($record->compreg->after_commissioned != "")
                                                             <div class="row" style="    padding: 8px 0 8px 0px;">       
                                                                 <div class="col-sm-6 f-12"><i class="zmdi "></i><b>Any Mod. Aftr Commisioning</b></div>
                                                                 <div class="col-sm-6 f-14"><?=nl2br($record->compreg->after_commissioned)?></div>
                                                             </div>
+                                                            @endif
                                                             <div class="row" style="    padding: 8px 0 8px 0px;">       
                                                                 <div class="col-sm-4 f-12"><i class="zmdi "></i><b>Scope of Work</b></div>
                                                                 <?php  if($record->scope_of_work == "")
@@ -434,10 +463,12 @@
                                                                         ?>
                                                                 <div class="col-sm-8 f-14">{!! $scope !!} </div>
                                                             </div>
+                                                            @if($record->compreg->event_before_failure != "")
                                                             <div class="row" style="    padding: 8px 0 8px 0px;">       
                                                                 <div class="col-sm-6 f-12"><i class="zmdi "></i><b>Event Before Failure</b></div>
                                                                 <div class="col-sm-6 f-14"><?=nl2br($record->compreg->event_before_failure)?></div>
                                                             </div>
+                                                            @endif
                                                             <div class="row" style="    padding: 8px 0 8px 0px;">       
                                                                 <div class="col-sm-4 f-12"><i class="zmdi "></i><b>Warranty</b></div>
                                                                 <div class="col-sm-8 f-14"><?php if($record->compreg->warrenty == 0){echo'With Warranty';}else{echo' Without Warranty';} ?></div>
@@ -734,6 +765,14 @@
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
+                                                                            <div class="form-group col-sm-6">
+                                                                                <label for="contact_number" class="control-label col-sm-6">Contact Number (at site)</label>
+                                                                                <div class="col-sm-6">
+                                                                                    <div class="fg-line">
+                                                                                        <input type='text' class="form-control input-sm" name="contact_number" id="se_contact_number" value="{{$record->compreg->mobileno}}">
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                     <div class="row agentdiv">
@@ -782,6 +821,14 @@
                                                                             <div class="col-sm-6">
                                                                                 <div class="fg-line">
                                                                                     <input type='text' class="form-control input-sm" name="contact_person" id="sa_contact_person" value="{{$record->compreg->contact_person}}">
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-group col-sm-6">
+                                                                            <label for="contact_number" class="control-label col-sm-6">Contact Number (at site)</label>
+                                                                            <div class="col-sm-6">
+                                                                                <div class="fg-line">
+                                                                                    <input type='text' class="form-control input-sm" name="contact_number" id="sa_contact_number" value="{{$record->compreg->mobileno}}">
                                                                                 </div>
                                                                             </div>
                                                                         </div>

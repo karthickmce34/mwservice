@@ -175,6 +175,49 @@
                         
                     
                 }
+                $("#modal3").find(".appsersecond .product").on('click',function(){
+                    var _this= this;
+                    var indx = $(this).closest(".row").index();
+                    $("#modalser5").find("#modalserprd2").remove();
+                    var model2 = $("#modalserprd").find("#modalserprd2").clone();
+                    $("#modalser5").append(model2);
+                    $("#modalser5").find("#data-table-command").dataTable({
+                        "lengthMenu": [ [100, 200], [100,200] ],
+                        } );
+                      $("div.dataTables_filter input").focus();
+                    $("#modalser5").find("#data-table-command").on('change','.prdradio',function(){
+                        var prdid = $(".prdradio:checked").val();
+                        var prdname = $(this).closest('tr').find(".pname").text();
+                       var unitprice = $(this).closest('tr').find(".amount").text();
+                       $(".appsersecond").find(".product").eq(indx).val(prdname);
+                       $(".appsersecond").find(".amount").eq(indx).val(unitprice);
+                       $(".appsersecond").find(".product_id").eq(indx).val(prdid);
+                       $("#modalser5").find("#serproductform").modal('toggle');
+                       $(".appsersecond").find(".qty").eq(indx).focus();
+                       
+                    });
+                    $("#modalser5").find("#serproductform").modal();
+
+
+                    $(".appsersecond").unbind().on('change','.amount',function(){
+                        var indx = $(this).closest(".row").index();
+                        var price = $(this).val();
+                        var quantity = $(".appsersecond").find(".qty").eq(indx).val();
+                        var tot = parseFloat(price)*parseFloat(quantity);
+                        $(".appsersecond").find(".total").eq(indx).val(tot);
+                    });
+
+                    $(".appsersecond").unbind().on('change','.qty',function(){
+                        var indx = $(this).closest(".row").index();
+                        var price = $(".appsersecond").find(".amount").eq(indx).val();
+                        var quantity = $(this).val();
+                        var tot = parseFloat(price)*parseFloat(quantity);
+                        $(".appsersecond").find(".total").eq(indx).val(tot);
+                    });
+
+
+
+                });
                 
                 function amcproduct()
                 {
@@ -185,7 +228,7 @@
                     
                 }
                 /**** other amc product******/
-                $("#modal3").find(".appsersecond").on('change','.tax_id',function(e){
+                /*$("#modal3").find(".appsersecond").on('change','.tax_id',function(e){
                     var tax_id = $(this).val();
                     var rowno = $(this).closest('.row').index();
                     var qty = $("#modal3").find(".appsersecond .row").eq(rowno).find('.qty').val();
@@ -202,8 +245,6 @@
                         taxcalc(qty,amt,tax_id,rowno);
                     }
                 });
-                
-                
                 $("#modal3").find(".appsersecond").on('change','.qty',function(e){
                     var rowno = $(this).closest('.row').index();
                     var tax_id = $("#modal3").find(".appsersecond .row").eq(rowno).find('.tax_id').val();
@@ -213,10 +254,90 @@
                     {
                         taxcalc(qty,amt,tax_id,rowno);
                     }
-                });
+                });*/
+                
+                
+                function productreset()
+                {
+                    var len=$("#modal3").find(".appsersecond .row").length;
+                    for(var i=0;i<len;i++)
+                    {
+                        var j=parseInt(i)+1;
+                        $("#modal3").find(".appsersecond .row").eq(i).find(".product_id").attr("name","product_id["+j+"]");
+                        $("#modal3").find(".appsersecond .row").eq(i).find(".product").attr("name","product["+j+"]");
+                        $("#modal3").find(".appsersecond .row").eq(i).find(".qty").attr("name","qty["+j+"]");
+                        $("#modal3").find(".appsersecond .row").eq(i).find(".tax_id").attr("name","tax_id["+j+"]");
+                        $("#modal3").find(".appsersecond .row").eq(i).find(".tax_amt").attr("name","tax_amt["+j+"]");
+                        $("#modal3").find(".appsersecond .row").eq(i).find(".amount").attr("name","amount["+j+"]");
+                        $("#modal3").find(".appsersecond .row").eq(i).find(".total").attr("name","total["+j+"]");
+                        
+                        $("#modal3").find(".appsersecond .product").unbind().on('click',function(){
+                            
+                            var _this= this;
+                            
+                            var indx = $(this).closest(".row").index();
+                            $("#modalser5").find("#modalserprd2").remove();
+                            var model2 = $("#modalserprd").find("#modalserprd2").clone();
+                            $("#modalser5").append(model2);
+                            $("#modalser5").find("#data-table-command").dataTable({
+                                "lengthMenu": [ [100, 200], [100,200] ],
+                                } );
+                            $("div.dataTables_filter input").focus();
+                            $("#modalser5").find("#data-table-command").on('change','.prdradio',function(){
+                                var prdid = $(".prdradio:checked").val();
+                                var prdname = $(this).closest('tr').find(".pname").text();
+                                var unitprice = $(this).closest('tr').find(".amount").text();
+                                $(".appsersecond").find(".product").eq(indx).val(prdname);
+                                $(".appsersecond").find(".amount").eq(indx).val(unitprice);
+                                $(".appsersecond").find(".product_id").eq(indx).val(prdid);
+                                $("#modalser5").find("#serproductform").modal('toggle');
+                                $(".appsersecond").find(".qty").eq(indx).focus();
+
+                            });
+                            $("#modalser5").find("#serproductform").modal();
+                            
+                            
+                            
+                            $("#modal3").find(".appsersecond").find(".qty").unbind().on('change',function(){
+                                var rowno = $(this).closest('.row').index();
+                                
+                                var tax_id = $(".appsersecond").find(".tax_id").eq(rowno).val();
+                                var qty = $(this).val();
+                                var amt = $(".appsersecond").find(".amount").eq(rowno).val();
+                                if(tax_id != "")
+                                {
+                                    taxcalc(qty,amt,tax_id,rowno);
+                                }
+                            });
+                            
+                            $("#modal3").find(".appsersecond").find(".amount").unbind().on('change',function(){
+                                var rowno = $(this).closest('.row').index();
+                                var tax_id = $(".appsersecond").find(".tax_id").eq(rowno).val();
+                                var qty = $(".appsersecond").find(".qty").eq(rowno).val();
+                                var amt = $(this).val();
+                                if(tax_id != "")
+                                {
+                                    taxcalc(qty,amt,tax_id,rowno);
+                                }
+                            });
+
+                            $("#modal3").find(".appsersecond").find(".tax_id").unbind().on('change',function(){
+                                var tax_id = $(this).val();
+                                var rowno = $(this).closest('.row').index();
+                                var qty = $(".appsersecond").find(".qty").eq(rowno).val();
+                                var amt = $(".appsersecond").find(".amount").eq(rowno).val();
+                                taxcalc(qty,amt,tax_id,rowno);
+                            });
+                        });
+                    }
+                }
+                
+                
+                
                 
                 function taxcalc(qty,amt,tax_id,rowno)
                 {
+                    $('.teruser').hide();
                     var datanew = {tax_id:tax_id};
                                     
                     var controller = 'complaintregister/';
@@ -235,6 +356,7 @@
                             var tot = parseFloat(netamt)+parseFloat(taxamt);
                             $("#modal3").find(".appsersecond .row").eq(rowno).find('.tax_amt').val(taxamt);
                             $("#modal3").find(".appsersecond .row").eq(rowno).find('.total').val(tot);
+                            $('.teruser').show();
                         }
                         else
                         {
@@ -291,68 +413,7 @@
                     });
                 }
                 
-                function productreset()
-                {
-                    var len=$("#modal3").find(".appsersecond .row").length;
-                    for(var i=0;i<len;i++)
-                    {
-                        var j=parseInt(i)+1;
-                        $("#modal3").find(".appsersecond .row").eq(i).find(".product_id").attr("name","product_id["+j+"]");
-                        $("#modal3").find(".appsersecond .row").eq(i).find(".product").attr("name","product["+j+"]");
-                        $("#modal3").find(".appsersecond .row").eq(i).find(".qty").attr("name","qty["+j+"]");
-                        $("#modal3").find(".appsersecond .row").eq(i).find(".tax_id").attr("name","tax_id["+j+"]");
-                        $("#modal3").find(".appsersecond .row").eq(i).find(".tax_amt").attr("name","tax_amt["+j+"]");
-                        $("#modal3").find(".appsersecond .row").eq(i).find(".amount").attr("name","amount["+j+"]");
-                        $("#modal3").find(".appsersecond .row").eq(i).find(".total").attr("name","total["+j+"]");
-                    }
-                }
                 
-                
-                
-                
-                $(".appsersecond").on('click','.product',function(){
-                    var _this= this;
-                    var indx = $(this).closest(".row").index();
-                    $("#modalser5").find("#modalserprd2").remove();
-                    var model2 = $("#modalserprd").find("#modalserprd2").clone();
-                    $("#modalser5").append(model2);
-                    $("#modalser5").find("#data-table-command").dataTable({
-                        "lengthMenu": [ [100, 200], [100,200] ],
-                        } );
-                      $("div.dataTables_filter input").focus();
-                    $("#modalser5").find("#data-table-command").on('change','.prdradio',function(){
-                        var prdid = $(".prdradio:checked").val();
-                        var prdname = $(this).closest('tr').find(".pname").text();
-                       var unitprice = $(this).closest('tr').find(".amount").text();
-                       $(".appsersecond").find(".product").eq(indx).val(prdname);
-                       $(".appsersecond").find(".amount").eq(indx).val(unitprice);
-                       $(".appsersecond").find(".product_id").eq(indx).val(prdid);
-                       $("#modalser5").find("#serproductform").modal('toggle');
-                       $(".appsersecond").find(".qty").eq(indx).focus();
-                       
-                    });
-                    $("#modalser5").find("#serproductform").modal();
-
-
-                    $(".appsersecond").on('change','.amount',function(){
-                        var indx = $(this).closest(".row").index();
-                        var price = $(this).val();
-                        var quantity = $(".appsersecond").find(".qty").eq(indx).val();
-                        var tot = parseFloat(price)*parseFloat(quantity);
-                        $(".appsersecond").find(".total").eq(indx).val(tot);
-                    });
-
-                    $(".appsersecond").on('change','.qty',function(){
-                        var indx = $(this).closest(".row").index();
-                        var price = $(".appsersecond").find(".amount").eq(indx).val();
-                        var quantity = $(this).val();
-                        var tot = parseFloat(price)*parseFloat(quantity);
-                        $(".appsersecond").find(".total").eq(indx).val(tot);
-                    });
-
-
-
-                });
                 
                 $('.teruser').click(function(){
                     $(this).hide();

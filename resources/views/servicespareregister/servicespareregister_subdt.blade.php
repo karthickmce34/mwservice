@@ -1,9 +1,11 @@
         <div class="card">
             <div class="card-header ch-alt">
                 <h4>Offer Details</h4>
+                @if($record->order_status != 8 && $record->order_status != 9)
                 <div class="pull-right">
                     <button class="btn btn-success  waves-effect waves-float offeradd"><i class="zmdi zmdi-plus"> Offer</i></button>                                    
                 </div>
+                @endif
             </div>
             <div class="card-body m-t-20 p-5">
                 <!--- Product----->
@@ -23,6 +25,7 @@
                         @php 
                             $color = 'bgm-gray'; 
                             $btn = '<button class="btn bgm-indigo waves-effect pull-right offersetdefault" style="margin-block: -36px;" data-offerid='.$offerdata->id.' data-ssid='.$offerdata->service_spares_register_id.' ><i class="zmdi">set default</i></button>';
+                            $btn = '';// Due to make last as default we set again btn as empty
                          @endphp
                     @endif
                     
@@ -47,16 +50,18 @@
                                     <div class="panel panel-collapse">
                                         <div class="panel-heading color-block bgm-orange" role="tab" id="headingTerms">
                                             <h4 class="panel-title ">
-                                                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTerms-{{$offerdata->revision_no}}" aria-expanded="false" aria-controls="collapseOne">
+                                                <a class="collapsed" data-toggle="collapse" data-parent="#accordionOffer" href="#collapseTerms-{{$offerdata->revision_no}}" aria-expanded="false" aria-controls="collapseOne">
                                                     Terms and Conditions
                                                 </a>
                                             </h4>
                                         </div>
                                         <div id="collapseTerms-{{$offerdata->revision_no}}" class="collapse" role="tabpanel" aria-labelledby="headingTerms">
                                             <div class="panel-body p-10">
+                                                @if($record->order_status != 8 && $record->order_status != 9)
                                                 <div class="p-5 pull-right mm-55-0">
                                                     <button class="btn btn-warning btn-icon waves-effect waves-circle waves-float editterms" data-offerid='{{$offerdata->id}}'><i class="zmdi zmdi-edit"></i></button>                                    
                                                 </div>
+                                                @endif
                                                 <div class="row ">  
                                                     <div class="col-sm-12">
                                                         <div class="panel card" data-collapse-color="cyan" id="accordionCyan" role="tablist" aria-multiselectable="true">
@@ -83,7 +88,7 @@
                                     <div class="panel panel-collapse">
                                         <div class="panel-heading color-block bgm-blue" role="tab" id="headingProduct">
                                             <h4 class="panel-title ">
-                                                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseProduct-{{$offerdata->revision_no}}" aria-expanded="false" aria-controls="collapseOne">
+                                                <a class="collapsed" data-toggle="collapse" data-parent="#accordionOffer" href="#collapseProduct-{{$offerdata->revision_no}}" aria-expanded="false" aria-controls="collapseOne">
                                                     Material To Be Supply
                                                 </a>
                                             </h4>
@@ -168,7 +173,9 @@
                                                                                     <div class="col-sm-1 f-12 text-center">
                                                                                                     {{$registerprd->total_price}}                                                       
                                                                                     </div>
+                                                                                    
                                                                                     <div class="col-sm-1 f-10 text-center">
+                                                                                        @if($record->order_status != 8 && $record->order_status != 9)
                                                                                         <!--a href="{{url('servicespareregister/editprd', $registerprd->id)}}" target="_self">
                                                                                             <button class="btn bgm-orange btn-icon waves-effect waves-circle waves-float"><i class="zmdi zmdi-edit"></i></button>
                                                                                         </a-->
@@ -177,7 +184,9 @@
                                                                                         <a href="{{url('servicespareregister/deleteprd', $registerprd->id)}}" target="_self">
                                                                                             <button class="btn bgm-red waves-effect waves-float"><i class="zmdi zmdi-close"></i></button>
                                                                                         </a>
+                                                                                        @endif
                                                                                     </div>
+                                                                                    
                                                                                 </div>
                                                                         @endforeach
                                                                             </div>
@@ -199,15 +208,70 @@
                                     <div class="panel panel-collapse">
                                         <div class="panel-heading color-block bgm-teal" role="tab" id="headingService">
                                             <h4 class="panel-title">
-                                                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseService" aria-expanded="false" aria-controls="collapseThree">
+                                                <a class="collapsed" data-toggle="collapse" data-parent="#accordionOffer" href="#collapseService-{{$offerdata->revision_no}}" aria-expanded="false" aria-controls="collapseThree">
                                                     Service Charges
                                                 </a>
                                             </h4>
                                         </div>
-                                        <div id="collapseService" class="collapse" role="tabpanel" aria-labelledby="headingService">
+                                        <div id="collapseService-{{$offerdata->revision_no}}" class="collapse" role="tabpanel" aria-labelledby="headingService">
                                             <div class="panel-body p-10">
+                                                @if($record->order_status != 8 && $record->order_status != 9)
                                                 <div class="p-5 pull-right mm-55-0">
                                                     <button type="button" class="btn bgm-lime btn-icon waves-effect waves-circle waves-float serviceadd"><i class="zmdi zmdi-plus"></i></button>                                    
+                                                </div>
+                                                @endif
+                                                <div class="row servicedetail">  
+                                                    <div class="col-sm-12">
+                                                        <?php
+                                                        $crrDate = date("Y-m-d");
+                                                        $activestatus = "";
+                                                        $active = "";
+                                                        $n = 0;
+                                                        ?>
+                                                        <div class="panel card" data-collapse-color="cyan" id="accordionCyan" role="tablist" aria-multiselectable="true">
+                                                            @if(($record->sercharges))
+                                                                <div class="row">
+                                                                    <div class="col-sm-12">
+                                                                        <div class="card">
+                                                                            <div class="card-head card-padding pd-10-20">
+                                                                                <div class="row" style="padding: 8px 0 8px 0px;">
+                                                                                    <div class="col-sm-3 text-center c-black">Description</div>
+                                                                                    <div class="col-sm-1 text-center c-black">No of Days</div>
+                                                                                    <div class="col-sm-2 text-center c-black">Cost/Day</div>
+                                                                                    <div class="col-sm-2 text-center c-black">Tax</div>
+                                                                                    <div class="col-sm-2 text-center c-black">Total</div>
+                                                                                    <div class="col-sm-2 text-center c-black">
+                                                                                        Comments
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="card-body card-padding pd-10-20">
+                                                                        @foreach($record->sercharges as $sercharge)
+                                                                            <?php $n++; ?>
+                                                                                <div class="row" style="padding: 8px 0 8px 0px;">
+                                                                                    <div class="col-sm-3 text-center">{{$sercharge->prd_description}}</div>
+                                                                                    <div class="col-sm-1 text-center">{{$sercharge->quantity}}</div>
+                                                                                    <div class="col-sm-2 text-center">{{$sercharge->unit_price}}</div>
+                                                                                    <div class="col-sm-2 text-center">{{$sercharge->tax->tax_name}}</div>
+                                                                                    <div class="col-sm-2 text-center">{{$sercharge->total_price}}</div>
+                                                                                    <div class="col-sm-2 text-center">
+                                                                                        @if($record->order_status != 8 && $record->order_status != 9)
+                                                                                        <button type="button" data-id={{$sercharge->id}} class="btn bgm-orange waves-effect waves-float editservicecharge"><i class="zmdi zmdi-edit"></i></button>
+
+                                                                                        <a href="{{url('servicespareregister/deleteprd', $sercharge->id)}}" target="_self">
+                                                                                            <button class="btn bgm-red waves-effect waves-float"><i class="zmdi zmdi-close"></i></button>
+                                                                                        </a>
+                                                                                        @endif
+                                                                                    </div>
+                                                                                </div>
+                                                                        @endforeach
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            @endif
+                                                        </div>
+                                                    </div>
                                                 </div>
                                                 <div id="modalservice">
                                                     <div id="modalservice1">
@@ -365,58 +429,7 @@
                                                 </div>
                                                 <div id="modalservicech">
                                                 </div>
-                                                <div class="row servicedetail">  
-                                                    <div class="col-sm-12">
-                                                        <?php
-                                                        $crrDate = date("Y-m-d");
-                                                        $activestatus = "";
-                                                        $active = "";
-                                                        $n = 0;
-                                                        ?>
-                                                        <div class="panel card" data-collapse-color="cyan" id="accordionCyan" role="tablist" aria-multiselectable="true">
-                                                            @if(($record->sercharges))
-                                                                <div class="row">
-                                                                    <div class="col-sm-12">
-                                                                        <div class="card">
-                                                                            <div class="card-head card-padding pd-10-20">
-                                                                                <div class="row" style="padding: 8px 0 8px 0px;">
-                                                                                    <div class="col-sm-3 text-center c-black">Description</div>
-                                                                                    <div class="col-sm-1 text-center c-black">No of Days</div>
-                                                                                    <div class="col-sm-2 text-center c-black">Cost/Day</div>
-                                                                                    <div class="col-sm-2 text-center c-black">Tax</div>
-                                                                                    <div class="col-sm-2 text-center c-black">Total</div>
-                                                                                    <div class="col-sm-2 text-center c-black">
-                                                                                        Comments
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="card-body card-padding pd-10-20">
-                                                                        @foreach($record->sercharges as $sercharge)
-                                                                            <?php $n++; ?>
-                                                                                <div class="row" style="padding: 8px 0 8px 0px;">
-                                                                                    <div class="col-sm-3 text-center">{{$sercharge->prd_description}}</div>
-                                                                                    <div class="col-sm-1 text-center">{{$sercharge->quantity}}</div>
-                                                                                    <div class="col-sm-2 text-center">{{$sercharge->unit_price}}</div>
-                                                                                    <div class="col-sm-2 text-center">{{$sercharge->tax->tax_name}}</div>
-                                                                                    <div class="col-sm-2 text-center">{{$sercharge->total_price}}</div>
-                                                                                    <div class="col-sm-2 text-center">
-                                                                                        <button type="button" data-id={{$sercharge->id}} class="btn bgm-orange waves-effect waves-float editservicecharge"><i class="zmdi zmdi-edit"></i></button>
-
-                                                                                        <a href="{{url('servicespareregister/deleteprd', $sercharge->id)}}" target="_self">
-                                                                                            <button class="btn bgm-red waves-effect waves-float"><i class="zmdi zmdi-close"></i></button>
-                                                                                        </a>
-
-                                                                                    </div>
-                                                                                </div>
-                                                                        @endforeach
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            @endif
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                
                                             </div>
                                         </div>
                                     </div>
@@ -449,11 +462,13 @@
                     </div>
                     <div id="collapseEngineer" class="collapse" role="tabpanel" aria-labelledby="headingEngineer">
                         <div class="panel-body p-10">
+                            @if($record->order_status != 8 && $record->order_status != 9)
                             <div class="p-5 pull-right mm-55-0">
                                 <a href="{{url('visitplan')}}/{{$visitplan->id}}/edit" target="_self">
                                     <button type="button" class="btn bgm-lime btn-icon waves-effect waves-circle waves-float engineeredit"><i class="zmdi zmdi-edit"></i></button>                                    
                                 </a>
                             </div>
+                            @endif
                              <div class="row">  
                                  <div class="col-sm-12">
                                      
@@ -474,22 +489,39 @@
                                                 <div class="card">
                                                     <div class="card-body card-padding pd-10-20">
                                                         <div class="contacts clearfix row">
-                                                            @if($visitplan->visitengs)
-                                                                @foreach($visitplan->visitengs as $visiteng)
-                                                                    <?php $n++; ?>
-                                                                        <div class="col-md-2 col-sm-4 col-xs-6">
-                                                                            <div class="c-item">
-                                                                                <a href="" class="ci-avatar">
-                                                                                    <img src="{{url('/')}}/{{$visiteng->engineer->file_path}}/{{$visiteng->engineer->file_name}}" alt="">
-                                                                                </a>
-                                                                                <div class="c-info">
-                                                                                    <strong>{{$visiteng->engineer->name}}</strong>
-                                                                                    <small>{{$visiteng->engineer->mobileno}}</small>
+                                                            
+                                                            @if($visitplan->is_agent ==0)
+                                                                @if($visitplan->visitengs)
+                                                                    @foreach($visitplan->visitengs as $visiteng)
+                                                                        <?php $n++; ?>
+                                                                            <div class="col-md-2 col-sm-4 col-xs-6">
+                                                                                <div class="c-item">
+                                                                                    <a href="" class="ci-avatar">
+                                                                                        <img src="{{url('/')}}/{{$visiteng->engineer->file_path}}/{{$visiteng->engineer->file_name}}" alt="">
+                                                                                    </a>
+                                                                                    <div class="c-info">
+                                                                                        <strong>{{$visiteng->engineer->name}}</strong>
+                                                                                        <small>{{$visiteng->engineer->mobileno}}</small>
+                                                                                    </div>
                                                                                 </div>
                                                                             </div>
+                                                                    @endforeach
+                                                                @endif
+                                                            @else 
+                                                            <div class="col-md-3 col-sm-4 col-xs-6">
+                                                                    <div class="c-item">
+                                                                        <a href="" class="ci-avatar">
+                                                                            <img src="{{url('/')}}/static/images/business-man.jpg" alt="">
+                                                                        </a>
+                                                                        <div class="c-info">
+                                                                            <strong>{{$visitplan->agent->company_name}}</strong>
+                                                                            <small>{{$visitplan->agent->mobileno}}</small>
                                                                         </div>
-                                                                @endforeach
+                                                                    </div>
+                                                                </div>
+                                                            
                                                             @endif
+                                                            
                                                         </div>
                                                     </div>
                                                 </div>
@@ -511,15 +543,17 @@
                 <div class="panel-heading color-block bgm-lightblue" role="tab" id="headingThingtodo">
                     <h4 class="panel-title">
                         <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThingtodo" aria-expanded="false" aria-controls="collapseOne">
-                            Site Observation
+                            Instruction to Check in Site
                         </a>
                     </h4>
                 </div>
                 <div id="collapseThingtodo" class="collapse" role="tabpanel" aria-labelledby="headingThingtodo">
                     <div class="panel-body p-10">
+                        @if($record->order_status != 8 && $record->order_status != 9)
                         <div class="p-5 pull-right mm-55-0">
                             <button type="button" class="btn bgm-lime btn-icon waves-effect waves-circle waves-float thingsadd"><i class="zmdi zmdi-plus"></i></button>                                    
                         </div>
+                        @endif
                         <div id="modalthings">
                             <div id="modalthings1">
                                 <div class="modal fade thingsform" id="thingsform" role="dialog">
@@ -528,7 +562,7 @@
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                <h4>Site Observation Form</h4>
+                                                <h4>Site Instruction Form</h4>
                                             </div>
                                             <div class="modal-body">
                                                 <div class="form-group">
@@ -666,9 +700,11 @@
                 </div>
                 <div id="collapseThingtotaken" class="collapse" role="tabpanel" aria-labelledby="headingThingtotaken">
                     <div class="panel-body p-10">
+                        @if($record->order_status != 8 && $record->order_status != 9)
                         <div class="p-5 pull-right mm-55-0">
                             <button type="button" class="btn bgm-lime btn-icon waves-effect waves-circle waves-float takenadd"><i class="zmdi zmdi-plus"></i></button>                                    
                         </div>
+                        @endif
                         <div id="modaltaken">
                             <div id="modaltaken1">
                                 <div class="modal fade takenform" id="takenform" role="dialog">
@@ -824,9 +860,11 @@
                 <div id="collapseAduit" class="collapse" role="tabpanel" aria-labelledby="headingAduit">
                     <div class="panel-body p-10">
                         <div class="p-5 pull-right mm-55-0">
+                            @if($record->order_status != 8 && $record->order_status != 9)
                             <a href="{{url('servicespareregister/addnew', $record->id)}}" target="_self">
                                 <button class="btn bgm-lime btn-icon waves-effect waves-circle waves-float"><i class="zmdi zmdi-plus"></i></button>                                    
                             </a>
+                            @endif
                         </div>
                         <div class="row ">  
                             <div class="col-sm-12">
@@ -868,6 +906,64 @@
                                             </div>
                                         @endforeach
                                     </div>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="panel-group" data-collapse-color="amber" role="tablist" aria-multiselectable="true">
+            <div class="panel panel-collapse">
+                <div class="panel-heading color-block bgm-gray" role="tab" id="headingSitephoto">
+                    <h4 class="panel-title">
+                        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseSitephoto" aria-expanded="false" aria-controls="collapseTwo">
+                            Site Photos
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseSitephoto" class="collapse" role="tabpanel" aria-labelledby="headingSitephoto">
+                    <div class="panel-body p-10">
+                        
+                        <div class="row ">  
+                            <div class="col-sm-12">
+                                <?php
+                                $crrDate = date("Y-m-d");
+                                $activestatus = "";
+                                $active = "";
+                                $n = 0;
+                                ?>
+                                <div class="panel card" data-collapse-color="cyan" id="accordionCyan" role="tablist" aria-multiselectable="true">
+                                    @if(($record->visitplan))
+                                        <div class="row">
+                                            @foreach($record->visitplan as $visitplan)
+                                                @foreach($visitplan->visitsummary as $visitplansum)
+                                                    @foreach($visitplansum->visitsummaryAsset as $registeraudit)
+                                                        <?php $n++; ?>
+                                                        <div class="col-sm-12">
+                                                            <div class="card">
+                                                                <div class="card-body card-padding pd-10-20">
+                                                                    <div class="row" style="padding: 8px 0 8px 0px;">
+                                                                        <div class="col-sm-2">{{$registeraudit->name}}</div>
+                                                                        <div class="col-sm-4 ">
+                                                                            @if($registeraudit->file_type == 0)
+                                                                                <img style="width: inherit;" src="{{url('/')}}/{{$registeraudit->file_path}}/{{$registeraudit->file_name}}" />
+                                                                            @else
+                                                                                <a style="width: inherit;" href="{{url('/')}}/{{$registeraudit->file_path}}/{{$registeraudit->file_name}}" tabindex="_self">{{$registeraudit->file_name}}<a/>
+                                                                            @endif                                                                    
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    @endforeach
+
+                                                @endforeach
+                                            @endforeach
+                                         </div>     
                                     @endif
                                 </div>
                             </div>
@@ -1007,6 +1103,58 @@
                         </div>
                         <?php $currentdate =date('Y-m-d'); ?>
                         <!--if(!empty($offerdata))-->
+                        @if(session()->get('user_type') == 2  || session()->get('user_type') == 0)
+                            <div class="modal-body">
+                                <div class="row m-l-10" role="form">
+                                    <div class="form-group col-sm-6">
+                                        <label for="offervalidity" class="control-label col-sm-4 required">Offer Validity</label>
+                                        <div class="col-sm-8">
+                                            <div class="fg-line">
+                                                <input type="hidden" name="spares_register_id" value="{{$record->id}}">
+                                                <input type="hidden" name="revision_no" id="revision_no" value="">
+                                                @if(!empty($offerdata))
+                                                <input type="hidden" name="last_offer_id" id="last_offer_id" value="{{$offerdata->id}}">
+                                                @endif
+
+                                                <select class="form-control input-sm" placeholder="Validity" aria-describedby="basic-addon1" data-validation="required" required="required" id="offervalidity" name="offervalidity">
+                                                    @foreach($offervalidity as $offerval=>$offername)
+                                                        @if(!empty($offerdata))
+                                                            @if($offerval == $offerdata->offervalidity)
+                                                                <option value="{{$offerval}}" selected>{{$offername}}</option>
+                                                            @else 
+                                                                <option value="{{$offerval}}">{{$offername}}</option>
+                                                            @endif
+                                                        @else 
+                                                                <option value="{{$offerval}}">{{$offername}}</option>
+                                                        @endif
+                                                    @endforeach
+                                                </select>  
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                       
+                                    <div class="form-group col-sm-12">
+                                        <label for="terms" class="control-label col-sm-1">Terms</label>
+                                        <div class="col-sm-11">
+                                            <div class="fg-line">
+                                                <textarea class="form-control input-sm" cols="20" rows="13" placeholder="Terms" name="terms" id="terms"  >{{$terms}}</textarea>                                        
+                                            </div>
+                                            <div class="termsdiv hide">{{$terms}}</div>
+                                        </div>
+                                    </div>
+
+                                </div>    
+                                <div class="form-row m-t-25">
+                                    <div class="col-sm-3 m-t-25">
+                                        <button type="button" id="addoffer" class="addoffer btn bgm-cyan"><i>ADD</i></button>
+                                    </div>
+                                </div>                 
+                            </div>
+                            <div class="modal-footer m-t-25">
+                                <button data-dismiss="modal" class="btn bgm-cyan btn-icon waves-effect waves-circle waves-float pull-right"><i class="zmdi zmdi-close"></i></button>
+                            </div>
+                        @else 
                             <div class="modal-body">
                                 <div class="row m-l-10" role="form">
                                     <div class="form-group col-sm-6">
@@ -1130,6 +1278,7 @@
                             <div class="modal-footer m-t-25">
                                 <button data-dismiss="modal" class="btn bgm-cyan btn-icon waves-effect waves-circle waves-float pull-right"><i class="zmdi zmdi-close"></i></button>
                             </div>
+                        @endif
                         <!--endif-->
                     </div>
                 </div>

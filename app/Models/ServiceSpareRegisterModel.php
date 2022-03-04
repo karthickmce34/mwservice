@@ -59,4 +59,9 @@ class ServiceSpareRegisterModel extends BaseModel {
     {
         return $this->hasMany('App\Models\VisitplanModel','servicespare_id','id');
     }
+    
+    public function agent()
+    {
+        return $this->belongsTo('App\Models\ServiceAgentModel','agent_id','id');
+    }
 }

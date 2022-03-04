@@ -24,7 +24,8 @@
                                                         Visitplan Summary 
                                                     </h2>
                                                 </div>
-                                                @if($record->isagent==1)
+                                                
+                                                @if($record->is_agent == 1)
                                                 <div class="col-sm-6">
                                                     <div class="card-body card-padding pd-10-20">
                                                         
@@ -60,10 +61,6 @@
                                                         <div class="row" style="    padding: 8px 0 8px 0px;">       
                                                             <div class="col-sm-4"><i class="zmdi "></i><b>Attended To</b></div>
                                                             <div class="col-sm-8"><?=date('d-m-Y', strtotime($record->date_of_complete))?></div>
-                                                        </div>
-                                                        <div class="row" style="    padding: 8px 0 8px 0px;">       
-                                                            <div class="col-sm-4"><i class="zmdi "></i><b>Days In Site</b></div>
-                                                            <div class="col-sm-8"><?=nl2br($record->days_site)?></div>
                                                         </div>
                                                         <div class="row" style="    padding: 8px 0 8px 0px;">       
                                                             <div class="col-sm-4"><i class="zmdi "></i><b>Work Description</b></div>
@@ -141,6 +138,10 @@
                                                             <div class="col-sm-4"><i class="zmdi "></i><b>Material Requirements</b></div>
                                                             <div class="col-sm-8"></div>
                                                         </div-->
+                                                        <div class="row" style="    padding: 8px 0 8px 0px;">       
+                                                            <div class="col-sm-4"><i class="zmdi "></i><b>Service Report</b></div>
+                                                            <div class="col-sm-8"><a style="width: inherit;" href="{{url('/')}}/{{$record->file_path}}/{{$record->file_name}}" tabindex="_self">{{$record->file_name}}</a></div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 @endif

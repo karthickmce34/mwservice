@@ -59,11 +59,20 @@
                             
                             "commands": function(column, row) {
                                 
+                                console.log(row.request_status);
+                                if(row.request_status.trim() != "Completed")
+                                {
                                     var cmd = "<a href=\"{{url($basePath)}}/"+row.id+"/edit\" target=\"_self\" class=\"btn bgm-orange btn-icon waves-effect waves-circle\"><i class=\"zmdi zmdi-edit\"></i></a>" +    
                                         "<a href=\"{{url($basePath)}}/"+row.id+"\" target=\"_self\" class=\"btn bgm-lightblue btn-icon waves-effect waves-circle\"><i class=\"zmdi zmdi-view-web\"></i></a>";   
-                                
-                                
-                                return cmd; 
+                                        
+                                     
+                                }
+                                else
+                                {
+                                    var cmd = "<a href=\"{{url($basePath)}}/"+row.id+"\" target=\"_self\" class=\"btn bgm-lightblue btn-icon waves-effect waves-circle\"><i class=\"zmdi zmdi-view-web\"></i></a>";   
+                                     
+                                }
+                                return cmd;
                                 
                             }
                         }

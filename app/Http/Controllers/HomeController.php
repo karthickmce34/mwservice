@@ -534,8 +534,7 @@ class HomeController extends Controller
         
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        print_r("hai");
-        print_r($curl);die;
+        
         $result = curl_exec($curl);
         $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         $data = ["result" => $result, "httpCode" => $httpCode];
@@ -577,7 +576,7 @@ class HomeController extends Controller
         $inputs = $request->all();
         
         $method = 'GET';
-        $url = "192.168.0.73:81/trialbalance/public/test/cusdetails?documentno=".$inputs['wrd'];
+        $url = "45.116.114.11:81/trialbalance/public/test/cusdetails?documentno=".$inputs['wrd'];
         $phpinpdata = false;
         $phpdata = $this->CallAPI($method,$url,$phpinpdata = false);
         $phpdecode=  json_decode($phpdata['result']);
@@ -590,11 +589,12 @@ class HomeController extends Controller
         $t=time();
         
         $method = 'GET';
-        $url = "192.168.0.73:81/trialbalance/public/test/prddetails?_t=".$t;
+        $url = "45.116.114.11:81/trialbalance/public/test/prddetails?_t=".$t;
         $phpinpdata = false;
         $phpdata = $this->CallAPI($method,$url,$phpinpdata = false);
         $phpdecode=  json_decode($phpdata['result']);
         $inpdata = array();
+        
         foreach($phpdecode as $prddetail)
         {
             $model1 = new $this->modelPrdName();

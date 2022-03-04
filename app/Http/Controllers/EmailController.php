@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Config;
 use App\Libraries\Helpers\SmsHelper;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 use App\TokenStore\TokenCache;
@@ -45,6 +46,7 @@ class EmailController extends Controller
     {
         $model = new $this->modelName();
 	$usrtype=session()->get('user_type');
+        
 	if($usrtype == 1)	
 	{
 		$modelData = $model->where('isspares',$usrtype)->orderBy('recieved_datetime','desc')->get();
@@ -53,6 +55,8 @@ class EmailController extends Controller
 	{
 		if($usrtype == 2)
 		{
+                        $m = DB::select("select * from email_header where id < 20");
+                        print_r($m);die;
 			$modelData = $model->where('isspares',$usrtype)->orderBy('recieved_datetime','desc')->get();
 		}
 		else

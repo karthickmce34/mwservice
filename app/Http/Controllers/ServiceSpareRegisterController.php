@@ -24,7 +24,7 @@ class ServiceSpareRegisterController extends Controller
     public $modelAssetName      = 'App\Models\ServiceSpareRegisterAssetModel';
     public $modelCompName       = 'App\Models\ComplaintRegisterModel';
     public $modelThingstodo     = 'App\Models\ServiceSpareThingstodoModel';
-    public $modelOfferdeatils   = 'App\Models\OfferDetailsModel';
+    public $modelOfferdetails   = 'App\Models\OfferDetailsModel';
     public $modelVisit          = 'App\Models\VisitplanModel';
     public $modelEngineer       = 'App\Models\ServiceEngineerModel';
     public $modelAgent          = 'App\Models\ServiceAgentModel';
@@ -91,7 +91,7 @@ class ServiceSpareRegisterController extends Controller
             return redirect()->route($this->baseRedirect);    
         } 
         
-        $modeloffer = new $this->modelOfferdeatils();
+        $modeloffer = new $this->modelOfferdetails();
         $offerdata = $modeloffer->where('service_spares_register_id',$id)->orderBy('id','desc')->first();
         $modelagent = new $this->modelAgent();
         $modelengineer = new $this->modelEngineer();
@@ -718,6 +718,7 @@ class ServiceSpareRegisterController extends Controller
         $regData['travel_expenses']=$inputs['travel_expenses'];
         $regData['local_conveyance']=$inputs['local_conveyance'];
         $regData['contact_person']=$inputs['contact_person'];
+        $regData['contact_number']=$inputs['contact_number'];
         $regData['visit_status']=1;
         $regData['status']=1;
         //print_r($regData);die;
@@ -1570,21 +1571,26 @@ class ServiceSpareRegisterController extends Controller
         $status = 1;
         $message = "success";
         $inputs = request()->all();
-        //print_r($inputs);die;
+        
         $offer['service_spares_register_id']=$inputs['spares_register_id'];
         $offer['offer_date']=date('Y-m-d');
         $offer['revision_no']=$inputs['revision_no'];
         $offer['offervalidity']=$inputs['offervalidity'];
+        if(isset($inputs['freight']))
         $offer['freight']=$inputs['freight'];
+        if(isset($inputs['deliveryperiod']))
         $offer['deliveryperiod']=$inputs['deliveryperiod'];
+        if(isset($inputs['paymentterms']))
         $offer['paymentterms']=$inputs['paymentterms'];
+        if(isset($inputs['dayscredit']))
         $offer['dayscredit']=$inputs['dayscredit'];
         $offer['terms']=$inputs['terms'];
         $offer['created_by_id'] = session()->get('user_id');
         $offer['status'] = 1;
-        $offerModel = new $this->modelOfferdeatils();
+        $offerModel = new $this->modelOfferdetails();
         
         $storedoffer = $offerModel->addRecord($offer);
+        
         if ($storedoffer && is_array($storedoffer)) {
             $this->data['status'] = 0;
             $this->data['message'] = "Not Successfully added";

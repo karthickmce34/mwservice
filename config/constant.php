@@ -11,7 +11,7 @@ return [
     'UPLOAD_PATH_REPORT_URL'                        => "reports/template",
     'UPLOAD_PATH_RESULT_URL'                        => "reports/result",
     'UPLOAD_PATH_EMAIL_URL'                        	=> "static/emails/body",
-	'EMAIL_ATTACHMENT_URL'                        	=> "static/emails/attachment",
+    'EMAIL_ATTACHMENT_URL'                        	=> "static/emails/attachment",
     
     'adminid'=>"info@megawin.co.in",
     'adminpassword'=>"W3lc0m3@!nf0",
@@ -95,7 +95,7 @@ return [
         '3'=>'Others',
     ],
     
-    'OPENBRAVOIP'     => "http://192.168.0.211:8080/Megawin/",
+    'OPENBRAVOIP'     => "http://45.116.114.11:8080/Megawin/",
     
     
 ];

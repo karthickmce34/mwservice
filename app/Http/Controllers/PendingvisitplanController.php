@@ -104,6 +104,12 @@ class PendingvisitplanController extends Controller
         $inputs = request()->all();
         $docid = $inputs['id'];
         $test=request()->file('img_upload');
+        
+        $report_file = request()->file('servicereport');
+        $UPLOAD_PATH_URL   = Config::get('constant.UPLOAD_PATH_URL'); 
+        $UPLOAD_PATH  = public_path($UPLOAD_PATH_URL);
+        
+        
         $model = new $this->modelName();
         $registerData = $model->find($docid);
         $cnt = 0;
@@ -120,6 +126,8 @@ class PendingvisitplanController extends Controller
                 $inpData['boarding_expenses']= 0;
                 $inpData['travel_expenses']= 0;
                 $inpData['local_conveyance']= 0;
+                $inpData['file_path'] = "";
+                $inpData['file_name'] = "";
                 if($this->created_by)
                 {
                     $inpData['created_by_id'] = session()->get('user_id');
@@ -137,15 +145,22 @@ class PendingvisitplanController extends Controller
                 $inpData['date_of_complete']= $inputs['act_attend_date_to'];
                 $inpData['work_description']= $inputs['work_description'];
                 $inpData['status'] = 1;
+                
                 $modelsum = new $this->modelVsSum();
                 $stored = $modelsum->addRecord($inpData);
-
+                
                 if($stored && is_array($stored))
                 {
                     return redirect()->back()->withErrors($stored)->withInput();
                 }
                 else
                 {
+                    $service_report = $this->imageSummaryUploadFile($modelsum->id,$report_file,$UPLOAD_PATH,$UPLOAD_PATH_URL);
+                    
+                    $modelsum->file_path = $service_report['file_path'];
+                    $modelsum->file_name = $service_report['file_name'];
+                    $modelsum->save();
+                    
 
                     for($i=1;$i<=$cnt;$i++)
                     {
@@ -158,7 +173,7 @@ class PendingvisitplanController extends Controller
                             $inpLnData['ischecked']= $inputs['ischecked'][$i];
                             if(isset($inputs['img_upload'][$i]))
                             {
-                                $assetUpload = $this->postImageuploadAsset($modelsum->id,$i);
+                                $assetUpload = $this->postSummaryAsset($modelsum->id,$i);
                                 if($assetUpload['uploaded'])
                                 {
                                     $inpLnData['file_path'] = $assetUpload['file_path'];
@@ -200,15 +215,18 @@ class PendingvisitplanController extends Controller
                             $inpLnData['created_by_id'] = session()->get('user_id');
                         }
                         $inpLnData['status'] = 1;
+                        
                         $modelsumln = new $this->modelVsSumLn();
                         $storedln = $modelsumln->addRecord($inpLnData);
                     }
 
                     $cnt2 = count($inputs['product']);
+                    
                     if($cnt2 > 0)
                     {
                         for($j=1;$j<=$cnt2;$j++)
                         {
+                           
                             if($inputs['product'][$j] != "")
                             {
                                 $inpLnData1['visitplan_summary_id']= $modelsum->id;
@@ -216,7 +234,26 @@ class PendingvisitplanController extends Controller
                                 $inpLnData1['qty']= $inputs['qty'][$j];
                                 $inpLnData1['unitprice']= $inputs['unitprice'][$j];
                                 $inpLnData1['amount']= $inputs['amount'][$j];
-
+                                
+                                if(isset($inputs['billimage'][$j]))
+                                {
+                                    $assetUpload2 = $this->postProductSummaryAsset($modelsum->id,$j);
+                                    if($assetUpload2['uploaded'])
+                                    {
+                                        $inpLnData1['file_path'] = $assetUpload2['file_path'];
+                                        $inpLnData1['file_name'] = $assetUpload2['file_name'];
+                                    }
+                                    else
+                                    {
+                                        $inpLnData1['file_path'] = "";
+                                        $inpLnData1['file_name'] = "";
+                                    }
+                                }
+                                else
+                                {
+                                    $inpLnData1['file_path'] = "";
+                                    $inpLnData1['file_name'] = "";
+                                }
 
                                 if($this->created_by)
                                 {
@@ -228,7 +265,7 @@ class PendingvisitplanController extends Controller
                             }
                         }
                     }
-
+                    
                     $modelComp = new $this->modelComplaint();
                     $compdata = $modelComp->find($registerData->complaint_register_id);
                     $compdata->document_status = 2;
@@ -288,6 +325,11 @@ class PendingvisitplanController extends Controller
             }
             else
             {
+                $service_report = $this->imageSummaryUploadFile($modelsum->id,$report_file,$UPLOAD_PATH,$UPLOAD_PATH_URL);
+                    
+                $modelsum->file_path = $service_report['file_path'];
+                $modelsum->file_name = $service_report['file_name'];
+                $modelsum->save();
 
                 $cnt2 = count($inputs['product']);
                 if($cnt2 > 0)
@@ -302,7 +344,26 @@ class PendingvisitplanController extends Controller
                             $inpLnData1['unitprice']= $inputs['unitprice'][$j];
                             $inpLnData1['amount']= $inputs['amount'][$j];
 
-
+                            if(isset($inputs['billimage'][$j]))
+                            {
+                                $assetUpload2 = $this->postProductSummaryAsset($modelsum->id,$j);
+                                if($assetUpload2['uploaded'])
+                                {
+                                    $inpLnData1['file_path'] = $assetUpload2['file_path'];
+                                    $inpLnData1['file_name'] = $assetUpload2['file_name'];
+                                }
+                                else
+                                {
+                                    $inpLnData1['file_path'] = "";
+                                    $inpLnData1['file_name'] = "";
+                                }
+                            }
+                            else
+                            {
+                                $inpLnData1['file_path'] = "";
+                                $inpLnData1['file_name'] = "";
+                            }
+                            
                             if($this->created_by)
                             {
                                 $inpLnData1['created_by_id'] = session()->get('user_id');
@@ -310,10 +371,11 @@ class PendingvisitplanController extends Controller
                             $inpLnData1['status'] = 1;
                             $modelsumprd = new $this->modelProduct();
                             $storedprd = $modelsumprd->addRecord($inpLnData1);
+                            
                         }
                     }
+                   
                 }
-
                 $modelComp = new $this->modelComplaint();
                 $compdata = $modelComp->find($registerData->complaint_register_id);
                 $compdata->document_status = 2;
@@ -400,4 +462,81 @@ class PendingvisitplanController extends Controller
            return null;
     }
     
+    public function imageSummaryUploadFile($docid,$fileObj,$basePath,$baseURL)
+    {
+        $response = array();
+        $response['uploaded'] = false;
+        $vlf =  $fileObj->isValid();
+        if($vlf)
+        {           
+            $fileName   = $fileObj->getClientOriginalName();
+            $fileName3 = $fileName;
+            $fileNames = explode(".",$fileName3);
+            $fileNames2 = $fileNames;
+            array_pop($fileNames2);        
+            $fileName2 = join('',$fileNames2);        
+            $extension = end($fileNames);   
+            
+
+            $model = new $this->modelVsSumLn();
+            $assetBasePath = $basePath .'VisitplanSummary/'.$docid;
+            $baseAssetURL = $baseURL .'VisitplanSummary/'.$docid;
+            if (!is_dir($assetBasePath)) 
+            {
+                $this->createPath($assetBasePath);
+            }
+            // check if file exists
+            $fileNamePath = $assetBasePath.'/'. $fileName;
+            $destinationPath = $assetBasePath;
+            $n = 0;
+            while(file_exists($fileNamePath))
+            {
+                $n++;
+                $fileName = $fileName2 . "_" . $n . "." . $extension;
+                $fileNamePath = $assetBasePath . $fileName;
+            }
+
+            //$uploaded = move_uploaded_file($_FILES['file']['tmp_name'], $fileNamePath);
+            $uploaded = $fileObj->move($destinationPath, $fileName);
+
+            
+            $response['uploaded'] = $uploaded;
+            if($uploaded)
+            {
+                $response['file_name'] = $fileName;
+                $response['file_path'] = $baseAssetURL;
+                /*$response['file_type'] = 0;
+                if(isset($this->file_types[strtolower($extension)]))
+                    $response['file_type'] = $this->file_types[strtolower($extension)];*/
+                $response['file_type'] = $extension;
+                $response['file_ext'] = $extension;                                
+            }        
+            
+        }
+        return $response;
+    }
+    
+    public function postSummaryAsset($docid,$i)
+    {        
+        $inputs = request()->all();
+        $_doc_file = request()->file('img_upload');
+        $UPLOAD_PATH_URL   = Config::get('constant.UPLOAD_PATH_URL'); 
+        $UPLOAD_PATH  = public_path($UPLOAD_PATH_URL);
+        if($_doc_file)
+            return $this->imageSummaryUploadFile($docid,$_doc_file[$i],$UPLOAD_PATH,$UPLOAD_PATH_URL);
+        else
+           return null;
+    }
+    
+    public function postProductSummaryAsset($docid,$i)
+    {        
+        $inputs = request()->all();
+        $_doc_file = request()->file('billimage');
+        $UPLOAD_PATH_URL   = Config::get('constant.UPLOAD_PATH_URL'); 
+        $UPLOAD_PATH  = public_path($UPLOAD_PATH_URL);
+        if($_doc_file)
+            return $this->imageSummaryUploadFile($docid,$_doc_file[$i],$UPLOAD_PATH,$UPLOAD_PATH_URL);
+        else
+           return null;
+    }
 }

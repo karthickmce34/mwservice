@@ -255,7 +255,24 @@
                                 <div class="card">
                                     <div class="card-header">
                                         <h2>Order Status </h2>
-                                        
+                                        <small>Over all</small>
+                                        <ul class="actions">
+                                            <li class="dropdown">
+                                                <a href="" data-toggle="dropdown">
+                                                    <i class="zmdi zmdi-more-vert"></i>
+                                                </a>
+
+                                                <ul class="dropdown-menu dropdown-menu-right">
+                                                    <li>
+                                                        <a href="">Current Week</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="">Current Month</a>
+                                                    </li>
+                                                    
+                                                </ul>
+                                            </li>
+                                        </ul>
                                     </div>
 
                                     <div class="card-body m-t-0">

@@ -119,6 +119,11 @@ Route::post('pendingvisit/insertsummary', 'PendingvisitplanController@postInsert
 
 Route::resource('visitplansummary', 'VisitplansummaryController');
 Route::get('visitplansummary/index', 'VisitplansummaryController@getIndex');
+Route::get('visitplansummary/addphoto/{id}', 'VisitplansummaryController@addphoto');
+Route::post('visitplansummary/storephoto', 'VisitplansummaryController@postStorephoto');
+Route::get('visitplansummary/editphoto/{id}', 'VisitplansummaryController@editphoto');
+Route::put('visitplansummary/updatephoto/{id}', 'VisitplansummaryController@updatephoto');
+
 
 Route::resource('product', 'ProductController');
 

@@ -75,6 +75,7 @@ where complaint_register.id = service_spares_register.complaint_register_id
 and service_spares_register.id = service_spares_product.service_spares_register_id
 and offer_details.service_spares_register_id = service_spares_register.id
 and segment.segment_id = complaint_register.complaint_type
+and service_spares_product.deleted_at is null
 and offer_details.id = $P{DOCUMENT_ID}
 and service_spares_product.invoicable=0]]></queryString>
 
@@ -267,7 +268,7 @@ and service_spares_product.invoicable=0]]></queryString>
 						x="503"
 						y="181"
 						width="62"
-						height="20"
+						height="18"
 						key="staticText-10"/>
 					<box leftPadding="2">					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -303,7 +304,7 @@ and service_spares_product.invoicable=0]]></queryString>
 						x="438"
 						y="181"
 						width="64"
-						height="20"
+						height="18"
 						key="staticText-6"/>
 					<box leftPadding="2">					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -320,7 +321,7 @@ and service_spares_product.invoicable=0]]></queryString>
 						x="396"
 						y="181"
 						width="42"
-						height="20"
+						height="18"
 						key="staticText-5"/>
 					<box leftPadding="2">					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -337,7 +338,7 @@ and service_spares_product.invoicable=0]]></queryString>
 						x="339"
 						y="181"
 						width="56"
-						height="20"
+						height="18"
 						key="staticText-4"/>
 					<box leftPadding="2">					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -354,7 +355,7 @@ and service_spares_product.invoicable=0]]></queryString>
 						x="107"
 						y="181"
 						width="231"
-						height="20"
+						height="18"
 						key="staticText-3"/>
 					<box leftPadding="2">					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -371,7 +372,7 @@ and service_spares_product.invoicable=0]]></queryString>
 						x="24"
 						y="181"
 						width="82"
-						height="20"
+						height="18"
 						key="staticText-2"/>
 					<box leftPadding="2">					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -388,7 +389,7 @@ and service_spares_product.invoicable=0]]></queryString>
 						x="0"
 						y="181"
 						width="20"
-						height="20"
+						height="18"
 						key="staticText-1"/>
 					<box leftPadding="2">					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -408,16 +409,6 @@ and service_spares_product.invoicable=0]]></queryString>
 						width="567"
 						height="1"
 						key="line-1"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						style="Report_Footer"
-						x="0"
-						y="202"
-						width="567"
-						height="1"
-						key="line-2"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 				<line direction="TopDown">
@@ -1204,6 +1195,16 @@ and service_spares_product.invoicable=0]]></queryString>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{emailid}]]></textFieldExpression>
 				</textField>
+				<line direction="TopDown">
+					<reportElement
+						style="Report_Footer"
+						x="0"
+						y="201"
+						width="567"
+						height="0"
+						key="line-63"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
 			</band>
 		</pageHeader>
 		<columnHeader>

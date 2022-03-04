@@ -50,10 +50,16 @@
                                                     <a href="{{url($basePath)}}/{{$record->id}}/edit" target="_self" class="bgm-orange"><i class="zmdi zmdi-edit"></i></a>
                                                 @endif
                                             @else
-                                                <a href="{{url($basePath)}}/{{$record->id}}/edit" target="_self" class="bgm-orange"><i class="zmdi zmdi-edit"></i></a>
-                                                @if(session()->get('user_type') == 0)
-                                                    <a href="{{url($basePath)}}/delete/{{$record->id}}" target="_self" class="bgm-red"><i class="zmdi zmdi-close"></i></a>
+                                                @if(isset($record->order_status))
+                                                    @if($record->order_status != 8 && $record->order_status != 9)
+                                                        <a href="{{url($basePath)}}/{{$record->id}}/edit" target="_self" class="bgm-orange"><i class="zmdi zmdi-edit"></i></a>
+                                                    @endif
+                                                @else
+                                                    @if(session()->get('user_type') == 0)
+                                                        <a href="{{url($basePath)}}/delete/{{$record->id}}" target="_self" class="bgm-red"><i class="zmdi zmdi-close"></i></a>
+                                                    @endif
                                                 @endif
+                                                    
                                             @endif
                                             <!--
                                             <a href="{{url($basePath)}}/show/{{$record->id}}" target="_self" class="bgm-lightblue"><i class="zmdi zmdi-view-web"></i></a>

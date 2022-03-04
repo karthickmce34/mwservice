@@ -931,18 +931,18 @@
                                                 </div>
                                             </div>
                                             <div class="form-group col-sm-6">
-                                                <label for="panel_descrption" class="control-label col-sm-4">Product Description</label>
+                                                <label for="panel_descrption" class="control-label col-sm-4 required">Product Description</label>
                                                 <div class="col-sm-8">
                                                     <div class="fg-line">
-                                                        <input class="form-control input-sm" placeholder="Panel Description" name="panel_descrption" type="text" id="panel_descrption" autocomplete="off">                                        
+                                                        <input class="form-control input-sm" placeholder="Panel Description" name="panel_descrption" required type="text" id="panel_descrption" autocomplete="off">                                        
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="form-group col-sm-6">
-                                                <label for="date_supply" class="control-label col-sm-4">Date of Supply</label>
+                                                <label for="date_supply" class="control-label col-sm-4">Date of Dispatch</label>
                                                 <div class="col-sm-8">
                                                     <div class="fg-line">
-                                                        <input type='text' class="form-control input-sm" id="date_supply" name="date_supply" value="{{$currentdate}}">
+                                                        <input type='text' class="form-control input-sm" id="date_supply" name="date_supply" value="">
                                                     </div>
                                                 </div>
                                             </div>
@@ -950,7 +950,7 @@
                                                 <label for="commissioned_date" class="control-label col-sm-4">Commissioned Date</label>
                                                 <div class="col-sm-8">
                                                     <div class="fg-line">
-                                                        <input type='text' class="form-control input-sm" id="commissioned_date" name="commissioned_date" value="{{$currentdate}}">
+                                                        <input type='text' class="form-control input-sm" id="commissioned_date" name="commissioned_date" value="">
                                                     </div>
                                                 </div>
                                             </div>
@@ -996,7 +996,7 @@
                                                 </div>
                                             </div>
                                             <div class="form-group col-sm-6">
-                                                <label for="after_commissioned" class="control-label col-sm-4">Modification After Commissioned</label>
+                                                <label for="after_commissioned" class="control-label col-sm-4">Modification After Commissioning</label>
                                                 <div class="col-sm-8">
                                                     <div class="fg-line">
                                                         <input class="form-control input-sm" placeholder="After Commissioned" name="after_commissioned" type="text" id="after_commissioned" autocomplete="off">

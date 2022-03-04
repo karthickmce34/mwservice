@@ -31,8 +31,8 @@
                                                     <div class="card-body card-padding pd-10-20">
                                                         <div class="pmo-contact">        
                                                             <ul>
-                                                                <li class="ng-binding"><i class="zmdi zmdi-smartphone-iphone"></i> {{$record->compreg->mobileno}}</li>
-                                                                <li class="ng-binding"><i class="zmdi zmdi-account-box-phone"></i> {{$record->compreg->contact_person}}</li>
+                                                                <li class="ng-binding"><i class="zmdi zmdi-smartphone-iphone"></i> {{$record->contact_number}}</li>
+                                                                <li class="ng-binding"><i class="zmdi zmdi-account-box-phone"></i> {{$record->contact_person}}</li>
 
                                                                 <li>
                                                                     <i class="zmdi zmdi-pin"></i>
@@ -76,46 +76,66 @@
 
                                                     <div class="col-sm-6">
                                                         <div class="card-body card-padding pd-10-20">
+                                                            @if($record->compreg->commissioned_date != "")
                                                             <div class="row" style="    padding: 8px 0 8px 0px;">       
                                                                 <div class="col-sm-6"><i class="zmdi "></i><b>Date of Commissioned</b></div>
                                                                 <div class="col-sm-6"><?=date('d-m-Y', strtotime($record->compreg->commissioned_date))?></div>
                                                             </div>
+                                                            @endif
+                                                            
                                                             <div class="row" style="    padding: 8px 0 8px 0px;">       
                                                                 <div class="col-sm-6"><i class="zmdi "></i><b>Customer Complaint</b></div>
                                                                 <div class="col-sm-6">{!! nl2br(e($record->compreg->complaint_nature)) !!}</div>
                                                             </div>
+                                                            
+                                                            @if($record->compreg->outgoing_load != "")
                                                             <div class="row" style="    padding: 8px 0 8px 0px;">       
                                                                 <div class="col-sm-6"><i class="zmdi "></i><b>Outgoing Load</b></div>
                                                                 <div class="col-sm-6"><?=nl2br($record->compreg->outgoing_load)?></div>
                                                             </div>
+                                                            @endif
+                                                            @if($record->compreg->relay_make_type != "")
                                                             <div class="row" style="    padding: 8px 0 8px 0px;">       
                                                                 <div class="col-sm-6"><i class="zmdi "></i><b>Relay Make&Type</b></div>
                                                                 <div class="col-sm-6"><?=nl2br($record->compreg->relay_make_type)?></div>
                                                             </div>
+                                                            @endif
+                                                            @if($record->compreg->relay_status != "")
                                                             <div class="row" style="    padding: 8px 0 8px 0px;">       
                                                                 <div class="col-sm-6"><i class="zmdi "></i><b>Relay Status</b></div>
                                                                 <div class="col-sm-6"><?=nl2br($record->compreg->relay_status)?></div>
                                                             </div>
+                                                            @endif
+                                                            @if($record->compreg->cable_length != "")
                                                             <div class="row" style="    padding: 8px 0 8px 0px;">       
                                                                 <div class="col-sm-6"><i class="zmdi "></i><b>Cable Length</b></div>
                                                                 <div class="col-sm-6">{{$record->compreg->cable_length}}</div>
                                                             </div>
+                                                            @endif
+                                                            @if($record->compreg->fault_current != "")
                                                             <div class="row" style="    padding: 8px 0 8px 0px;">       
                                                                 <div class="col-sm-6"><i class="zmdi "></i><b>Fault Current</b></div>
                                                                 <div class="col-sm-6"><?=nl2br($record->compreg->fault_current)?></div>
                                                             </div>
+                                                            @endif
+                                                            @if($record->compreg->vcb_interlock != "")
                                                             <div class="row" style="    padding: 8px 0 8px 0px;">       
                                                                 <div class="col-sm-6"><i class="zmdi "></i><b>VCB Interlock Condition</b></div>
                                                                 <div class="col-sm-6">{!! nl2br(e($record->compreg->vcb_interlock)) !!}</div>
                                                             </div>
+                                                            @endif
+                                                            @if($record->compreg->after_commissioned != "")
                                                             <div class="row" style="    padding: 8px 0 8px 0px;">       
                                                                 <div class="col-sm-6"><i class="zmdi "></i><b>Any Mod. Aftr Commisioning</b></div>
                                                                 <div class="col-sm-6"><?=nl2br($record->compreg->after_commissioned)?></div>
                                                             </div>
+                                                            @endif
+                                                            @if($record->compreg->event_before_failure != "")
                                                             <div class="row" style="    padding: 8px 0 8px 0px;">       
                                                                 <div class="col-sm-6"><i class="zmdi "></i><b>Event Before Failure</b></div>
                                                                 <div class="col-sm-6"><?=nl2br($record->compreg->event_before_failure)?></div>
                                                             </div>
+                                                            @endif
                                                             <div class="row" style="    padding: 8px 0 8px 0px;">       
                                                                 <div class="col-sm-6"><i class="zmdi "></i><b>Warranty</b></div>
                                                                 <div class="col-sm-6"><?php if($record->compreg->warrenty == 0){echo'With Warranty';}else{echo' Without Warranty';} ?></div>
@@ -127,10 +147,12 @@
 
                                                         <div class="card-body card-padding pd-10-20">
 
+                                                            @if($record->compreg->date_supply != "")
                                                             <div class="row" style="    padding: 8px 0 8px 0px;">       
                                                                 <div class="col-sm-6"><i class="zmdi "></i><b>Panel Supply Date</b></div>
                                                                 <div class="col-sm-6"><?=date('d-m-Y', strtotime($record->compreg->date_supply))?></div>
                                                             </div>
+                                                            @endif
                                                             <div class="row" style="    padding: 8px 0 8px 0px;">       
                                                                 <div class="col-sm-6"><i class="zmdi "></i><b>Remark/Comments</b></div>
                                                                 <div class="col-sm-6">{!! nl2br(e($record->compreg->remark)) !!}</div>
@@ -321,19 +343,24 @@
                                                                                         <input type="type" class="form-control input-sm" placeholder="Product" name="product" id="product" value=""/>                                                                                    
                                                                                     </div>
                                                                                 </div>
-                                                                                <div class="col-sm-2">
+                                                                                <div class="col-sm-1">
                                                                                     <div class="fg-line">
-                                                                                        <input type="type" class="form-control input-sm" placeholder="qty" name="qty" id="qty" value=""/>                                                                                    
+                                                                                        <input type="type" class="form-control input-sm" placeholder="Qty" name="qty" id="qty" value=""/>                                                                                    
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-1">
+                                                                                    <div class="fg-line">
+                                                                                        <input type="type" class="form-control input-sm" placeholder="Cost" name="unitprice" id="unitprice" value=""/>                                                                                    
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="col-sm-2">
                                                                                     <div class="fg-line">
-                                                                                        <input type="type" class="form-control input-sm" placeholder="unit price" name="unitprice" id="unitprice" value=""/>                                                                                    
+                                                                                        <input type="type" class="form-control input-sm" placeholder="Total" name="amount" id="amount" value=""/>                                                                                    
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="col-sm-2">
                                                                                     <div class="fg-line">
-                                                                                        <input type="type" class="form-control input-sm" placeholder="amount" name="amount" id="amount" value=""/>                                                                                    
+                                                                                        <input type='file' class="form-control input-sm billimage"  name="billimage" >
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="col-sm-1 text-center m-t-10">
@@ -353,23 +380,22 @@
 
                                                                             @if($record->is_agent == 1)
                                                                             <div class="row">
+                                                                                <input type='hidden' class="form-control input-sm" name="is_agent"  value="1">
                                                                                 <div class="form-group col-sm-6">
-                                                                                    <input type='hidden' class="form-control input-sm" name="is_agent"  value="1">
-                                                                                    <?php $retdate = $currentdate =date('Y-m-d');  ?>
-                                                                                    <label for="act_attend_date_from" class="control-label col-sm-6">Date of Attend From</label>
+                                                                                    <label for="act_attend_date_from" class="control-label col-sm-6">Attend From</label>
                                                                                     <div class="col-sm-6">
                                                                                         <div class="fg-line">
-                                                                                            <input type='text' class="form-control input-sm date-picker" name="act_attend_date_from" id="act_attend_date_from" value="{{$retdate}}">
+                                                                                            <?php if($record->date_of_depature == "") { $depdate = $currentdate =date('Y-m-d'); } else {$depdate = $record->date_of_depature;}  ?>
+                                                                                            <input type='text' class="form-control input-sm date-picker act_agent_date_from" name="act_attend_date_from"  value="{{$depdate}}">
                                                                                         </div>
                                                                                     </div>
-                                                                                    
                                                                                 </div>
-                                                                                
                                                                                 <div class="form-group col-sm-6">
-                                                                                    <label for="act_attend_date_to" class="control-label col-sm-6">Date of Attend To</label>
+                                                                                    <?php if($record->date_of_return == "") { $retdate = $currentdate =date('Y-m-d'); } else {$retdate = $record->date_of_return;}  ?>
+                                                                                    <label for="act_agent_date_to" class="control-label col-sm-6">Attend To</label>
                                                                                     <div class="col-sm-6">
                                                                                         <div class="fg-line">
-                                                                                            <input type='text' class="form-control input-sm date-picker" name="act_attend_date_to" id="act_attend_date_to" value="{{$retdate}}">
+                                                                                            <input type='text' class="form-control input-sm date-picker act_agent_date_to" name="act_attend_date_to" value="{{$retdate}}">
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
@@ -408,7 +434,7 @@
                                                                                     <label for="days_site" class="control-label col-sm-6">Total Days</label>
                                                                                     <div class="col-sm-6">
                                                                                         <div class="fg-line">
-                                                                                            <input type='text' class="form-control input-sm" name="days_site" id="days_site" value="{{$record->days_site}}">
+                                                                                            <input type='text' class="form-control input-sm required" name="days_site" id="days_site" required value="{{$record->days_site}}">
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
@@ -454,6 +480,15 @@
                                                                                 </div>
 
                                                                             @endif
+                                                                            <div class="col-sm-6">
+                                                                                <label for="servicereport" class="control-label col-sm-6">Service Report</label>
+                                                                                <div class="col-sm-6">
+                                                                                    <div class="fg-line">
+                                                                                        <input type='file' class="form-control input-sm servicereport required" required name="servicereport" >
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -463,7 +498,7 @@
                                                                             <div class="panel">
                                                                                 <div class="panel-heading ">
                                                                                     <h3>
-                                                                                        Things Done
+                                                                                        Site Inspection Detail
                                                                                     </h3>
                                                                                 </div>
                                                                                 <div class="panel-body ">

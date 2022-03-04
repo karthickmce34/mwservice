@@ -263,7 +263,7 @@
                     var boarding_expenses = $("#modal3").find("#se_boarding_expenses").val();
                     var travel_expenses = $("#modal3").find("#se_travel_expenses").val();
                     var local_conveyance = $("#modal3").find("#se_local_conveyance").val();
-                    var contact_person = $("#modal3").find("#se_contact_person").val();
+                    
                     
                     if(parseInt(depute_engineer) == 0)
                     {
@@ -273,12 +273,16 @@
                         });
                         var date_of_depature = $("#modal3").find(".se_date_of_depature").val();
                         var date_of_return = $("#modal3").find(".se_date_of_return").val();
+                        var contact_person = $("#modal3").find("#se_contact_person").val();
+                        var contact_number = $("#modal3").find("#se_contact_number").val();
                     }
                     else
                     {
                         agent_id = $("#modal3").find('#agent_id :selected').val();
                         var date_of_depature = $("#modal3").find(".sa_date_of_depature").val();
                         var date_of_return = $("#modal3").find(".sa_date_of_return").val();
+                        var contact_person = $("#modal3").find("#sa_contact_person").val();
+                        var contact_number = $("#modal3").find("#sa_contact_number").val();
                     }
                     var dataConfig = {
                      depute_engineer: depute_engineer,
@@ -292,7 +296,8 @@
                      boarding_expenses:boarding_expenses,
                      travel_expenses:travel_expenses,
                      local_conveyance:local_conveyance,
-                     contact_person:contact_person
+                     contact_person:contact_person,
+                     contact_number:contact_number,
                  };
                  var dt;
                  if(parseInt(depute_engineer) == 0)
@@ -491,6 +496,7 @@
                     {
                         
                         //console.log($(".thingsnew2").find('.things0').serializeArray());
+                        $(this).hide();
                         var controller = 'servicespareregister/';
 
                         $.ajax({

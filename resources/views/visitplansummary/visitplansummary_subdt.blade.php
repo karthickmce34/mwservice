@@ -1,3 +1,4 @@
+        
         <div class="panel-group" data-collapse-color="amber" role="tablist" aria-multiselectable="true">
             <div class="panel panel-collapse">
                 <div class="panel-heading color-block bgm-blue" role="tab" id="headingProduct">
@@ -19,13 +20,12 @@
                                 $n = 0;
                                 ?>
                                 <div class="panel card" data-collapse-color="cyan" id="accordionCyan" role="tablist" aria-multiselectable="true">
-                                    @if(($record->visitplan->servicespare->registerprds))
+                                    @if(($record->visitsummaryProduct))
                                         <div class="row">
                                             <div class="col-sm-12">
                                                 <div class="card">
                                                     <div class="card-head card-padding pd-10-20">
                                                         <div class="row c-black" style="padding: 8px 0 8px 0px;">
-                                                            <div class="col-sm-2 text-center" >Product Code</div>
                                                             <div class="col-sm-4 text-center">
                                                                             Product Name                                                       
                                                             </div>
@@ -38,24 +38,29 @@
                                                             <div class="col-sm-1 ">
                                                                             Total                                                       
                                                             </div>
+                                                            <div class="col-sm-3 ">
+                                                                            Image                                                       
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div class="card-body card-padding pd-10-20">
-                                                @foreach($record->visitplan->servicespare->registerprds as $registerprd)
+                                                @foreach($record->visitsummaryProduct as $registerprd)
                                                     <?php $n++; ?>
                                                         <div class="row" style="padding: 8px 0 8px 0px;">
-                                                            <div class="col-sm-2 text-center">{{$registerprd->product->code}}</div>
                                                             <div class="col-sm-4 text-center">
-                                                                            {{$registerprd->product->name}}                                                       
+                                                                            {{$registerprd->product}}                                                       
                                                             </div>
                                                             <div class="col-sm-1 text-center">
                                                                             {{$registerprd->unit_price}}                                                       
                                                             </div>
                                                             <div class="col-sm-1 ">
-                                                                            {{$registerprd->quantity}}                                                       
+                                                                            {{$registerprd->qty}}                                                       
                                                             </div>
                                                             <div class="col-sm-1 ">
-                                                                            {{$registerprd->total_price}}                                                       
+                                                                            {{$registerprd->amount}}                                                       
+                                                            </div>
+                                                            <div class="col-sm-3 text-center">@if($registerprd->file_path == "")  @else
+                                                                <img style="width: inherit;" src="{{url('/')}}/{{$registerprd->file_path}}/{{$registerprd->file_name}}" /> @endif
                                                             </div>
                                                             
                                                         </div>
@@ -77,7 +82,7 @@
                 <div class="panel-heading color-block bgm-cyan" role="tab" id="headingThingtodo">
                     <h4 class="panel-title">
                         <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThingtodo" aria-expanded="false" aria-controls="collapseOne">
-                            Things Done
+                            Site Inspection Detail
                         </a>
                     </h4>
                 </div>
@@ -192,5 +197,127 @@
                 </div>
             </div>
         </div>
+        
+        
+        
+        <div class="panel-group" data-collapse-color="amber" role="tablist" aria-multiselectable="true">
+            <div class="panel panel-collapse">
+                <div class="panel-heading color-block bgm-cyan" role="tab" id="headingAduit">
+                    <h4 class="panel-title">
+                        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseAduit" aria-expanded="false" aria-controls="collapseTwo">
+                            Site Documents and Photos
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseAduit" class="collapse" role="tabpanel" aria-labelledby="headingAduit">
+                    <div class="panel-body p-10">
+                        <div class="p-5 pull-right mm-55-0">
+                            <a href="{{url('visitplansummary/addphoto', $record->id)}}" target="_self">
+                                <button class="btn bgm-lime btn-icon waves-effect waves-circle waves-float"><i class="zmdi zmdi-plus"></i></button>                                    
+                            </a>
+                        </div>
+                        <div class="row ">  
+                            <div class="col-sm-12">
+                                <?php
+                                $crrDate = date("Y-m-d");
+                                $activestatus = "";
+                                $active = "";
+                                $n = 0;
+                                $m = 0;
+                                ?>
+                                <div class="panel card" data-collapse-color="cyan" id="accordionCyan" role="tablist" aria-multiselectable="true">
+                                    @if(($record->visitplan->visitaudits))
+                                        <div class="row">
+                                        @foreach($record->visitplan->visitaudits as $visitaudit)
+                                            <?php $n++; ?>
+                                            
+                                            <div class="col-sm-12">
+                                                <div class="card">
+                                                    <div class="card-body card-padding pd-10-20">
+                                                        <div class="row" style="padding: 8px 0 8px 0px;">
+                                                            <div class="col-sm-2">{{$visitaudit->name}}</div>
+                                                            <div class="col-sm-4 ">
+                                                                @if($visitaudit->file_type == 0)
+                                                                    <img style="width: inherit;" src="{{url('/')}}/{{$visitaudit->file_path}}/{{$visitaudit->file_name}}" />
+                                                                @else
+                                                                    <a style="width: inherit;" href="{{url('/')}}/{{$visitaudit->file_path}}/{{$visitaudit->file_name}}" tabindex="_self">{{$visitaudit->file_name}}<a/>
+                                                                @endif                                                                    
+                                                            </div>
+                                                            <div class="col-sm-2 text-center">
+                                                                <a href="{{url('visitplan/editphoto', $visitaudit->id)}}" target="_self">
+                                                                    <button class="btn bgm-orange btn-icon waves-effect waves-circle waves-float"><i class="zmdi zmdi-edit"></i></button>
+                                                                </a>
+                                                                <a href="{{url('visitplan/deletephoto', $visitaudit->id)}}" target="_self">
+                                                                    <button class="btn bgm-red btn-icon waves-effect waves-circle waves-float"><i class="zmdi zmdi-close"></i></button>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                        
+                                    @endif
+                                    <div class="row">
+                                        @foreach($record->visitsummaryAsset as $visitsummaryAsset)
+                                            <?php $n++; ?>
+                                            
+                                            <div class="col-sm-12">
+                                                <div class="card">
+                                                    <div class="card-body card-padding pd-10-20">
+                                                        <div class="row" style="padding: 8px 0 8px 0px;">
+                                                            <div class="col-sm-2">{{$visitsummaryAsset->name}}</div>
+                                                            <div class="col-sm-4 ">
+                                                                @if($visitsummaryAsset->file_type == 0)
+                                                                    <img style="width: inherit;" src="{{url('/')}}/{{$visitsummaryAsset->file_path}}/{{$visitsummaryAsset->file_name}}" />
+                                                                @else
+                                                                    <a style="width: inherit;" href="{{url('/')}}/{{$visitsummaryAsset->file_path}}/{{$visitsummaryAsset->file_name}}" tabindex="_self">{{$visitsummaryAsset->file_name}}<a/>
+                                                                @endif                                                                    
+                                                            </div>
+                                                            <div class="col-sm-2 text-center">
+                                                                <a href="{{url('visitplansummary/editphoto', $visitsummaryAsset->id)}}" target="_self">
+                                                                    <button class="btn bgm-orange btn-icon waves-effect waves-circle waves-float"><i class="zmdi zmdi-edit"></i></button>
+                                                                </a>
+                                                                <a href="{{url('visitplansummary/deletephoto', $visitsummaryAsset->id)}}" target="_self">
+                                                                    <button class="btn bgm-red btn-icon waves-effect waves-circle waves-float"><i class="zmdi zmdi-close"></i></button>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                    @foreach($record->visitplan->servicespare->registeraudits as $registeraudit)
+                                        <?php $m++; ?>
+                                            
+                                            <div class="col-sm-12">
+                                                <div class="card">
+                                                    <div class="card-body card-padding pd-10-20">
+                                                        <div class="row" style="padding: 8px 0 8px 0px;">
+                                                            <div class="col-sm-2">{{$registeraudit->name}}</div>
+                                                            <div class="col-sm-4 ">
+                                                                @if($registeraudit->file_type == 0)
+                                                                    <img style="width: inherit;" src="{{url('/')}}/{{$registeraudit->file_path}}/{{$registeraudit->file_name}}" />
+                                                                @else
+                                                                    <a style="width: inherit;" href="{{url('/')}}/{{$registeraudit->file_path}}/{{$registeraudit->file_name}}" tabindex="_self">{{$registeraudit->file_name}}<a/>
+                                                                @endif                                                                    
+                                                            </div>
+                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
         
         

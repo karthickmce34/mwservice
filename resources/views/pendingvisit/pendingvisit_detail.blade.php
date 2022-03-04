@@ -59,6 +59,14 @@
                 $("#modal3").find("#act_attend_date_from").datepicker({dateFormat: 'yy-mm-dd'});
                 $("#modal3").find("#act_attend_date_to").datepicker({dateFormat: 'yy-mm-dd'});
                 
+                $("#modal3").find(".act_agent_date_from").attr("id","act_agent_date_from");
+                $("#modal3").find(".act_agent_date_to").attr("id","act_agent_date_to");
+                
+                
+                $("#modal3").find("#act_agent_date_from").datepicker({dateFormat: 'yy-mm-dd'});
+                $("#modal3").find("#act_agent_date_to").datepicker({dateFormat: 'yy-mm-dd'});
+                
+                
                 $("#modal3").find(".newline").on('click',function()
                 {
                    var thigsnew2 = $("#modal3").find(".product").find(".things0").clone(); 
@@ -74,7 +82,7 @@
                 $("#modal3").find("form .thingsnew2").on('change',"#qty",function(){
                    var qty = $(this).val(); 
                    console.log($(this).closest(".things0"));
-                   $(this).closest(".things0").find("input#unitprice").val(qty);
+                   //$(this).closest(".things0").find("input#unitprice").val(qty);
                 });
                 
                 
@@ -156,6 +164,7 @@
                         $(".thingsnew2").find(".things0").eq(i).find("#qty").attr("name","qty["+j+"]");
                         $(".thingsnew2").find(".things0").eq(i).find("#unitprice").attr("name","unitprice["+j+"]");
                         $(".thingsnew2").find(".things0").eq(i).find("#amount").attr("name","amount["+j+"]");
+                        $(".thingsnew2").find(".things0").eq(i).find(".billimage").attr("name","billimage["+j+"]");
                     }
                 }
             
