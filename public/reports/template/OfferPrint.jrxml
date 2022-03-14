@@ -225,7 +225,7 @@ and service_spares_product.invoicable=0]]></queryString>
 					<reportElement
 						x="5"
 						y="39"
-						width="303"
+						width="351"
 						height="14"
 						key="staticText-82"/>
 					<box leftPadding="2"></box>
