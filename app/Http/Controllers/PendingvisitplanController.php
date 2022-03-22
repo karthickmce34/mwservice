@@ -62,9 +62,13 @@ class PendingvisitplanController extends Controller
                                         and visitplan_engineer.engineer_id = '$user_id'
                                         and visitplan_engineer.deleted_at is null
                                         and visit_status in (1)");
+            $id=array();
              foreach($servicedatas as $servicedata)
              {
-              $id[]=$servicedata->id;
+                 if(isset($servicedata->id))
+                 {
+                    $id[]=$servicedata->id;
+                 }
              }
 
             $model = new $this->modelName();
@@ -193,8 +197,7 @@ class PendingvisitplanController extends Controller
                             }
                             else
                             {
-                                $inpLnData['remarks']= "";
-                                $inpLnData['ischecked']= 0;
+                                
                                 $inpLnData['file_path'] = "";
                                 $inpLnData['file_name'] = "";
                                 $inpLnData['file_ext'] = "";

@@ -109,22 +109,30 @@
                                                 <div class="col-sm-6">
                                                     
                                                     <div class="card-body card-padding pd-10-20">
-                                                        
+                                                        <div class="row" style="    padding: 8px 0 8px 0px;">       
+                                                            <div class="col-sm-4"><i class="zmdi "></div>
+                                                            <div class="col-sm-4 text-center"></i><b>Planned Expenses</b></div>
+                                                            <div class="col-sm-4 text-center"></i><b>Actual Expenses</b></div>
+                                                        </div>
                                                         <div class="row" style="    padding: 8px 0 8px 0px;">       
                                                             <div class="col-sm-4"><i class="zmdi "></i><b>Lodging Expenses</b></div>
-                                                            <div class="col-sm-8"><?=nl2br($record->visitplan->loading_expenses)?></div>
+                                                            <div class="col-sm-4 text-center"><?=nl2br($record->visitplan->loading_expenses)?></div>
+                                                            <div class="col-sm-4 text-center"><?=nl2br($record->loading_expenses)?></div>
                                                         </div>
                                                         <div class="row" style="    padding: 8px 0 8px 0px;">       
                                                             <div class="col-sm-4"><i class="zmdi "></i><b>Boarding Expenses</b></div>
-                                                            <div class="col-sm-8">{!! nl2br(e($record->visitplan->boarding_expenses)) !!}</div>
+                                                            <div class="col-sm-4 text-center">{!! nl2br(e($record->visitplan->boarding_expenses)) !!}</div>
+                                                            <div class="col-sm-4 text-center">{!! nl2br(e($record->boarding_expenses)) !!}</div>
                                                         </div>
                                                         <div class="row" style="    padding: 8px 0 8px 0px;">       
-                                                            <div class="col-sm-4"><i class="zmdi "></i><b>Travel Expenses</b></div>
-                                                            <div class="col-sm-8">{!! nl2br(e($record->visitplan->travel_expenses)) !!}</div>
+                                                            <div class="col-sm-4 "><i class="zmdi "></i><b>Travel Expenses</b></div>
+                                                            <div class="col-sm-4 text-center">{!! nl2br(e($record->visitplan->travel_expenses)) !!}</div>
+                                                            <div class="col-sm-4 text-center">{!! nl2br(e($record->travel_expenses)) !!}</div>
                                                         </div>
                                                         <div class="row" style="    padding: 8px 0 8px 0px;">       
                                                             <div class="col-sm-4"><i class="zmdi "></i><b>Local Conveyance</b></div>
-                                                            <div class="col-sm-8">{!! nl2br(e($record->visitplan->local_conveyance)) !!}</div>
+                                                            <div class="col-sm-4 text-center">{!! nl2br(e($record->visitplan->local_conveyance)) !!}</div>
+                                                            <div class="col-sm-4 text-center">{!! nl2br(e($record->local_conveyance)) !!}</div>
                                                         </div>
                                                         <!--div class="row" style="    padding: 8px 0 8px 0px;">       
                                                             <div class="col-sm-4"><i class="zmdi "></i><b>Total Expenses</b></div>
@@ -137,11 +145,11 @@
                                                         <div class="row" style="    padding: 8px 0 8px 0px;">       
                                                             <div class="col-sm-4"><i class="zmdi "></i><b>Material Requirements</b></div>
                                                             <div class="col-sm-8"></div>
-                                                        </div-->
+                                                        </div>
                                                         <div class="row" style="    padding: 8px 0 8px 0px;">       
                                                             <div class="col-sm-4"><i class="zmdi "></i><b>Service Report</b></div>
                                                             <div class="col-sm-8"><a style="width: inherit;" href="{{url('/')}}/{{$record->file_path}}/{{$record->file_name}}" tabindex="_self">{{$record->file_name}}</a></div>
-                                                        </div>
+                                                        </div-->
                                                     </div>
                                                 </div>
                                                 @endif

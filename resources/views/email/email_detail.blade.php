@@ -100,7 +100,12 @@
                                 <div class="col-sm-2"><i class="zmdi "></i><b>DateTime</b></div>
                                 <div class="col-sm-8"><?=nl2br($record->recieved_datetime)?></div>
                             </div>
-                            
+                            @if(isset($record->complaint))
+                                <div class="row" style="    padding: 8px 0 8px 0px;">       
+                                    <div class="col-sm-2"><i class="zmdi "></i><b>Complaint No</b></div>
+                                    <div class="col-sm-8"><?=nl2br($record->complaint->seqno)?></div>
+                                </div>
+                            @endif
                             
                         </div>
                     </div>

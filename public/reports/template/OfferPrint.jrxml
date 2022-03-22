@@ -225,7 +225,7 @@ and service_spares_product.invoicable=0]]></queryString>
 					<reportElement
 						x="5"
 						y="39"
-						width="351"
+						width="371"
 						height="14"
 						key="staticText-82"/>
 					<box leftPadding="2"></box>
@@ -297,7 +297,7 @@ and service_spares_product.invoicable=0]]></queryString>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="SansSerif" pdfFontName="Helvetica-Bold" size="14" isBold="true"/>
 					</textElement>
-				<text><![CDATA[OFFER FOR SPARES AND SERVICE]]></text>
+				<text><![CDATA[OFFER FOR SERVICE]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
@@ -1047,7 +1047,7 @@ and service_spares_product.invoicable=0]]></queryString>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font fontName="SansSerif" pdfFontName="Helvetica" size="9" isBold="false"/>
 					</textElement>
-				<text><![CDATA[1800 425 8088]]></text>
+				<text><![CDATA[089295 99797]]></text>
 				</staticText>
 				<staticText>
 					<reportElement

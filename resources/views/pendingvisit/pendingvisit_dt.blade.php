@@ -470,22 +470,45 @@
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
-                                                                                <div class="col-sm-6">
-                                                                                    <label for="work_description" class="control-label col-sm-6">Work Description</label>
-                                                                                    <div class="col-sm-6">
-                                                                                        <div class="fg-line">
-                                                                                            <textarea class="form-control input-sm" cols="20" rows="3" placeholder="Work Description" name="work_description" id="work_description" ></textarea>                                        
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
+                                                                                
 
                                                                             @endif
-                                                                            <div class="col-sm-6">
-                                                                                <label for="servicereport" class="control-label col-sm-6">Service Report</label>
-                                                                                <div class="col-sm-6">
-                                                                                    <div class="fg-line">
-                                                                                        <input type='file' class="form-control input-sm servicereport required" required name="servicereport" >
+                                                                            
+                                                                            
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-row col-sm-12 m-t-20">
+                                                                    <div class="card">
+                                                                        <div class="card-body">
+                                                                            <div class="panel">
+                                                                                <div class="panel-heading ">
+                                                                                    <h3>
+                                                                                        Site Work Description
+                                                                                    </h3>
+                                                                                </div>
+                                                                                <div class="panel-body ">
+                                                                                    <div class="row">
+                                                                                        <div class="col-sm-12">
+                                                                                            <div class="col-sm-8">
+                                                                                                <label for="work_description" class="control-label col-sm-4">Work Description</label>
+                                                                                                <div class="col-sm-8">
+                                                                                                    <div class="fg-line">
+                                                                                                        <textarea class="form-control input-sm" cols="20" rows="3" placeholder="Work Description" name="work_description" id="work_description" ></textarea>                                        
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="col-sm-4">
+                                                                                                <label for="servicereport" class="control-label col-sm-4">Report</label>
+                                                                                                <div class="col-sm-8">
+                                                                                                    <div class="fg-line">
+                                                                                                        <input type='file' class="form-control input-sm servicereport required" required name="servicereport" >
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
                                                                                     </div>
+                                                                                    
                                                                                 </div>
                                                                             </div>
                                                                             

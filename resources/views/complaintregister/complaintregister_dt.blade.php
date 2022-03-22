@@ -126,7 +126,9 @@
                                                         @endif
                                                         <div class="row" style="    padding: 8px 0 8px 0px;">       
                                                             <div class="col-sm-4"><i class="zmdi "></i><b>Complaint Nature</b></div>
-                                                            <div class="col-sm-8">{!! nl2br(e($record->complaint_nature)) !!}</div>
+                                                            <?php $complaint_nature = $record->complaint_nature;
+                                                                        $newcomplaint_nature = wordwrap($complaint_nature, 60, "\n", true);?>
+                                                            <div class="col-sm-8">{!! nl2br(e($newcomplaint_nature)) !!}</div>
                                                         </div>
                                                         @if($record->outgoing_load != "")
                                                         <div class="row" style="    padding: 8px 0 8px 0px;">       

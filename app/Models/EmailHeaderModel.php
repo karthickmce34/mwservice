@@ -16,7 +16,12 @@ class EmailHeaderModel extends BaseModel {
     public function __construct()
     {
         parent::__construct();
-    }    
+    }   
+    
+    public function complaint()
+    {
+        return $this->hasOne('App\Models\ComplaintRegisterModel','eheader_id','id');
+    }
     
 }
 

@@ -50,8 +50,8 @@ service_spares_product.net_amt as lineamt,
 service_spares_product.tax_amt,
 service_spares_product.total_price,
 service_charge.hsn,
-case when service_spares_register.complaint_type = 0 then "E-mail : service@megawin.co.in, PH.No : 0427-2330288, 2330498.   Toll Free : 1800 425 8088"
-else "E-mail : spares@megawin.co.in, PH.No : 0427-2330288, 2330498.   Toll Free : 1800 425 8088" end as header1,
+case when service_spares_register.complaint_type = 0 then "E-mail : service@megawin.co.in, PH.No : 0427-2330288, 2330498.   Toll Free : 08929 99797"
+else "E-mail : spares@megawin.co.in, PH.No : 0427-2330288, 2330498.   Toll Free :  08929 99797" end as header1,
 case when product.code = "" || product.code is null then service_charge.code else product.code end as prdcode
 
 from service_spares_register,
@@ -230,7 +230,7 @@ and service_spares_product.invoicable=0]]></queryString>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="SansSerif" pdfFontName="Helvetica-Bold" size="10" isBold="true"/>
 					</textElement>
-				<text><![CDATA[Proforma Invoice for Spares and Service]]></text>
+				<text><![CDATA[Proforma Invoice for Service]]></text>
 				</staticText>
 				<line direction="TopDown">
 					<reportElement

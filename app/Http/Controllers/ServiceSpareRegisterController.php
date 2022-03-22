@@ -1225,7 +1225,7 @@ class ServiceSpareRegisterController extends Controller
         }
         if($inputs['type'] == 0)
         {
-            $filename = "Spares_Offer_".str_replace(" ","-",$compData->seqno);
+            $filename = "Service_Offer_".str_replace(" ","-",$compData->seqno);
             $jaspername = "OfferPrint";
 
         }
@@ -1237,7 +1237,7 @@ class ServiceSpareRegisterController extends Controller
         $region_email = "";
         $reportfile = $this->generatereport($id,$filename,$jaspername);
         $this->data['filepath']=$reportfile;
-        $this->data['subject']="Spares Offer - ".str_replace(" ","-",$compData->seqno);
+        $this->data['subject']="Service Offer - ".str_replace(" ","-",$compData->seqno);
         $this->data['filename']=$filename.".pdf";
         $this->data['fromaddress']=$fromaddress;
         $this->data['type']=$compData['complaint_type'];
@@ -1571,7 +1571,7 @@ class ServiceSpareRegisterController extends Controller
         $status = 1;
         $message = "success";
         $inputs = request()->all();
-        
+      
         $offer['service_spares_register_id']=$inputs['spares_register_id'];
         $offer['offer_date']=date('Y-m-d');
         $offer['revision_no']=$inputs['revision_no'];
@@ -1600,6 +1600,7 @@ class ServiceSpareRegisterController extends Controller
         {
             $modelssprd = new $this->modelSSPrdName();
             $SSproducts = $modelssprd->where('offer_details_id',$inputs['last_offer_id'])->get();
+            
             if($SSproducts)
             {
                 foreach($SSproducts as $SSproduct)

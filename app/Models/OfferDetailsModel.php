@@ -20,6 +20,6 @@ class OfferDetailsModel extends BaseModel {
 
     public function registerprds()
     {
-        return $this->hasMany('App\Models\ServiceSpareProductModel','offer_details_id','id')->where('invoicable',0)->where('isserviceproduct',0);
+        return $this->hasMany('App\Models\ServiceSpareProductModel','offer_details_id','id')->where('invoicable',0)->where('isserviceproduct',1);
     }
 }

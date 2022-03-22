@@ -12,6 +12,7 @@
                     @php
                         $offercnt = 0;
                     @endphp
+            
                 @foreach($record->offerdata as $offerdata)
                     @php
                         $offercnt=$offercnt+1;
@@ -229,7 +230,7 @@
                                                         $n = 0;
                                                         ?>
                                                         <div class="panel card" data-collapse-color="cyan" id="accordionCyan" role="tablist" aria-multiselectable="true">
-                                                            @if(($record->sercharges))
+                                                            @if(($offerdata->registerprds))
                                                                 <div class="row">
                                                                     <div class="col-sm-12">
                                                                         <div class="card">
@@ -246,7 +247,7 @@
                                                                                 </div>
                                                                             </div>
                                                                             <div class="card-body card-padding pd-10-20">
-                                                                        @foreach($record->sercharges as $sercharge)
+                                                                        @foreach($offerdata->registerprds as $sercharge)
                                                                             <?php $n++; ?>
                                                                                 <div class="row" style="padding: 8px 0 8px 0px;">
                                                                                     <div class="col-sm-3 text-center">{{$sercharge->prd_description}}</div>
@@ -915,6 +916,97 @@
             </div>
         </div>
         
+        @if($record->order_status == 8)
+        <div class="panel-group" data-collapse-color="amber" role="tablist" aria-multiselectable="true">
+            <div class="panel panel-collapse">
+                <div class="panel-heading color-block bgm-cyan" role="tab" id="headingDescription">
+                    <h4 class="panel-title">
+                        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseDescription" aria-expanded="false" aria-controls="collapseOne">
+                            Work Description (On Site)
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseDescription" class="collapse" role="tabpanel" aria-labelledby="headingDescription">
+                    <div class="panel-body p-10">
+                        <div class="row ">  
+                            <div class="col-sm-12">
+                                <div class="panel card" data-collapse-color="cyan" id="accordionCyan" role="tablist" aria-multiselectable="true">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="card">
+                                                <div class="card-head card-padding pd-10-20">
+                                                    @if(($record->visitplan))
+                                                        @foreach($record->visitplan as $visitplan)
+                                                            @foreach($visitplan->visitsummary as $visitplansum)
+                                                                <div class="row" style="    padding: 8px 0 8px 0px;">       
+                                                                    <div class="col-sm-4"><i class="zmdi "></i><b>Description</b></div>
+                                                                    <div class="col-sm-8">{{$visitplansum->work_description}}</div>
+                                                                </div>
+                                                                <div class="row" style="    padding: 8px 0 8px 0px;">       
+                                                                    <div class="col-sm-4"><i class="zmdi "></i><b>Service Report</b></div>
+                                                                    <div class="col-sm-8"><a style="width: inherit;" href="{{url('/')}}/{{$visitplansum->file_path}}/{{$visitplansum->file_name}}" tabindex="_self">{{$visitplansum->file_name}}</a></div>
+                                                                </div>
+                                                            @endforeach
+                                                        @endforeach
+                                                    @endif
+                                                                
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="col-sm-12">
+                                            @if(($record->visitplan))
+                                                @foreach($record->visitplan as $visitplan)
+                                                    <div class="card-body card-padding pd-10-20">
+                                                        <div class="row" style="    padding: 8px 0 8px 0px;">       
+                                                            <div class="col-sm-4"><i class="zmdi "></div>
+                                                            <div class="col-sm-4 text-center"></i><b>Planned Expenses</b></div>
+                                                            <div class="col-sm-4 text-center"></i><b>Actual Expenses</b></div>
+                                                        </div>
+                                                        <div class="row" style="    padding: 8px 0 8px 0px;">       
+                                                            <div class="col-sm-4"><i class="zmdi "></i><b>Lodging Expenses</b></div>
+                                                            <div class="col-sm-4 text-center"><?=nl2br($visitplan->loading_expenses)?></div>
+                                                            @foreach($visitplan->visitsummary as $visitplansum)
+                                                            <div class="col-sm-4 text-center"><?=nl2br($visitplansum->loading_expenses)?></div>
+                                                            @endforeach
+                                                        </div>
+                                                        <div class="row" style="    padding: 8px 0 8px 0px;">       
+                                                            <div class="col-sm-4"><i class="zmdi "></i><b>Boarding Expenses</b></div>
+                                                            <div class="col-sm-4 text-center">{!! nl2br(e($visitplan->boarding_expenses)) !!}</div>
+                                                            @foreach($visitplan->visitsummary as $visitplansum)
+                                                            <div class="col-sm-4 text-center">{!! nl2br(e($visitplansum->boarding_expenses)) !!}</div>
+                                                            @endforeach
+                                                        </div>
+                                                        <div class="row" style="    padding: 8px 0 8px 0px;">       
+                                                            <div class="col-sm-4 "><i class="zmdi "></i><b>Travel Expenses</b></div>
+                                                            <div class="col-sm-4 text-center">{!! nl2br(e($visitplan->travel_expenses)) !!}</div>
+                                                            @foreach($visitplan->visitsummary as $visitplansum)
+                                                            <div class="col-sm-4 text-center">{!! nl2br(e($visitplansum->travel_expenses)) !!}</div>
+                                                            @endforeach
+                                                        </div>
+                                                        <div class="row" style="    padding: 8px 0 8px 0px;">       
+                                                            <div class="col-sm-4"><i class="zmdi "></i><b>Local Conveyance</b></div>
+                                                            <div class="col-sm-4 text-center">{!! nl2br(e($visitplan->local_conveyance)) !!}</div>
+                                                            @foreach($visitplan->visitsummary as $visitplansum)
+                                                            <div class="col-sm-4 text-center">{!! nl2br(e($visitplansum->local_conveyance)) !!}</div>
+                                                            @endforeach
+                                                        </div>
+                                                        
+                                                    </div>
+
+                                                @endforeach
+                                            @endif
+                                            
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="panel-group" data-collapse-color="amber" role="tablist" aria-multiselectable="true">
             <div class="panel panel-collapse">
                 <div class="panel-heading color-block bgm-gray" role="tab" id="headingSitephoto">
@@ -972,6 +1064,7 @@
                 </div>
             </div>
         </div>
+        @endif
         <!-- modal group -->
         
         <div id="emailmodal">
