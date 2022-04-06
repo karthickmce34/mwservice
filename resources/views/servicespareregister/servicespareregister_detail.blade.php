@@ -1499,9 +1499,11 @@
             });
             
             $(".serviceadd").on('click',function(){
+                var offerid = $(this).data('offerid');
                 $("#modalservice3").find("#modalservice1").remove();
                 var service = $("#modalservice").find("#modalservice1").clone();
                 $("#modalservice3").append(service);
+                $("#modalservice3").find(".sr_offer_details_id").val(offerid);
                 
                 var servicenew = $("#modalservice3").find(".serchargenew .serchargenew1 .sercharge0").clone();
                 $("#modalservice3").find(".servicenew2 form").append(servicenew);
@@ -2132,6 +2134,7 @@
             $(".editservicecharge").on('click',function()
             {
                 var id = $(this).data('id');
+                
                 $("#modalservice3").find("#modalservice1").remove();
                 var service = $("#modalservice").find("#modalservice1").clone();
                 $("#modalservice3").append(service);
@@ -2186,9 +2189,7 @@
                             var price = $("#modalservice3").find(".servicenew2 .sr_unit_price").val();
                             var tot = parseFloat(price)*parseFloat(quantity);
                             $("#modalservice3").find(".servicenew2 .sr_total").val(tot);
-                            alert(quantity);
-                            alert(price);
-                            alert(tax_id);
+                            
                             sertaxcalc(quantity,price,tax_id);
                         });
 

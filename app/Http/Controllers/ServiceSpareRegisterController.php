@@ -486,6 +486,7 @@ class ServiceSpareRegisterController extends Controller
             $prd['product_id']=$inputs['product_id'][$i];
             $prd['prd_description']=$inputs['product'][$i];
             $prd['description']=$inputs['description'][$i];
+            $prd['offer_details_id']=$inputs['offer_details_id'];
             $prd['quantity']=$inputs['qty'][$i];
             $prd['isreturn']=0;
             $prd['unit_price']=$inputs['unit_price'][$i];
@@ -534,6 +535,19 @@ class ServiceSpareRegisterController extends Controller
                 }
             }
         }
+        
+        $modelprd = new $this->modelSSPrdName();
+        $prdDatas = $modelprd->where('offer_details_id',$inputs['offer_details_id'])->get();
+        $total_price=0;
+        foreach($prdDatas as $prdData)
+        {
+            $total_price = $total_price+$prdData->total_price;
+        }
+        $modelName = new $this->modelName();
+        $modelSSData = $modelName->find($register_id);
+        
+        $modelSSData->total_gross_amt = $total_price;
+        $modelSSData->save();
         
         $this->data['status']=1;
         $this->data['message']="Things To Do Added Successfully";
@@ -1492,7 +1506,7 @@ class ServiceSpareRegisterController extends Controller
         }
         
         $modelprd = new $this->modelSSPrdName();
-        $prdDatas = $modelprd->where('service_spares_register_id',$modelData->service_spares_register_id)->get();
+        $prdDatas = $modelprd->where('offer_details_id',$modelData->offer_details_id)->get();
         $total_price=0;
         foreach($prdDatas as $prdData)
         {
@@ -1500,6 +1514,7 @@ class ServiceSpareRegisterController extends Controller
         }
         $modelName = new $this->modelName();
         $modelSSData = $modelName->find($modelData->service_spares_register_id);
+        
         $modelSSData->total_gross_amt = $total_price;
         $modelSSData->save();
         
@@ -1542,17 +1557,32 @@ class ServiceSpareRegisterController extends Controller
     
     public function deletePrd($id)
     {
-        $model = new $this->modelSSPrdName();
-        $record = $model->find($id);
-        $docid = $record->service_spares_register_id;
-        $record->delete();
+        $modelss = new $this->modelSSPrdName();
+        $recordss = $modelss->find($id);
+        $offer_details_id = $recordss->offer_details_id;
+        $docid = $recordss->service_spares_register_id;
+        $recordss->delete();
         $modelssprdtx = new $this->modelSSPrdTax();
         $records = $modelssprdtx->where('service_spares_product_id',$id)->get();
+        
         foreach($records as $record)
         {
             $prddel = $modelssprdtx->find($record->id);
             $prddel->forcedelete();
         }
+        $modelprd = new $this->modelSSPrdName();
+        $prdDatas = $modelprd->where('offer_details_id',$offer_details_id)->get();
+        $total_price=0;
+        foreach($prdDatas as $prdData)
+        {
+            $total_price = $total_price+$prdData->total_price;
+        }
+        $modelName = new $this->modelName();
+        $modelSSData = $modelName->find($docid);
+        
+        $modelSSData->total_gross_amt = $total_price;
+        $modelSSData->save();
+        
         return redirect()->route($this->baseName . '.show', $docid);
     }
     

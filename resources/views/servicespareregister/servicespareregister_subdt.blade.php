@@ -218,7 +218,7 @@
                                             <div class="panel-body p-10">
                                                 @if($record->order_status != 8 && $record->order_status != 9)
                                                 <div class="p-5 pull-right mm-55-0">
-                                                    <button type="button" class="btn bgm-lime btn-icon waves-effect waves-circle waves-float serviceadd"><i class="zmdi zmdi-plus"></i></button>                                    
+                                                    <button type="button" class="btn bgm-lime btn-icon waves-effect waves-circle waves-float serviceadd" data-offerid='{{$offerdata->id}}'><i class="zmdi zmdi-plus"></i></button>                                    
                                                 </div>
                                                 @endif
                                                 <div class="row servicedetail">  
@@ -301,6 +301,7 @@
 
                                                                                                                             <label class="sr-only" for="product">Product</label>
                                                                                                                             <input type="hidden" class="sr_product_id" name="product_id" />
+                                                                                                                            <input type="hidden" class="sr_offer_details_id" name="offer_details_id" />
                                                                                                                             <input type="text" class="form-control input-sm sr_product" name="product" placeholder="Product" autocomplete="off">
                                                                                                                             <span class="input-group-addon sr_last "><i class="btn btn-xs zmdi zmdi-search"></i></span>                                                                    
                                                                                                                         </div>
@@ -426,10 +427,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                <div id="modalservice3">
-                                                </div>
-                                                <div id="modalservicech">
-                                                </div>
+                                                
                                                 
                                             </div>
                                         </div>
@@ -1182,6 +1180,11 @@
             <form>
                 
             </form>                        
+        </div>
+        
+        <div id="modalservice3">
+        </div>
+        <div id="modalservicech">
         </div>
         
         <div class="offerfirst" >
