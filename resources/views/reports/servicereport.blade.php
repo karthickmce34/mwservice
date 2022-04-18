@@ -28,28 +28,7 @@
             <div style="border: 2px gray solid;border-radius: 5px" >
                 <div class="row m-25">
                     <div class="row m-25">
-                        <div class="col-xs-3">
-                            <div class="form-group">
-                                <div class="fg-line">
-                                    <?php $firstdate = date("Y-m-01"); ?>
-                                    <p class="c-black f-500 m-b-20">From date</p>
-                                    <div class="input-group form-group">
-                                        <input type='text' class="form-control" placeholder="Click here..." id='fromdate' name='fromdate' value="{{$firstdate}}">
-                                    </div>
-                                </div>
-                            </div>
-                       </div>
-                       <div class="col-xs-3">
-                           <div class="form-group">
-                                <div class="fg-line">
-                                    <p class="c-black f-500 m-b-20">To date</p>
-                                    <?php $currdate = date("Y-m-d"); ?>
-                                    <div class="input-group form-group">
-                                        <input type='text' class="form-control" placeholder="Click here..." id='todate' name='todate' value="{{$currdate}}">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        
                         <div class="col-xs-3">
                            <div class="form-group">
                                 <div class="fg-line">
@@ -89,6 +68,28 @@
                                             <option value="9">Cancelled</option>
                                             
                                         </select>   
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-3 frmdt">
+                            <div class="form-group">
+                                <div class="fg-line">
+                                    <?php $firstdate = date("Y-m-01"); ?>
+                                    <p class="c-black f-500 m-b-20">From date</p>
+                                    <div class="input-group form-group">
+                                        <input type='text' class="form-control" placeholder="Click here..." id='fromdate' name='fromdate' value="{{$firstdate}}">
+                                    </div>
+                                </div>
+                            </div>
+                       </div>
+                       <div class="col-xs-3 todt">
+                           <div class="form-group">
+                                <div class="fg-line">
+                                    <p class="c-black f-500 m-b-20">To date</p>
+                                    <?php $currdate = date("Y-m-d"); ?>
+                                    <div class="input-group form-group">
+                                        <input type='text' class="form-control" placeholder="Click here..." id='todate' name='todate' value="{{$currdate}}">
                                     </div>
                                 </div>
                             </div>
@@ -174,6 +175,20 @@
             $("#todate").datepicker({changeMonth: true,changeYear: true,dateFormat: "yy-mm-dd",});
             $(".newrow").hide();
             var _site_url = "{{url('/')}}/";
+            $("#order_status").change(function(){
+                var orderstatus = $("#order_status option:selected").val();
+                if(orderstatus == "pending")
+                {
+                    $(".frmdt").hide();
+                    $(".todt").hide();
+                }
+                else
+                {
+                    $(".frmdt").show();
+                    $(".todt").show();
+                }
+            });
+            
             $(".search").click(function(){
                                 var fromdate = $("#fromdate").val();
                                 var todate = $("#todate").val();

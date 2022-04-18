@@ -46,7 +46,8 @@ class ServiceReportController extends Controller
         
         if($orderstatus == null || $orderstatus == "")
         {
-            $statuspara = "";
+            $statuspara = "and complaint_register.complaint_date >= '".$inputs['fromdate']."' 
+                          and complaint_register.complaint_date <= '".$inputs['todate']."'";
         }
         else
         {
@@ -56,7 +57,9 @@ class ServiceReportController extends Controller
             }
             else
             {
-                $statuspara = " and service_spares_register.order_status = $orderstatus ";
+                $statuspara = " and service_spares_register.order_status = $orderstatus 
+                        and complaint_register.complaint_date >= '".$inputs['fromdate']."' 
+                          and complaint_register.complaint_date <= '".$inputs['todate']."'";
             }
                 
         }
@@ -116,8 +119,6 @@ class ServiceReportController extends Controller
 
                                     where complaint_register.id = service_spares_register.complaint_register_id
                                     and complaint_register.complaint_type = 0
-                                    and complaint_register.complaint_date >= '".$inputs['fromdate']."' 
-                                    and complaint_register.complaint_date <= '".$inputs['todate']."'
                                     $statuspara".' '." $orderpara )a 
                                     group by a.complaint_date, 
                                             a.seqno,
