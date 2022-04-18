@@ -76,6 +76,7 @@
                                     <div class="input-group form-group">
                                         <select class="selectpicker" placeholder="Order Status" aria-describedby="basic-addon1"    id="order_status" name="order_status">
                                             <option value="">=== Order Status ===</option>
+                                            <option value="pending">Pending</option>
                                             <option value="0">Enquiryreceived</option>
                                             <option value="1">OfferSent</option>
                                             <option value="2">Poreceived</option>
@@ -86,6 +87,7 @@
                                             <option value="6">DISent</option>
                                             <option value="8">Completed</option>
                                             <option value="9">Cancelled</option>
+                                            
                                         </select>   
                                     </div>
                                 </div>
@@ -122,35 +124,41 @@
             
         </div>
         <div class="card-body card-padding">
-            <div id="row1" class=" table-responsive">
-                <table id="servicedetail" class="display table table-striped table-vmiddle f-10">
-                    <thead>
-                        <tr class="f-">
-                            <th data-column-id="sno">Sno</th>
-                            <th data-column-id="complaintdate">Complaint Date</th>
-                            <th data-column-id="documentno">Documentno</th>
-                            <th data-column-id="ordertype">Order Type</th>
-                            <th data-column-id="accname">Customer Name</th>
-                            <th data-column-id="site_location">Site Location</th>  
-                            <th data-column-id="salesno">SO no.</th>
-                            <th data-column-id="complaint">Nature of Complaint</th>
-                            <th data-column-id="warrenty">Warrenty</th>
-                            <th data-column-id="complaintmode">Complaint Received</th>
-                            <th data-column-id="status">Action Taken</th>
-                            <th data-column-id="deputed">Attended by</th>
-                            <th data-column-id="deputedon">Attended Date</th>
-                            <th data-column-id="remark">Remarks</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                    </tbody>
-
-                </table>
+            <div class="newrow2">
+                
             </div>
         </div>
             
     </div>
+    <div class="newrow">
+        <div id="row1" class=" table-responsive">
+            <table id="servicedetail" class="display table table-striped table-vmiddle f-10">
+                <thead>
+                    <tr class="">
+                        <th data-column-id="sno">Sno</th>
+                        <th data-column-id="complaintdate">Complaint Date</th>
+                        <th data-column-id="documentno">Documentno</th>
+                        <th data-column-id="ordertype">Order Type</th>
+                        <th data-column-id="accname">Customer Name</th>
+                        <th data-column-id="site_location">Site Location</th>  
+                        <th data-column-id="salesno">SO no.</th>
+                        <th data-column-id="complaint">Nature of Complaint</th>
+                        <th data-column-id="warrenty">Warrenty</th>
+                        <th data-column-id="complaintmode">Complaint Received</th>
+                        <th data-column-id="status">Action Taken</th>
+                        <th data-column-id="deputed">Attended by</th>
+                        <th data-column-id="deputedon">Attended Date</th>
+                        <th data-column-id="remark">Remarks</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+        
 
 @stop
 
@@ -164,6 +172,7 @@
         $(function () {
             $("#fromdate").datepicker({changeMonth: true,changeYear: true,dateFormat: "yy-mm-dd",});
             $("#todate").datepicker({changeMonth: true,changeYear: true,dateFormat: "yy-mm-dd",});
+            $(".newrow").hide();
             var _site_url = "{{url('/')}}/";
             $(".search").click(function(){
                                 var fromdate = $("#fromdate").val();
@@ -181,7 +190,11 @@
                                 }).done(function (data, textStatus, jqXHR) {
                                     
                                     console.log(" ajax done ");
-                                    $("#servicedetail").find("tbody tr").remove();
+                                    $(".newrow").show();
+                                    var newrow = $(".newrow").find("#row1").clone();
+                                    $(".newrow2").find("div").remove();
+                                    $(".newrow2").append(newrow);
+                                    $(".newrow").hide();
                                     var len = data.servicedata.length;
                                     
                                     for(var i=0;i<len;i++)
@@ -199,10 +212,10 @@
                                         var tr = "<tr><td>"+j+"</td><td>"+data.servicedata[i].complaintdate+"</td><td>"+data.servicedata[i].seqno+"</td><td>"+data.servicedata[i].ordertype+"</td><td>"+data.servicedata[i].customer_name+"</td>"+ 
                                                   "<td>"+data.servicedata[i].site_location+"</td><td>"+data.servicedata[i].salesorder_no+"</td><td>"+data.servicedata[i].complaint_nature+"</td><td>"+data.servicedata[i].warrentytype+"</td><td>"+data.servicedata[i].complaintmode+"</td>"+
                                                   "<td>"+data.servicedata[i].orderstatus+"</td><td>"+attendedby+"</td><td>"+data.servicedata[i].attendeddate+"</td><td>"+data.servicedata[i].workdecription+"</td></tr>";
-                                        $("#servicedetail").find("tbody").append(tr);
+                                        $(".newrow2").find("#servicedetail tbody").append(tr);
                                     }
                                        
-                                    $("#servicedetail").DataTable({
+                                    $(".newrow2").find("#servicedetail").DataTable({
                                         "displayLength": 100,
                                         "paging":false,
                                         "info" : false,

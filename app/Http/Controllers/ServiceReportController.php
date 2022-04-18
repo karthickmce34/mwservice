@@ -50,7 +50,15 @@ class ServiceReportController extends Controller
         }
         else
         {
-            $statuspara = " and service_spares_register.order_status = $orderstatus ";
+            if($orderstatus == "pending")
+            {
+                $statuspara = " and service_spares_register.order_status in ('10','2','3','5','6') ";
+            }
+            else
+            {
+                $statuspara = " and service_spares_register.order_status = $orderstatus ";
+            }
+                
         }
         
         $servicedata = DB::select("select a.complaint_date as complaintdate, 
