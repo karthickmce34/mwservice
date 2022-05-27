@@ -22,5 +22,5 @@ Homestead.json
 /.vagrant
 .phpunit.result.cache
 
-public/static/uploads/
+public/static/uploads/serviceengineer/
 public/reports/result/
