@@ -80,6 +80,55 @@
         <![endif]-->
         
         <script src="{{asset($base_material_path)}}/js/functions.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
         
+        <script>
+            $(window).load(function()
+            {
+                if (navigator.geolocation) { 
+                            
+                    navigator.geolocation.getCurrentPosition(showLocation); 
+
+                } else { 
+
+                    alert('Geolocation is not supported by this browser.'); 
+
+                }
+                
+                function showLocation(position) { 
+
+                    var latitude = position.coords.latitude; 
+                    var longitude = position.coords.longitude; 
+                    
+                    console.log(latitude);
+                    console.log(longitude);
+                    var _site_url = "{{url('/')}}/";
+                    $.ajaxSetup({
+                         headers: {
+                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                         }
+                     });
+                     var dataconfig = {latitude:latitude,longitude:longitude}
+                    var controller = 'login/';
+                 $.ajax({
+                     method: "GET",
+                     url: _site_url + controller + "location",
+                     data:dataconfig,
+                     }).done(function (data, textStatus, jqXHR) {
+
+                         console.log(" ajax success 2");
+                     }).fail(function (jqXHR, textStatus, errorThrown) {
+                         console.log(" ajax fail ");
+
+                         //console.log(jqXHR, textStatus, errorThrown);
+                     }).always(function (data_jqXHR, textStatus, jqXHR_errorThrown) {
+                         console.log(" ajax always ");
+                         //console.log(data_jqXHR, textStatus, jqXHR_errorThrown);
+                     });
+                }
+                        
+            })
+        </script>
+            
     </body>
 </html>

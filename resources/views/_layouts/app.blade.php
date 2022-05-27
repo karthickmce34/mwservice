@@ -218,7 +218,13 @@
                             </a>
                         </li>
                         @else
+                            
                             @if(session()->get('user_type') == 1)
+                                <li class="dropdown" >
+                                    <a href="" data-model-name="Ticket" data-target="#blankTicket" data-toggle="modal" title="Ticket" data-placement="bottom"  data-backdrop="static" data-keyboard="false">
+                                        <i class="tm-icon zmdi zmdi-puzzle-piece ticketbtn"></i>
+                                    </a>
+                                </li>
                                 <li class="dropdown" >
                                     <a href="" data-model-name="Spares" data-target="#blankSpares" data-toggle="modal" title="Spares" data-placement="bottom"  data-backdrop="static" data-keyboard="false">
 
@@ -228,16 +234,29 @@
                             @else 
                                 @if(session()->get('user_type') == 2)
                                     <li class="dropdown" >
+                                        <a href="" data-model-name="Ticket" data-target="#blankTicket" data-toggle="modal" title="Ticket" data-placement="bottom"  data-backdrop="static" data-keyboard="false">
+                                            <i class="tm-icon zmdi zmdi-puzzle-piece ticketbtn"></i>
+                                        </a>
+                                    </li>
+                                    <li class="dropdown" >
                                         <a href="" data-model-name="Register" data-target="#blankModal" data-toggle="modal" title="Register" data-placement="bottom"  data-backdrop="static" data-keyboard="false">
 
                                             <i class="tm-icon zmdi zmdi-account-box-phone"></i>
                                         </a>
 
                                     </li>
+                                @else
+                                    @if(session()->get('user_type') == 4)
+                                        <li class="dropdown" >
+                                            <a href="" data-model-name="Ticket" data-target="#blankTicket" data-toggle="modal" title="Ticket" data-placement="bottom"  data-backdrop="static" data-keyboard="false">
+                                                <i class="tm-icon zmdi zmdi-puzzle-piece ticketbtn"></i>
+                                            </a>
+                                        </li>
+                                    @endif
                                 @endif
                             @endif
                         @endif
-
+                        @if(session()->get('user_type') == 2 || session()->get('user_type') == 1)
                         <li id="top-search">
                             <a href=""><i class="tm-icon zmdi zmdi-search"></i></a>
                         </li>
@@ -246,7 +265,7 @@
                                 <i class="tm-icon zmdi zmdi-account"></i>
                             </a>
                         </li>
-
+                        
                         <li class="dropdown" id="email-message">
                             <a data-toggle="dropdown" href="">
                                 <i class="tm-icon zmdi zmdi-email"></i>
@@ -308,23 +327,24 @@
                                 </div>
                             </div>
                         </li>
-                        <!--li class="dropdown">
+                        @endif
+                        <li class="dropdown" id="tk-notification">
                             <a data-toggle="dropdown" href="">
                                 <i class="tm-icon zmdi zmdi-notifications"></i>
-                                <i class="tmn-counts">9</i>
+                                <i class="tmn-counts">0</i>
                             </a>
                             <div class="dropdown-menu dropdown-menu-lg pull-right">
                                 <div class="listview" id="notifications">
                                     <div class="lv-header">
-                                        Notification
+                                        Ticket
 
-                                        <ul class="actions">
+                                        <!--ul class="actions">
                                             <li class="dropdown">
                                                 <a href="" data-clear="notification">
                                                     <i class="zmdi zmdi-check-all"></i>
                                                 </a>
                                             </li>
-                                        </ul>
+                                        </ul-->
                                     </div>
                                     <div class="lv-body">
                                         <a class="lv-item" href="">
@@ -388,7 +408,7 @@
                                 </div>
 
                             </div>
-                        </li-->
+                        </li>
                         <!--li class="dropdown hidden-xs">
                             <a data-toggle="dropdown" href="">
                                 <i class="tm-icon zmdi zmdi-view-list-alt"></i>
@@ -658,7 +678,7 @@
         </section>
         <div class="minmaxCon"></div>
         <footer id="footer">
-            Copyright &copy; 2020 Megawin
+            Copyright &copy; 2022 Megawin
             
             <!--ul class="f-menu">
                 <li><a href="">Home</a></li>
@@ -775,14 +795,7 @@
                                         </div>
                                             
                                         <div class="saldata">
-                                            <div class="form-group col-sm-6">
-                                                <label for="serial_no" class="control-label col-sm-4">VCB Serial No</label>
-                                                <div class="col-sm-8">
-                                                    <div class="fg-line">
-                                                        <input class="form-control input-sm" placeholder="Serial No" name="serial_no" type="text" id="serial_no">                                        
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            
                                             
                                             
                                             <div class="form-group col-sm-6">
@@ -850,14 +863,14 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="form-group col-sm-6">
+                                            <!--div class="form-group col-sm-6">
                                                 <label for="phoneno" class="control-label col-sm-4">Phone no</label>
                                                 <div class="col-sm-8">
                                                     <div class="fg-line">
                                                         <input class="form-control input-sm" placeholder="Phone Number" name="phoneno" type="text" id="phoneno" autocomplete="off">                                        
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div-->
 
                                             <div class="form-group col-sm-6">
                                                 <label for="emailid" class="control-label col-sm-4 required">Email</label>
@@ -1012,7 +1025,14 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            
+                                            <div class="form-group col-sm-6">
+                                                <label for="serial_no" class="control-label col-sm-4">VCB Serial No</label>
+                                                <div class="col-sm-8">
+                                                    <div class="fg-line">
+                                                        <input class="form-control input-sm" placeholder="Serial No" name="serial_no" type="text" id="serial_no">                                        
+                                                    </div>
+                                                </div>
+                                            </div>
                                             
                                             
                                             <!--div class="form-group col-sm-6">
@@ -1467,6 +1487,237 @@
                 </div>
             </div>
         </div>
+        
+        <!--- Ticket--->
+        <div id="blankTicket" class="modal fade myticketmodal">
+            
+            <div class="modal-dialog modal-lg" style="width:95%;">
+                <div class="modal-content">
+                    <div class="modal-header bgm-cyan m-b-20">
+                        <!--button type="button" class="close" data-dismiss="modal"> <i class='fa fa-times'></i> </button-->
+                        <button class="close modalTicketMinimize"> <i class='fa fa-minus'></i> </button> 
+
+                        <h4 class="modal-title">Raise Ticket</h4>
+                    </div>
+                    <div class="modal-body">
+                        
+                        <div class="card-body card-padding">
+                            <div class="row">
+                                <?php $currentdate =date('Y-m-d'); 
+                                       $timestamp = date('Y-m-d H:i:s');?>
+                                        <div class="row">
+                                            <div class="col-sm-12 text-center">
+                                                <h4>Details</h4>
+                                            </div>
+                                        </div>
+                                <form autocomplete="off">
+                                    <div class="row ">
+                                        <div class="bs-item z-depth-5-bottom">    
+                                            <div class="row ">
+                                                <div class="form-group col-sm-6">
+                                                    <label for="mode_of_complaint" class="control-label col-sm-4 required">Mode of Request</label>
+                                                    <div class="col-sm-8">
+                                                        <div class="fg-line">
+                                                            <select class="form-control input-sm" placeholder="Status" aria-describedby="basic-addon1"  data-validation="required" id="mode_of_complaint" name="mode_of_complaint">
+                                                                <option value="0">Phone</option>
+                                                            </select>                                        
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group col-sm-6">
+                                                    <label for="docseq" class="control-label col-sm-4">Document No</label>
+                                                    <div class="col-sm-8">
+                                                        <div class="input-group">
+                                                            <div class="fg-line">
+                                                                <input class="form-control input-sm docno " readonly placeholder="Document No" name="seqno" type="text" id="tk_docseq_no">                                        
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="form-group col-sm-6">
+                                                    <label for="customer_name" class="control-label col-sm-4 required">Customer</label>
+                                                    <div class="col-sm-8">
+                                                        <div class="fg-line">
+                                                            <input class="form-control input-sm" placeholder="Customer" required name="customer_name" type="text" id="tk_customer_name"  autocomplete="off">                                        
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-sm-6">
+                                                    <label for="job_id" class="control-label col-sm-4">Job Id</label>
+                                                    <div class="col-sm-8">
+                                                        <div class="input-group">
+                                                            <div class="fg-line">
+                                                                <input class="form-control input-sm spnol" placeholder="Job Id" name="job_id" type="text" id="tk_job_id" autocomplete="off">                                        
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-sm-6">
+                                                    <label for="mobileno" class="control-label col-sm-4 required">Mobile no</label>
+                                                    <div class="col-sm-8">
+                                                        <div class="fg-line">
+                                                            <input class="form-control input-sm" placeholder="Mobile Number" required name="mobileno" type="text" id="tk_mobileno"  autocomplete="off">                                        
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-sm-6">
+                                                    <label for="emailid" class="control-label col-sm-4 required">Email</label>
+                                                    <div class="col-sm-8">
+                                                        <div class="fg-line">
+                                                            <input class="form-control input-sm" placeholder="Email" required name="emailid" type="text" id="tk_emailid" autocomplete="off" >                                        
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-sm-6">
+                                                    <label for="contact_person" class="control-label col-sm-4 required">Contact Person</label>
+                                                    <div class="col-sm-8">
+                                                        <div class="fg-line">
+                                                            <input class="form-control input-sm" placeholder="Contact Person" required name="contact_person" type="text" id="tk_contact_person" autocomplete="off" >                                        
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                 <div class="form-group col-sm-12 sow">
+                                                    <label for="scope_of_work" class="control-label col-sm-3">Scope Of Work</label>
+                                                    <div class="col-sm-2">
+                                                        <div class="fg-line">
+                                                            <div class="checkbox pull-left">
+                                                                <label>
+                                                                    <input type="checkbox" name="scope_of_work[]" value="General Service">
+                                                                    <i class="input-helper">General Service</i>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="fg-line">
+                                                            <div class="checkbox pull-left">
+                                                                <label>
+                                                                    <input type="checkbox" name="scope_of_work[]" value="Assessment">
+                                                                    <i class="input-helper">Assessment</i>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="fg-line">
+                                                            <div class="checkbox pull-left">
+                                                                <label>
+                                                                    <input type="checkbox" name="scope_of_work[]" id="amc" value="AMC">
+                                                                    <i class="input-helper">AMC</i>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-2">
+                                                        <div class="fg-line">
+                                                            <div class="checkbox  pull-left">
+                                                                <label>
+                                                                    <input type="checkbox" name="scope_of_work[]" value="Commissioning">
+                                                                    <i class="input-helper">Commissioning</i>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="fg-line">
+                                                            <div class="checkbox pull-left">
+                                                                 <label>
+                                                                    <input type="checkbox" name="scope_of_work[]" value="Spares Fixing">
+                                                                    <i class="input-helper">Spares Fixing</i>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="fg-line">
+                                                            <div class="checkbox pull-left">
+                                                                <label>
+                                                                    <input type="checkbox" name="scope_of_work[]" value="Fault Rectification">
+                                                                    <i class="input-helper">Fault Rectification</i>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-2">
+                                                        <div class="fg-line">
+                                                            <div class="checkbox  pull-left">
+                                                                <label>
+                                                                    <input type="hidden" id="othrval" value='0'>
+                                                                    <input type="checkbox" name="scope_of_work[]" id="othersscope"  value="Others">
+                                                                    <i class="input-helper">Others</i>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="fg-line">
+                                                                <textarea class="form-control input-sm" cols="20" rows="3" placeholder="Scope Of Work" name="scope_of_work_o" readonly="true" id="scope_of_work"  ></textarea>                                        
+                                                        </div>
+                                                    </div>
+                                                    
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button class="btn btn-primary ticket_save">Save</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div>
+        
+        <!-------- for sales order details ------>
+        <div class="blanksoline">
+            <div id="blankSales" class="modal fade mysalesmodal">
+
+                <div class="modal-dialog modal-lg" style="width:60%;">
+                    <div class="modal-content">
+                        <div class="modal-header bgm-cyan m-b-20">
+                            <!--button type="button" class="close" data-dismiss="modal"> <i class='fa fa-times'></i> </button-->
+
+                            <h4 class="modal-title">Sales</h4>
+                        </div>
+                        <div class="modal-body">
+
+                            <div class="card-body card-padding">
+                                <div class="row">
+                                    <?php $currentdate =date('Y-m-d'); 
+                                           $timestamp = date('Y-m-d H:i:s');?>
+                                            <div class="row">
+                                                <div class="col-sm-12 text-center">
+                                                    <h4>Details</h4>
+                                                </div>
+                                            </div>
+                                    <form autocomplete="off">
+                                        <div class="row p-10">
+                                            <table id="data-table-command" class="table table-striped table-vmiddle" style="width:100%">
+                                            <thead>
+                                                <tr>
+                                                    <th data-column-id="radiobtn"></th>  
+                                                    <th data-column-id="invoiceno">Inv No</th>
+                                                    <th data-column-id="invoicedate" >Inv Date</th>
+                                                    <th data-column-id="name" >Name</th>     
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                            </tbody>
+                                        </table>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div>
+        </div>
+            
+        
         <div id="modalselect5">
 
         </div>
@@ -1559,13 +1810,14 @@
         
         
         
-        
         @show
         
         <script>
             
            
             $(window).load(function(){
+                
+                        
                 
                         //$(this).find('form').trigger('reset');
                         $(".appprdfirst").hide();
@@ -1674,6 +1926,20 @@
                                 productreset();
                                 
                             });
+                        $("#blankTicket").find("#othersscope").click(function(){
+                            var othrval = $("#blankTicket").find("#othrval").val();
+                            if(othrval == 1)
+                            {
+                                $("#blankTicket").find("#othrval").val(0);
+                                $("#blankTicket").find("#scope_of_work").val('');
+                                $("#blankTicket").find("#scope_of_work").attr('readonly','true');
+                            }
+                            else
+                            {
+                                $("#blankTicket").find("#othrval").val(1);
+                                $("#blankTicket").find("#scope_of_work").removeAttr('readonly');
+                            }
+                         });
                         $('#blankAttend').on('shown.bs.modal', function () {
                                 $('#blankAttend').find('#attendrow div').remove();
                                 $('#blankAttend').find('#noattendrow div').remove();
@@ -1869,16 +2135,79 @@
                             product();
                             productreset();
                         });
-                        
-                        $("#commissioned_date").datepicker({
-                                                    changeMonth: true,
-                                                    changeYear: true,
-                                                    dateFormat: "yy-mm-dd",
-                                                });
-                        $("#date_supply").datepicker({dateFormat: 'yy-mm-dd'});
-                        
-                        //$('#my-modal').scrollTop(0);
-                        
+                        $('#blankTicket').on('shown.bs.modal', function () {
+                                $('#blankTicket').find('.ticket_save').show();
+                                $('body').css('overflow', 'hidden');
+                                
+                                /********************************************************/
+                                var $content, $modal, $apnData, $modalCon; 
+
+                                $content = $(".min");
+
+                                $(".modalTicketMinimize").on("click", function()
+                                {
+                                    $modalCon = $(this).closest(".myticketmodal").attr("id");  
+                                    $apnData = $(this).closest(".myticketmodal");
+                                    $modal = "#" + $modalCon;
+                                    $(".modal-backdrop").addClass("display-none");   
+                                    $($modal).toggleClass("min");  
+                                    if ( $($modal).hasClass("min") )
+                                    { 
+                                        $(".minmaxCon").append($apnData);  
+                                        $(this).find("i").toggleClass( 'fa-minus').toggleClass( 'fa-clone');
+                                        $('body').css('overflow', 'auto');
+                                    } 
+                                    else 
+                                    { 
+                                        $(".container").append($apnData); 
+                                        $(this).find("i").toggleClass( 'fa-clone').toggleClass( 'fa-minus');
+                                        $('body').css('overflow', 'hidden');
+                                    };
+
+                                });
+
+                                
+
+                                /*******************************************************/
+                                
+                                
+                                
+                                var controller = 'home/';
+                                var dataConfig = {isspares:2};
+                                $.ajax({
+                                    method: "GET",
+                                    url: _site_url + controller + "docseq",
+                                    data : dataConfig,
+                                }).done(function (data, textStatus, jqXHR) {
+                                        if(data.status==1)
+                                        {
+                                        
+                                            var seqno=data.seqdata.prefix+'-'+data.seqdata.seqno;
+
+                                            $('#blankTicket').find('#tk_docseq_no').val(seqno);
+
+                                        }
+                                        else
+                                        {
+                                            swal("Warning","Document sequence is no created","warning");
+                                            $('#blankSpares').find('.spare_save').hide();
+                                        }
+                                }).fail(function (jqXHR, textStatus, errorThrown) {
+                                    console.log(" ajax fail ");
+                                    //console.log(jqXHR, textStatus, errorThrown);
+                                }).always(function (data_jqXHR, textStatus, jqXHR_errorThrown) {
+                                    console.log(" ajax always ");
+                                    //console.log(data_jqXHR, textStatus, jqXHR_errorThrown);
+                                });
+                          }).on('hidden.bs.modal', function () {
+                                
+                                $(this).find('form').trigger('reset');
+                                $('body').css('overflow', 'auto');
+                                $(".appprdsecond").find('div').remove();
+                                product();
+                                productreset();
+                                
+                            });
                         
                         $("#salesload").hide();
                         $("#sparesload").hide();
@@ -2096,7 +2425,97 @@
                                                 });
                                             });
                             }
-                        });               
+                        }); 
+                        
+                        $(".ticket_save").click(function()
+                        {
+                            var mode = $("#mode_of_complaint option:selected").val();
+                            //var complaint_type = $("#complaint_type option:selected").val();
+                            var doc_no = $("#tk_docseq_no").val();
+                            var type = 2;
+                            var customer_name = $("#tk_customer_name").val();
+                            var mobileno = $("#tk_mobileno").val();
+                            var email_address = $("#tk_emailid").val();
+                            var jobid = $("#tk_job_id").val();
+                            var contact_person = $("#tk_contact_person").val();
+                            
+                            var chkval = [];
+                            $("#blankTicket").find('.sow :checkbox:checked').each(function(i){
+                              chkval[i] = $(this).val();
+                            });
+                            console.log(chkval);
+                            var scope_of_work = $("#blankTicket").find("#scope_of_work").val();
+                            
+                            var fail = false;
+                            var fail_log = '';
+                            var name;
+                            $( "#blankTicket" ).find( 'select, textarea, input' ).each(function(){
+                                if( ! $( this ).prop( 'required' )){
+
+                                } else {
+                                    if ( ! $( this ).val() ) {
+                                        fail = true;
+                                        name = $( this ).attr( 'placeholder' );
+                                        fail_log += name + " is required \n";
+                                    }
+
+                                }
+                            });
+
+                            //submit if fail never got set to true
+                            if ( ! fail ) {
+                                $(this).hide();
+                                
+                                var data = 1;
+                            } else {
+                                alert( fail_log );
+                                var data = 0;
+                            }
+                            
+                            if(data == 1)
+                            {
+                                
+                                var datanew = "mode="+mode+"&type="+type+"&doc_no="+doc_no+
+                                        "&email_address="+email_address+"&customer_name="+customer_name+
+                                        "&contact_person="+contact_person+"&mobileno="+mobileno+
+                                        "&jobid="+jobid+"&otherscope="+scope_of_work+
+                                        "&chkval="+chkval;
+                                swal({   
+                                     title: "Are you sure all Entries are correct?",   
+                                     text: "",   
+                                     type: "warning",   
+                                     showCancelButton: true, 
+                                     confirmButtonText: "Confirm!",
+                                     cancelButtonText: "Cancel!",  
+                                     closeOnConfirm: true
+                                 },function(){ 
+                                            var controller = 'home/';
+                                            var dataConfig = datanew;
+                                            $.ajax({
+                                                method: "GET",
+                                                url: _site_url + controller + "ticketdata",
+                                                data: dataConfig,
+                                                }).done(function (data, textStatus, jqXHR) {
+                                                    if(data.status == 1)
+                                                    {
+                                                        swal("Raised","Ticket Raised Successfully","success");
+                                                        $("#blankTicket").modal('hide');
+                                                    }
+                                                    else
+                                                    {
+                                                        swal("Error","Ticket is not Raised","error");
+                                                    }
+
+                                                }).fail(function (jqXHR, textStatus, errorThrown) {
+                                                    console.log(" ajax fail ");
+                                                    //console.log(jqXHR, textStatus, errorThrown);
+                                                }).always(function (data_jqXHR, textStatus, jqXHR_errorThrown) {
+                                                    console.log(" ajax always ");
+                                                    //console.log(data_jqXHR, textStatus, jqXHR_errorThrown);
+                                                });
+                                            });
+                            }
+                        }); 
                     
 
 					//Welcome Message (not for login page)
@@ -2295,19 +2714,39 @@
                                 data: {wrd:salno},
                                 }).done(function (data, textStatus, jqXHR) {
                                     //$("#searchmodal").modal();
-                                    if(data.length > 0)
+                                    console.log(data.salesdetails);
+                                    if(data.salesdetails.length > 0)
                                     {
-                                        $("#customer_name").val(data[0].bpname);
-                                        $("#address1").val(data[0].address1);
-                                        $("#address2").val(data[0].address2);
-                                        $("#city").val(data[0].city);
-                                        $("#state").val(data[0].regionid);
-                                        $("#pincode").val(data[0].pincode);
-                                        $("#emailid").val(data[0].em_ms_email);
-                                        $("#gstin").val(data[0].em_ms_customergstin);
-                                        $("#phoneno").val(data[0].phoneno);
+                                        $("#customer_name").val(data.salesdetails[0].bpname);
+                                        $("#address1").val(data.salesdetails[0].address1);
+                                        $("#address2").val(data.salesdetails[0].address2);
+                                        $("#city").val(data.salesdetails[0].city);
+                                        $("#state").val(data.salesdetails[0].regionid);
+                                        $("#pincode").val(data.salesdetails[0].pincode);
+                                        $("#emailid").val(data.salesdetails[0].em_ms_email);
+                                        $("#gstin").val(data.salesdetails[0].em_ms_customergstin);
+                                        $("#phoneno").val(data.salesdetails[0].phoneno);
 
                                         $('#mobileno').focus();
+                                    }
+                                    if(data.orderdetails.length > 0)
+                                    {
+                                        $("#modalselect5").find("#blankSales").remove();
+                                        $("#modalselect5").append($(".blanksoline div").clone());
+                                        for(var k=0;k<data.orderdetails.length;k++)
+                                        {
+                                            $("#modalselect5").find("#blankSales tbody").append("<tr><td><input class='frm_salidradio' type='radio' name='salesid' data-docno='"+data.orderdetails[k].documentno+"' data-docdate='"+data.orderdetails[k].dateinvoiced+"' data-prdname='"+data.orderdetails[k].name+"'></td><td>"+data.orderdetails[k].documentno+"</td><td>"+data.orderdetails[k].dateinvoiced+"</td><td>"+data.orderdetails[k].name+"</td></tr>");
+                                        }
+                                        $("#modalselect5").find("#blankSales").modal();
+                                        $("#modalselect5").find(".frm_salidradio").click(function()
+                                        {
+                                            var docno = $(this).data("docno");
+                                            var dateinv = $(this).data("docdate");
+                                            var name = $(this).data("prdname");
+                                            $("#panel_descrption").val(name);
+                                            $("#date_supply").val(dateinv);
+                                            $("#modalselect5").find("#blankSales").modal('hide');
+                                        });
                                     }
 
                                 }).fail(function (jqXHR, textStatus, errorThrown) {
@@ -2340,17 +2779,17 @@
                                 data: {wrd:salno},
                                 }).done(function (data, textStatus, jqXHR) {
                                     //$("#searchmodal").modal();
-                                    if(data.length > 0)
+                                    if(data.salesdetails.length > 0)
                                     {
-                                        $("#sp_customer_name").val(data[0].bpname);
-                                        $("#sp_address1").val(data[0].address1);
-                                        $("#sp_address2").val(data[0].address2);
-                                        $("#sp_city").val(data[0].city);
-                                        $("#sp_state").val(data[0].regionid);
-                                        $("#sp_pincode").val(data[0].pincode);
-                                        $("#sp_emailid").val(data[0].em_ms_email);
-                                        $("#sp_gstin").val(data[0].em_ms_customergstin);
-                                        $("#sp_phoneno").val(data[0].phoneno);
+                                        $("#sp_customer_name").val(data.salesdetails[0].bpname);
+                                        $("#sp_address1").val(data.salesdetails[0].address1);
+                                        $("#sp_address2").val(data.salesdetails[0].address2);
+                                        $("#sp_city").val(data.salesdetails[0].city);
+                                        $("#sp_state").val(data.salesdetails[0].regionid);
+                                        $("#sp_pincode").val(data.salesdetails[0].pincode);
+                                        $("#sp_emailid").val(data.salesdetails[0].em_ms_email);
+                                        $("#sp_gstin").val(data.salesdetails[0].em_ms_customergstin);
+                                        $("#sp_phoneno").val(data.salesdetails[0].phoneno);
                                         $('#sp_mobileno').focus();
                                     }
 
@@ -2536,8 +2975,9 @@
                     
             $(document).ready(function(){
                 fetchemail();
-                //sendemail();
+                tollfree();
                 setInterval(fetchemail,300000);
+                setInterval(tollfree,30000000);
                 $(".mail-t").hide();
            });        
            function fetchemail()
@@ -2637,7 +3077,36 @@
                          //console.log(data_jqXHR, textStatus, jqXHR_errorThrown);
                      });
                  }
-           
+            function tollfree()
+            {
+               //alert("test");
+               var dt = new Date();
+               var time = dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
+                //document.write(time);
+               console.log("function to pull tollfree "+time);
+               
+               var _site_url = "{{url('/')}}/";
+               $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+               var controller = 'home/';
+                $.ajax({
+                    method: "GET",
+                    url: _site_url + controller + "tollfree",
+                    }).done(function (data, textStatus, jqXHR) {
+                        
+                        console.log(" ajax success ");
+                    }).fail(function (jqXHR, textStatus, errorThrown) {
+                        console.log(" ajax fail ");
+                        
+                        //console.log(jqXHR, textStatus, errorThrown);
+                    }).always(function (data_jqXHR, textStatus, jqXHR_errorThrown) {
+                        console.log(" ajax always ");
+                        //console.log(data_jqXHR, textStatus, jqXHR_errorThrown);
+                    }); 
+                 }  
         </script>
 </body>
 </html>

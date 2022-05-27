@@ -6,6 +6,19 @@
                             <span class="color">Active</span>
                         </div>
                         <div class="p-5">
+                            @php
+                            if($baseName == 'complaintregister') $bname='Call Log '; 
+                                                else
+                                                    if($baseName == 'servicespareregister') $bname='Service Register';
+                                                    else 
+                                                    if($baseName == 'visitplan') $bname='Visits Plan';
+                                                    else
+                                                    if($baseName == 'pendingvisit') $bname='Pending Visit';
+                                                    else 
+                                                    if($baseName == 'visitplansummary') $bname='Visit Summary';
+                                                    else 
+                                                    $bname = ucfirst($baseName); 
+                            @endphp
                             
                             @if($baseName != 'servicespareregister' || $baseName != 'visitplan' || $baseName != 'pendingvisit' || $baseName != 'product' || $baseName != 'email')
                             <a href="{{url($baseName)}}/create" target="_self">
@@ -18,8 +31,8 @@
                         </div>
                     </div>
                     <div class="text-center">
-                        <h2 class="f-400 txt-ellipsis" title="{{ucfirst(addslashes($baseName))}}">@if($baseName == 'complaintregister') Spares/Service Call Register @else @if($baseName == 'visitplan') Visits Plan @else @if($baseName == 'pendingvisit') Pending Visits @else {{ucfirst($baseName)}} @endif @endif @endif</h2>
-                        <p class="c-gray m-t-20 m-b-20">Manage All @if($baseName == 'complaintregister') Spares/Service Call Register @else @if($baseName == 'visitplan') Visits Plan @else @if($baseName == 'pendingvisit') Pending Visits @else {{ucfirst($baseName)}} @endif @endif @endif here.</p>
+                        <h2 class="f-400 txt-ellipsis" title="{{ucfirst(addslashes($baseName))}}">{{$bname}}</h2>
+                        <p class="c-gray m-t-20 m-b-20">Manage All {{$bname}} here.</p>
                        
                     </div>
                     <div>

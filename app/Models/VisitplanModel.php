@@ -51,4 +51,19 @@ class VisitplanModel extends BaseModel {
         return $this->hasMany('App\Models\VisitplanSummaryModel','visitplan_id','id');
     }
     
+    public function thingstodos()
+    {
+        return $this->hasMany('App\Models\ServiceSpareThingstodoModel','visitplan_id','id');
+    }
+    
+    public function prdtakens()
+    {
+        return $this->hasMany('App\Models\ServiceSpareProductModel','visitplan_id','id')->where('invoicable',1)->where('isserviceproduct',0);
+    }
+    
+    public function registeraudits()
+    {
+        return $this->hasMany('App\Models\ServiceSpareRegisterAssetModel','visitplan_id','id');
+    }
+    
 }

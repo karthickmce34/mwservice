@@ -22,13 +22,16 @@
                 </ul>
             </li>
             <li class="sub-menu @yield('page_spares_li_cls')">
-                <a href="" data-ma-action="submenu-toggle"><i class="zmdi zmdi-collection-item"></i> Spares & Service</a>
+                <a href="" data-ma-action="submenu-toggle"><i class="zmdi zmdi-collection-item"></i> Service</a>
                 <ul>
                     <li >
-                        <a class="@yield('page_complaintregister_li_cls')" href="{{ route('complaintregister.index') }}"><i class="zmdi zmdi-assignment-o"></i>&nbsp;&nbsp; Complaint Register </a>
+                        <a class="@yield('page_ticket_li_cls')" href="{{ route('ticket.index') }}"><i class="zmdi zmdi-email"></i>&nbsp;&nbsp; Ticket</a>
                     </li>
                     <li >
-                        <a class="@yield('page_servicespareregister_li_cls')" href="{{ route('servicespareregister.index') }}"><i class="zmdi zmdi-assignment"></i>&nbsp;&nbsp; Service/Spares  Register </a>
+                        <a class="@yield('page_complaintregister_li_cls')" href="{{ route('complaintregister.index') }}"><i class="zmdi zmdi-assignment-o"></i>&nbsp;&nbsp; Call Log </a>
+                    </li>
+                    <li >
+                        <a class="@yield('page_servicespareregister_li_cls')" href="{{ route('servicespareregister.index') }}"><i class="zmdi zmdi-assignment"></i>&nbsp;&nbsp; Service  Register </a>
                     </li>
                     <!--li >
                         <a class="@yield('page_visitplan_li_cls')" href="{{ route('visitplan.index') }}"><i class="zmdi zmdi-case"></i>&nbsp;&nbsp; Visits Plan </a>
@@ -78,18 +81,35 @@
                         </ul>
                     </li>
                 @else
-                    <li class="sub-menu @yield('page_spares_li_cls')">
-                        <a href="" data-ma-action="submenu-toggle"><i class="zmdi zmdi-collection-item"></i> Service</a>
-                        <ul>
-                            
-                            <li >
-                                <a class="@yield('page_pendingvisit_li_cls')" href="{{ route('pendingvisit.index') }}"><i class="zmdi zmdi-case"></i>&nbsp;&nbsp; Pending Visits </a>
-                            </li>
-                            <li >
-                                <a class="@yield('page_visitplansummary_li_cls')" href="{{ route('visitplansummary.index') }}"><i class="zmdi zmdi-case"></i>&nbsp;&nbsp; Visits Summary</a>
-                            </li>
-                        </ul>
-                    </li>
+                    @if($user_type == 4)
+                        <li class="@yield('page_home_li_cls')">
+                            <a href="{{ route('home.index') }}"><i class="zmdi zmdi-home"></i> Home</a>
+                        </li>
+                        <li class="sub-menu @yield('page_spares_li_cls')">
+                            <a href="" data-ma-action="submenu-toggle"><i class="zmdi zmdi-collection-item"></i> Ticket</a>
+                            <ul>
+                                <li >
+                                    <a class="@yield('page_ticket_li_cls')" href="{{ route('ticket.index') }}"><i class="zmdi zmdi-email"></i>&nbsp;&nbsp; Ticket</a>
+                                </li>
+                            </ul>
+                        </li>
+                    @else
+                        <li class="@yield('page_home_li_cls')">
+                            <a href="{{ route('home.index') }}"><i class="zmdi zmdi-home"></i> Home</a>
+                        </li>
+                        <li class="sub-menu @yield('page_spares_li_cls')">
+                            <a href="" data-ma-action="submenu-toggle"><i class="zmdi zmdi-collection-item"></i> Service</a>
+                            <ul>
+
+                                <li >
+                                    <a class="@yield('page_pendingvisit_li_cls')" href="{{ route('pendingvisit.index') }}"><i class="zmdi zmdi-case"></i>&nbsp;&nbsp; Pending Visits </a>
+                                </li>
+                                <li >
+                                    <a class="@yield('page_visitplansummary_li_cls')" href="{{ route('visitplansummary.index') }}"><i class="zmdi zmdi-case"></i>&nbsp;&nbsp; Visits Summary</a>
+                                </li>
+                            </ul>
+                        </li>
+                    @endif
                 @endif
             @endif
         </ul>

@@ -106,10 +106,18 @@ class PendingvisitplanController extends Controller
          $status = 1;
         $message = "success";
         $inputs = request()->all();
+        //print_r($inputs);die;
         $docid = $inputs['id'];
         $test=request()->file('img_upload');
         
         $report_file = request()->file('servicereport');
+        $lodgingbill_file = request()->file('lodgingbill');
+        $travelbill_file = request()->file('travelbill');
+        $sld_file = request()->file('sld');
+        $panelfront_file = request()->file('panelfront');
+        $panelleft_file = request()->file('panelleft');
+        $panelright_file = request()->file('panelright');
+        $panelinside_file = request()->file('panelinside');
         $UPLOAD_PATH_URL   = Config::get('constant.UPLOAD_PATH_URL'); 
         $UPLOAD_PATH  = public_path($UPLOAD_PATH_URL);
         
@@ -148,6 +156,18 @@ class PendingvisitplanController extends Controller
                 $inpData['date_of_attend']= $inputs['act_attend_date_from'];
                 $inpData['date_of_complete']= $inputs['act_attend_date_to'];
                 $inpData['work_description']= $inputs['work_description'];
+                
+                $inpData['outgoing_load']= $inputs['outgoing_load'];
+                $inpData['relay_make_type']= $inputs['relay_make_type'];
+                $inpData['cable_length']= $inputs['cable_length'];
+                $inpData['fault_current']= $inputs['fault_current'];
+                $inpData['vcb_interlock']= $inputs['vcb_interlock'];
+                $inpData['after_commissioned']= $inputs['after_commissioned'];
+                $inpData['event_before_failure']= $inputs['event_before_failure'];
+                $inpData['serial_no']= $inputs['serial_no'];
+                $inpData['transformer_rating']= $inputs['transformer_rating'];
+                $inpData['others']= $inputs['others'];
+                
                 $inpData['status'] = 1;
                 
                 $modelsum = new $this->modelVsSum();
@@ -163,6 +183,51 @@ class PendingvisitplanController extends Controller
                     
                     $modelsum->file_path = $service_report['file_path'];
                     $modelsum->file_name = $service_report['file_name'];
+                    
+                    if(isset($lodgingbill_file))
+                    {
+                        /*****lodging****/
+                        $lodging_bill = $this->imageSummaryUploadFile($modelsum->id,$lodgingbill_file,$UPLOAD_PATH,$UPLOAD_PATH_URL);
+
+                        $modelsum->lodgingbill_file_path = $lodging_bill['file_path'];
+                        $modelsum->lodgingbill_file_name = $lodging_bill['file_name'];
+                    }
+                        
+                    if(isset($travelbill_file))
+                    {
+                        /*****travel****/
+                        $travel_bill = $this->imageSummaryUploadFile($modelsum->id,$travelbill_file,$UPLOAD_PATH,$UPLOAD_PATH_URL);
+
+                        $modelsum->travelbill_file_path = $travel_bill['file_path'];
+                        $modelsum->travelbill_file_name = $travel_bill['file_name'];
+                    }
+                        
+                    
+                    /*****sld****/
+                    $sld = $this->imageSummaryUploadFile($modelsum->id,$sld_file,$UPLOAD_PATH,$UPLOAD_PATH_URL);
+                    
+                    $modelsum->sld_file_path = $sld['file_path'];
+                    $modelsum->sld_file_name = $sld['file_name'];
+                    
+                    $panelfront = $this->imageSummaryUploadFile($modelsum->id,$panelfront_file,$UPLOAD_PATH,$UPLOAD_PATH_URL);
+                    
+                    $modelsum->panelfront_file_path = $panelfront['file_path'];
+                    $modelsum->panelfront_file_name = $panelfront['file_name'];
+                    
+                    $panelleft = $this->imageSummaryUploadFile($modelsum->id,$panelleft_file,$UPLOAD_PATH,$UPLOAD_PATH_URL);
+                    
+                    $modelsum->panelleft_file_path = $panelleft['file_path'];
+                    $modelsum->panelleft_file_name = $panelleft['file_name'];
+                    
+                    $panelright = $this->imageSummaryUploadFile($modelsum->id,$panelright_file,$UPLOAD_PATH,$UPLOAD_PATH_URL);
+                    
+                    $modelsum->panelright_file_path = $panelright['file_path'];
+                    $modelsum->panelright_file_name = $panelright['file_name'];
+                    
+                    $panelinside = $this->imageSummaryUploadFile($modelsum->id,$panelinside_file,$UPLOAD_PATH,$UPLOAD_PATH_URL);
+                    
+                    $modelsum->panelinside_file_path = $panelinside['file_path'];
+                    $modelsum->panelinside_file_name = $panelinside['file_name'];
                     $modelsum->save();
                     
 

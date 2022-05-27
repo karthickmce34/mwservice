@@ -31,14 +31,16 @@
 tax_rate.tax_rate_name as taxname,
 sum(service_product_tax.tax_amt) as taxamto
 
-from service_spares_register,
+from service_spares_register,offer_details,
 service_spares_product,service_product_tax,tax_rate
 
 where
  service_spares_register.id = service_spares_product.service_spares_register_id
 and service_spares_product.id = service_product_tax.service_spares_product_id
+and offer_details.service_spares_register_id = service_spares_register.id
+and service_spares_product.offer_details_id = offer_details.id
 and service_product_tax.tax_rate_id = tax_rate.id 
-and service_spares_register.id = $P{DOCUMENT_ID}
+and offer_details.id = $P{DOCUMENT_ID}
 and service_spares_product.invoicable=0
 
 group by tax_rate.tax_rate_name]]></queryString>

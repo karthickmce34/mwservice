@@ -26,6 +26,7 @@ class ServiceSpareRegisterController extends Controller
     public $modelThingstodo     = 'App\Models\ServiceSpareThingstodoModel';
     public $modelOfferdetails   = 'App\Models\OfferDetailsModel';
     public $modelVisit          = 'App\Models\VisitplanModel';
+    public $modelVisitSummary   = 'App\Models\VisitplanSummaryModel';
     public $modelEngineer       = 'App\Models\ServiceEngineerModel';
     public $modelAgent          = 'App\Models\ServiceAgentModel';
     public $modelVsEng          = 'App\Models\VisitplanEngineerModel';
@@ -454,6 +455,7 @@ class ServiceSpareRegisterController extends Controller
         
         $cnt =count($inputs['things_to_do']);
         $register_id = $inputs['register_id'];
+        $visitplan_id = $inputs['visitplan_id'];
         
         for($i=1;$i<=$cnt;$i++)
         {
@@ -461,6 +463,7 @@ class ServiceSpareRegisterController extends Controller
            $things['answer_type']=$inputs['answer_type'][$i];
            $things['created_by_id'] = session()->get('user_id');
            $things['service_spares_register_id'] = $register_id;
+           $things['visitplan_id'] = $visitplan_id;
            $things['status'] = 1;
            $modelthings = new $this->modelThingstodo();
            $stored = $modelthings->addRecord($things);
@@ -1601,11 +1604,13 @@ class ServiceSpareRegisterController extends Controller
         $status = 1;
         $message = "success";
         $inputs = request()->all();
-      
+        //print_r($inputs);die;
+        $offerModel = new $this->modelOfferdetails();
+        $modelData = $offerModel->find($inputs['offer_id']);
         $offer['service_spares_register_id']=$inputs['spares_register_id'];
         $offer['offer_date']=date('Y-m-d');
         $offer['revision_no']=$inputs['revision_no'];
-        $offer['offervalidity']=$inputs['offervalidity'];
+        $offer['offervalidity']=$modelData->offervalidity;
         if(isset($inputs['freight']))
         $offer['freight']=$inputs['freight'];
         if(isset($inputs['deliveryperiod']))
@@ -1614,10 +1619,10 @@ class ServiceSpareRegisterController extends Controller
         $offer['paymentterms']=$inputs['paymentterms'];
         if(isset($inputs['dayscredit']))
         $offer['dayscredit']=$inputs['dayscredit'];
-        $offer['terms']=$inputs['terms'];
+        $offer['terms']=$modelData->terms;
         $offer['created_by_id'] = session()->get('user_id');
         $offer['status'] = 1;
-        $offerModel = new $this->modelOfferdetails();
+        
         
         $storedoffer = $offerModel->addRecord($offer);
         
@@ -1629,29 +1634,30 @@ class ServiceSpareRegisterController extends Controller
         else
         {
             $modelssprd = new $this->modelSSPrdName();
-            $SSproducts = $modelssprd->where('offer_details_id',$inputs['last_offer_id'])->get();
+            //$SSproducts = $modelssprd->where('offer_details_id',$inputs['last_offer_id'])->get();
             
-            if($SSproducts)
+            if(count($inputs['product_id']) > 0)
             {
-                foreach($SSproducts as $SSproduct)
+                $len = count($inputs['product_id']);
+                for($SS=1;$SS<=$len;$SS++)
                 {
                     $prd=array();
-                    $prd['product_id']=$SSproduct['product_id'];
-                    $prd['prd_description']=$SSproduct['prd_description'];
-                    $prd['description']=$SSproduct['description'];
-                    $prd['quantity']=$SSproduct['quantity'];
-                    $prd['isreturn']=$SSproduct['isreturn'];
-                    $prd['unit_price']=$SSproduct['unit_price'];
-                    $prd['discount']=$SSproduct['discount'];
-                    $prd['tax_id']=$SSproduct['tax_id'];
-                    $prd['net_amt']=$SSproduct['net_amt'];
-                    $prd['tax_amt']=$SSproduct['tax_amt'];
-                    $prd['total_price']=$SSproduct['total_price'];
+                    $prd['product_id']=$inputs['product_id'][$SS];
+                    $prd['prd_description']=$inputs['product'][$SS];
+                    $prd['description']=$inputs['description'][$SS];
+                    $prd['quantity']=$inputs['qty'][$SS];
+                    $prd['isreturn']=$inputs['isreturn'][$SS];
+                    $prd['unit_price']=$inputs['unit_price'][$SS];
+                    $prd['discount']=0;
+                    $prd['tax_id']=$inputs['tax_id'][$SS];
+                    $prd['net_amt']=$inputs['qty'][$SS]*$inputs['unit_price'][$SS];
+                    $prd['tax_amt']=$inputs['tax_amt'][$SS];
+                    $prd['total_price']=$inputs['total'][$SS];
                     $prd['created_by_id'] = session()->get('user_id');
-                    $prd['service_spares_register_id'] = $SSproduct['service_spares_register_id'];
+                    $prd['service_spares_register_id'] = $inputs['spares_register_id'];
                     $prd['offer_details_id'] = $offerModel->id;
-                    $prd['invoicable'] = $SSproduct['invoicable'];
-                    $prd['isserviceproduct'] = $SSproduct['isserviceproduct'];
+                    $prd['invoicable'] = $inputs['invoicable'][$SS];
+                    $prd['isserviceproduct'] = $inputs['isserviceproduct'][$SS];
                     $prd['status'] = 1;
                     $modelprd = new $this->modelSSPrdName();
                     $storedprd = $modelprd->addRecord($prd);
@@ -1662,21 +1668,21 @@ class ServiceSpareRegisterController extends Controller
                     } 
                     else
                     {
-                        if($SSproduct['tax_id'] == "" || $SSproduct['tax_id'] == null)
+                        if($inputs['tax_id'][$SS] == "" || $inputs['tax_id'][$SS] == null)
                         {
                             
                         }
                         else
                         {
                             $modelTax = new $this->modelTax();
-                            $taxdata = $modelTax->find($SSproduct['tax_id']);
+                            $taxdata = $modelTax->find($inputs['tax_id'][$SS]);
 
                             foreach($taxdata->taxgroup as $taxgroup)
                             {
-                                $netamt = $SSproduct['net_amt'];
+                                $netamt = $inputs['qty'][$SS]*$inputs['unit_price'][$SS];
                                 $taxamt = (($netamt)*($taxgroup->taxrate->rate/100));
                                 $prdtx['service_spares_product_id']=$modelprd->id;
-                                $prdtx['tax_id']=$SSproduct['tax_id'];
+                                $prdtx['tax_id']=$inputs['tax_id'][$SS];
                                 $prdtx['tax_group_id']=$taxgroup->id;
                                 $prdtx['tax_rate_id']=$taxgroup->taxrate->id;
                                 $prdtx['taxable_amount']=$netamt;
@@ -1727,6 +1733,40 @@ class ServiceSpareRegisterController extends Controller
             $this->data['message']=$message;
             return response()->json($this->data);
         }
+        
+    }
+    
+    public function postUpdateterms()
+    {
+        $status = 1;
+        $message = "success";
+        $inputs = request()->all();
+        $modeloffers = new $this->modelOfferdetails();
+        $modelData = $modeloffers->find($inputs['id']);
+        
+        $modelData->terms = $inputs['terms'];
+        $modelData->save();
+        
+        $this->data['status']=$status;
+
+        return response()->json($this->data);
+        
+    }
+    
+    public function postUpdateexpense()
+    {
+        $status = 1;
+        $message = "success";
+        $inputs = request()->all();
+        $modelvisit = new $this->modelVisit();
+        $modelData = $modelvisit->find($inputs['visitid']);
+        
+        $modelvisit->expense_status = 1;
+        $modelData->save();
+        
+        $this->data['status']=$status;
+
+        return response()->json($this->data);
         
     }
 }
