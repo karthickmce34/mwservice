@@ -18,9 +18,9 @@
                     </div>
                      @endif
                     <div class="text-center">
-                        <h2 class="f-400">@if($baseName == 'complaintregister') Spares/Service Call Register  
+                        <h2 class="f-400">@if($baseName == 'complaintregister') Call Log  
                                                 @else
-                                                    @if($baseName == 'servicespareregister') Spares/Service
+                                                    @if($baseName == 'servicespareregister') Service Register
                                                     @else 
                                                     @if($baseName == 'visitplan') Visits Plan
                                                     @else
@@ -39,12 +39,12 @@
                         
                         @if($record)                                             
                         
-                        <div class="col-sm-12 ">
+                        <div class="col-sm-12">
                             <div class="card pt-inner">
                                 <div class="pti-header @if($record->status==1) bgm-lightgreen @else bgm-amber @endif">
                                     @include($baseName . '.' . $baseName .'_dt')  
                                     <div class="pti-footer lnk-wh-inh">
-                                        @if($baseName != 'visitplansummary')
+                                        @if($baseName != 'visitplansummary' || $baseName != 'ticket')
                                             @if(isset($record->visit_status))
                                                 @if($record->visit_status == 0)
                                                     <a href="{{url($basePath)}}/{{$record->id}}/edit" target="_self" class="bgm-orange"><i class="zmdi zmdi-edit"></i></a>

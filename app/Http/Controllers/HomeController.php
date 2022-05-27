@@ -23,6 +23,8 @@ class HomeController extends Controller
     public $modelAttend     = 'App\Models\AttendanceModel';
     public $modelUser       = 'App\Models\UserModel';
     public $modelRegion     = 'App\Models\RegionModel';
+    public $modelTicketName = 'App\Models\TicketModel';
+    public $modelTollfree   = 'App\Models\TollfreeModel';
     /**
      * Create a new controller instance.
      *
@@ -48,239 +50,101 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $t=time();
+        $currdate = date('Y-m-d');
+        $user = session()->get('user_type');
         
-        $method = 'GET';
-        $url = "https://telephonycloud.co.in/api/v1/dashboard?svc-id=1086";
-        $username = '9789464775';
-        $password = 'admin';
+        $ticketemail=0;
+        $closedspm=0;
+        $closedintrl=0;
+        $closedreqraised=0;
+        $closedrepmail=0;
+        $ticketphne=0;
         
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
-        curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-        $output = curl_exec($ch);
-        $info = curl_getinfo($ch);
-        curl_close($ch);
-        
-        $datas = json_decode($output, TRUE);
-        if($datas)
+        if($user == 4)
         {
-            foreach($datas['agents'] as $data)
+            $openticket = DB::table('ticket')->where('created_at', '>=', $currdate)->where('mode', '=', 0)->get();
+            $convertedticket = DB::table('ticket')->where('created_at', '>=', $currdate)->where('mode', '=', 0)->whereIn('ticket_status',[1,2])->get();
+            $closedticket = DB::table('ticket')->where('created_at', '>=', $currdate)->where('mode', '=', 0)->where('ticket_status',3)->get();
+            $pendingticket = DB::table('ticket')->where('created_at', '>=', $currdate)->where('mode', '=', 0)->where('ticket_status',0)->get();
+            
+            $data['opentktdet']="Phone - $ticketphne";
+
+
+        }
+        else
+        {
+            $openticket = DB::table('ticket')->where('created_at', '>=', $currdate)->get();
+            $convertedticket = DB::table('ticket')->where('created_at', '>=', $currdate)->whereIn('ticket_status',[1,2])->get();
+            $closedticket = DB::table('ticket')->where('created_at', '>=', $currdate)->where('ticket_status',3)->get();
+            $pendingticket = DB::table('ticket')->where('created_at', '>=', $currdate)->where('ticket_status',0)->get();
+            
+            $data['opentktdet']="Phone - $ticketphne , Email - $ticketemail";
+
+        }
+            
+        
+        $tollfreegeneral = DB::table('tollfree')->where('tollfree_time', '>=', $currdate)->where('ivrdata','like','General')->get();
+        $tollfreespser = DB::table('tollfree')->where('tollfree_time', '>=', $currdate)->where('ivrdata','like','Service & Spare')->get();
+        $tollfreeanswer = DB::table('tollfree')->where('tollfree_time', '>=', $currdate)->where('disposition','like','ANSWER')->get();
+        $tollfreenoanswer = DB::table('tollfree')->where('tollfree_time', '>=', $currdate)->where('disposition','like','NOANSWER')->get();
+        $tollfreevmsg = DB::table('tollfree')->where('tollfree_time', '>=', $currdate)->where('disposition','like','VOICEMSG')->get();
+                
+        
+        if($openticket)
+        {
+            foreach($openticket as $opentkt)
             {
-                $record['id'] = $data['id'];
-                $record['number'] = $data['number'];
-                $record['name'] = $data['name'];
-                $record['user_id'] = $data['user_id'];
-                $trxn_id = $data['call_txn_id'];
-                $recentcalls= "https://telephonycloud.co.in/api/v1/agent-recent-calls?svc-id=1086&recent_txn_id=".$trxn_id;
-
-                $ch2 = curl_init();
-                curl_setopt($ch2, CURLOPT_URL, $recentcalls);
-                curl_setopt($ch2, CURLOPT_RETURNTRANSFER, true);
-                curl_setopt($ch2, CURLOPT_USERPWD, "$username:$password");
-                curl_setopt($ch2, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-                $output2 = curl_exec($ch2);
-                $info2 = curl_getinfo($ch2);
-                curl_close($ch2);
-
-                $datas2 = json_decode($output2, TRUE);
-
-                foreach($datas2 as $data2)
+                
+                if($opentkt->mode == 0)
                 {
-                    $record['duration'] = $data2['duration'];
-                    $record['receivedBy'] = $data2['receivedBy'];
-                    $record['disposition'] = $data2['disposition'];
-                    $record['recording'] = $data2['recording'];
-                    $record['time'] = $data2['time'];
-                    $record['customerNumber'] = $data2['customerNumber'];
-                    $record['callType'] = $data2['ivrData'];
-                    $record['xnid'] = $data2['xnid'];               
-
-                    //echo "<pre>";
-                    //print_r($record);
+                    $ticketphne = $ticketphne+1; 
                 }
-
-
-
+                else
+                {
+                    $ticketemail=$ticketemail+1;
+                }
             }
         }
-        //die;
-        $model = new $this->modelName();
-        $sprphone = 0;
-        $serphone = 0;
-        $spremail = 0;
-        $seremail = 0;
         
-        $pending = 0;
-        $completed = 0;
-        $service = 0;
-        $spare = 0;
-        $serviceandspares = 0;
-        $enq = 0;
-        $ofrsent = 0;
-        $pisent = 0;
-        $dispatch = 0;
-        $frmdate = date('Y-m-d', strtotime('today - 30 days'));
-        
-        $pastmodeldatas = DB::table('complaint_register')->where('complaint_date', '>=', $frmdate)->get();
-        $sprmodeldatas = DB::table('complaint_register')->where('complaint_type',1)->get();
-        $sermodeldatas = DB::table('complaint_register')->where('complaint_type',0)->get();
-        $spenqdatas = DB::table('service_spares_register')->get();
-        $visitdatas = DB::table('visit_plan')->join('visitplan_engineer','visit_plan.id','=','visitplan_engineer.visitplan_id')
-                                            ->join('service_engineer','visitplan_engineer.engineer_id','=','service_engineer.id')
-                                            ->where('visit_plan.visit_status',2)
-                                            ->select('service_engineer.name')->get();
-        
-        $pendenqs = DB::table('service_spares_register')
-                        ->join('complaint_register','complaint_register.id','=','service_spares_register.complaint_register_id')
-                        ->where('service_spares_register.complaint_type',1)
-                        ->whereIn('service_spares_register.order_status',[0])
-                        ->select('complaint_register.seqno','complaint_register.complaint_date','complaint_register.customer_name','complaint_register.mobileno')
-                        ->orderBy('complaint_register.complaint_date','desc')->get();
-        
-        $newenqs = DB::table('service_spares_register')
-                        ->join('complaint_register','complaint_register.id','=','service_spares_register.complaint_register_id')
-                        ->where('service_spares_register.complaint_type',1)
-                        ->where('service_spares_register.order_status',0)
-                        ->where('complaint_register.complaint_date',date('Y-m-d'))
-                        ->select('complaint_register.seqno','complaint_register.complaint_date','complaint_register.customer_name','complaint_register.mobileno')
-                        ->orderBy('complaint_register.complaint_date','desc')->get();
-        
-        $orderstatus = DB::Select("select Count(a.order_status) as ordercount,
-                                            a.order_status as order_status from
-                                            (select 
-                                            case when service_spares_register.order_status = 0 then 'Enquiry Received' else 
-                                            case when service_spares_register.order_status = 1 then 'OfferSent' else 
-                                            case when service_spares_register.order_status = 2 then 'Poreceived' else 
-                                            case when service_spares_register.order_status = 3 then 'PiSent' else 
-                                            case when service_spares_register.order_status = 4 then 'Advance Received' else 
-                                            case when service_spares_register.order_status = 5 then 'Payment Received' else
-                                            case when service_spares_register.order_status = 6 then 'DI Sent' else
-                                            case when service_spares_register.order_status = 7 then 'Partial Completed' else
-                                            case when service_spares_register.order_status = 8 then 'Completed' else
-                                            case when service_spares_register.order_status = 9 then 'Cancelled' else
-                                            case when service_spares_register.order_status = 10 then 'Deputed' End End End End End End End End End End End as Order_status
-
-                                            from complaint_register,service_spares_register
-                                            where complaint_register.id = service_spares_register.complaint_register_id
-                                            and complaint_register.document_status != 3 
-                                            and complaint_register.complaint_type = 0)a
-                                            group by a.order_status");
-        
-        
-        /*foreach($modeldatas as $modeldata)
-         {
-             if($modeldata->mode_of_complaint == 0)
-             {
-                 $phone = $phone+1;
-             }
-             else
-             {
-                 $email = $email+1;
-             }
-             if($modeldata->document_status == 2)
-             {
-                 $completed = $completed+1;
-             }
-             else if($modeldata->document_status == 1 || $modeldata->document_status == 0)
-             {
-                 $pending = $pending+1;
-             }
-             
-                 
-         }*/
-         foreach($sprmodeldatas as $sprmodeldata)
-         {
-             if($sprmodeldata->mode_of_complaint == 0)
-             {
-                 $sprphone = $sprphone+1;
-             }
-             else
-             {
-                 $spremail = $spremail+1;
-             }
-         }
-         
-         foreach($sermodeldatas as $sermodeldata)
-         {
-             if($sermodeldata->mode_of_complaint == 0)
-             {
-                 $serphone = $serphone+1;
-             }
-             else
-             {
-                 $seremail = $seremail+1;
-             }
-             if($sermodeldata->document_status == 2)
-             {
-                 $completed = $completed+1;
-             }
-             else if($sermodeldata->document_status == 1 || $sermodeldata->document_status == 0)
-             {
-                 $pending = $pending+1;
-             }
-         }
-         
-        foreach($pastmodeldatas as $pastmodeldata)
+        foreach($closedticket as $closedtkt)
         {
-
-            if($pastmodeldata->complaint_type == 0)
+            if($closedtkt->close_reason == 1)
             {
-                $service = $service+1;
-            }
-            else if ($pastmodeldata->complaint_type == 1)
-            {
-                $spare = $spare+1;
+                $closedspm = $closedspm+1; 
             }
             else
             {
-                $serviceandspares = $serviceandspares+1;
-            }
-
+                if($closedtkt->close_reason == 2)
+                {
+                    $closedintrl = $closedintrl+1; 
+                }
+                else
+                {
+                    if($closedtkt->close_reason == 3)
+                    {
+                        $closedreqraised = $closedreqraised+1; 
+                    }
+                    else
+                    {
+                        $closedrepmail = $closedrepmail+1;
+                    }
+                }
+                    
+            } 
         }
         
-        foreach($spenqdatas as $spenqdata)
-         {
-            if($spenqdata->order_status == 0)
-            {
-                $enq = $enq+1;
-            }
-            if($spenqdata->order_status == 1)
-            {
-                $ofrsent = $ofrsent+1;
-            }
-            if($spenqdata->order_status == 3)
-            {
-                $pisent = $pisent+1;
-            }
-            if($spenqdata->order_status == 5)
-            {
-                $dispatch = $dispatch+1;
-            }
-             
-                 
-         }
+        $data['openticket']=$openticket;
+        $data['closetktdet']="Internal Mail - $closedintrl ,      Already Raised - $closedreqraised , Spam - $closedspm ,  Reply Mail - $closedrepmail";
+        $data['convertedticket']=$convertedticket;
+        $data['closedticket']=$closedticket;
+        $data['pendingticket']=$pendingticket;
          
+        $data['tollfreegeneral']=$tollfreegeneral;
+        $data['tollfreespser']=$tollfreespser;
+        $data['tollfreeanswer']=$tollfreeanswer;
+        $data['tollfreenoanswer']=$tollfreenoanswer;
+        $data['tollfreevmsg']=$tollfreevmsg; 
         
-         
-        $data['sprphone']=$sprphone;
-        $data['serphone']=$serphone;
-        $data['spremail']=$spremail;
-        $data['seremail']=$seremail;
-        $data['completed']=$completed;
-        $data['pending']=$pending;
-        $data['enq']=$enq;
-        $data['ofrsent']=$ofrsent;
-        $data['pisent']=$pisent;
-        $data['dispatch']=$dispatch;
-        $data['service']=$service;
-        $data['spare']=$spare;
-        $data['penenqs']=$pendenqs;
-        $data['newenqs']=$newenqs;
-        $data['orderstatus']=$orderstatus;
-        $data['serviceandspares']=$serviceandspares;
         
         return view('home',$data);
     }
@@ -580,7 +444,7 @@ class HomeController extends Controller
         $phpinpdata = false;
         $phpdata = $this->CallAPI($method,$url,$phpinpdata = false);
         $phpdecode=  json_decode($phpdata['result']);
-        
+        //print_r($phpdecode);die;
         return response()->json($phpdecode);
     }
     
@@ -661,11 +525,18 @@ class HomeController extends Controller
         $isspares=$inputs['isspares'];
         $year=date('Y');
         $month=date('m');
-        
-        $seqdata = $seqmodel->where('is_spares',$isspares)
-                            ->where('doctype',0)
-                            ->where('year',$year)
-                            ->where('month',$month)->first();
+        if($isspares == 2)
+        {
+            $seqdata = $seqmodel->where('doctype',2)->first();
+        }
+        else
+        {
+            $seqdata = $seqmodel->where('is_spares',$isspares)
+                                ->where('doctype',0)
+                                ->where('year',$year)
+                                ->where('month',$month)->first();
+        }
+            //print_r($isspares);die;
         if($seqdata)
         {
             $modelRegion = new $this->modelRegion();
@@ -745,14 +616,30 @@ class HomeController extends Controller
     {
         $status = 1;
         $message = "success";
-        
-        $calenders = DB::Select("SELECT distinct complaint_register.customer_name,visit_plan.date_of_depature as startdate,visit_plan.date_of_return as enddate  
+        $user = session()->get('user_type');
+        $user_id = session()->get('user_id');
+        $calenders = array();
+        if($user != 4)
+        {
+            $calenders = DB::Select("SELECT distinct complaint_register.customer_name,visit_plan.date_of_depature as startdate,visit_plan.date_of_return as enddate  
                                 FROM visit_plan,visitplan_engineer,complaint_register,service_engineer 
                                 WHERE complaint_register.id = visit_plan.complaint_register_id
                                 and visit_plan.id = visitplan_engineer.visitplan_id
                                 and visitplan_engineer.engineer_id = service_engineer.id
                                 and visit_status = 1
                                 and visit_plan.date_of_depature is not null");
+        }
+        else
+        {
+            $calenders = DB::Select("SELECT distinct complaint_register.customer_name,visit_plan.date_of_depature as startdate,visit_plan.date_of_return as enddate  
+                                FROM visit_plan,visitplan_engineer,complaint_register,service_engineer 
+                                WHERE complaint_register.id = visit_plan.complaint_register_id
+                                and visit_plan.id = visitplan_engineer.visitplan_id
+                                and visitplan_engineer.engineer_id = service_engineer.id
+                                and visitplan_engineer.engineer_id = $user_id
+                                and visit_status = 1
+                                and visit_plan.date_of_depature is not null");
+        }
         
         $calenderdata=array();
         foreach($calenders as $calender)
@@ -768,5 +655,288 @@ class HomeController extends Controller
         $this->data['calender'] = $calenderdata;
         
         return response()->json($this->data);
+    }
+    
+    public function getTicketdata(Request $request)
+    {
+         $status = 1;
+        $message = "success";
+        $inputs = $request->all();
+        
+        if($this->created_by)
+        {
+            $inputs['created_by_id'] = session()->get('user_id');
+        }
+        
+        $inputs['complaint_nature'] = json_encode($inputs['chkval']);
+        $model = new $this->modelTicketName();
+        $inputs['status'] = 1;
+        $stored = $model->addRecord($inputs);
+        
+        
+        if($stored && is_array($stored))
+        {
+            $this->data['status'] = 0;
+            return response()->json($this->data);
+        }
+        else
+        {
+            $seqmodel = new $this->modelDocseq();
+            $seqdata = $seqmodel->where('doctype',2)->first();
+            $seqdata->seqno=$seqdata->seqno+1;
+            $seqdata->save();
+            
+            $this->data['status'] = 1;
+            $this->data['message'] = $message;
+            
+            return response()->json($this->data);
+        }
+              
+    }
+    
+    public function getTollfreedata()
+    {
+        $t=time();
+        
+        $method = 'GET';
+        $url = "https://telephonycloud.co.in/api/v1/dashboard?svc-id=1086";
+        $username = '9789464775';
+        $password = 'admin';
+        
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
+        curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+        $output = curl_exec($ch);
+        $info = curl_getinfo($ch);
+        curl_close($ch);
+        
+        $tollfreecall =0;
+        $datas = json_decode($output, TRUE);
+        if($datas)
+        {
+            
+            foreach($datas['agents'] as $data)
+            {
+                
+                $record['ag_id'] = $data['id'];
+                $record['number'] = $data['number'];
+                $record['name'] = $data['name'];
+                $record['user_id'] = $data['user_id'];
+                $record['call_txn_id'] = $data['call_txn_id'];
+                $trxn_id = $data['call_txn_id'];
+                $recentcalls= "https://telephonycloud.co.in/api/v1/agent-recent-calls?svc-id=1086&recent_txn_id=".$trxn_id;
+
+                $ch2 = curl_init();
+                curl_setopt($ch2, CURLOPT_URL, $recentcalls);
+                curl_setopt($ch2, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($ch2, CURLOPT_USERPWD, "$username:$password");
+                curl_setopt($ch2, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+                $output2 = curl_exec($ch2);
+                $info2 = curl_getinfo($ch2);
+                curl_close($ch2);
+
+                $datas2 = json_decode($output2, TRUE);
+               
+                foreach($datas2 as $data2)
+                {
+                    $record['duration'] = $data2['duration'];
+                    $record['receivedby'] = $data2['receivedBy'];
+                    $record['disposition'] = $data2['disposition'];
+                    $record['recording'] = $data2['recording'];
+                    $record['tollfree_time'] = $data2['time'];
+                    $record['customernumber'] = $data2['customerNumber'];
+                    $record['calltype'] = $data2['callType'];
+                    $record['ivrdata'] = $data2['ivrData'];
+                    $record['toll_id'] = $data2['xnid'];  
+                    $record['created_by_id'] = session()->get('user_id');
+                    $record['status'] = 1;
+                    $modelToll = new $this->modelTollfree();
+                    $modelTollData = $modelToll->where("toll_id",$record['toll_id'])->first();
+                    if(!$modelTollData)
+                    {
+                        $stored = $modelToll->addRecord($record);
+                    }
+                    
+                }
+            }
+        }
+    }
+    
+    public function getDashboarddata()
+    {
+        $model = new $this->modelName();
+        $sprphone = 0;
+        $serphone = 0;
+        $spremail = 0;
+        $seremail = 0;
+        
+        $pending = 0;
+        $completed = 0;
+        $service = 0;
+        $spare = 0;
+        $serviceandspares = 0;
+        $enq = 0;
+        $ofrsent = 0;
+        $pisent = 0;
+        $dispatch = 0;
+        $frmdate = date('Y-m-d', strtotime('today - 30 days'));
+        $currdate = date('Y-m-d');
+        
+        $pastmodeldatas = DB::table('complaint_register')->where('complaint_date', '>=', $frmdate)->get();
+        $sprmodeldatas = DB::table('complaint_register')->where('complaint_type',1)->get();
+        $sermodeldatas = DB::table('complaint_register')->where('complaint_type',0)->get();
+        $spenqdatas = DB::table('service_spares_register')->get();
+        $visitdatas = DB::table('visit_plan')->join('visitplan_engineer','visit_plan.id','=','visitplan_engineer.visitplan_id')
+                                            ->join('service_engineer','visitplan_engineer.engineer_id','=','service_engineer.id')
+                                            ->where('visit_plan.visit_status',2)
+                                            ->select('service_engineer.name')->get();
+        
+        $pendenqs = DB::table('service_spares_register')
+                        ->join('complaint_register','complaint_register.id','=','service_spares_register.complaint_register_id')
+                        ->where('service_spares_register.complaint_type',1)
+                        ->whereIn('service_spares_register.order_status',[0])
+                        ->select('complaint_register.seqno','complaint_register.complaint_date','complaint_register.customer_name','complaint_register.mobileno')
+                        ->orderBy('complaint_register.complaint_date','desc')->get();
+        
+        $newenqs = DB::table('service_spares_register')
+                        ->join('complaint_register','complaint_register.id','=','service_spares_register.complaint_register_id')
+                        ->where('service_spares_register.complaint_type',1)
+                        ->where('service_spares_register.order_status',0)
+                        ->where('complaint_register.complaint_date',date('Y-m-d'))
+                        ->select('complaint_register.seqno','complaint_register.complaint_date','complaint_register.customer_name','complaint_register.mobileno')
+                        ->orderBy('complaint_register.complaint_date','desc')->get();
+        
+        $orderstatus = DB::Select("select Count(a.order_status) as ordercount,
+                                            a.order_status as order_status from
+                                            (select 
+                                            case when service_spares_register.order_status = 0 then 'Enquiry Received' else 
+                                            case when service_spares_register.order_status = 1 then 'OfferSent' else 
+                                            case when service_spares_register.order_status = 2 then 'Poreceived' else 
+                                            case when service_spares_register.order_status = 3 then 'PiSent' else 
+                                            case when service_spares_register.order_status = 4 then 'Advance Received' else 
+                                            case when service_spares_register.order_status = 5 then 'Payment Received' else
+                                            case when service_spares_register.order_status = 6 then 'DI Sent' else
+                                            case when service_spares_register.order_status = 7 then 'Partial Completed' else
+                                            case when service_spares_register.order_status = 8 then 'Completed' else
+                                            case when service_spares_register.order_status = 9 then 'Cancelled' else
+                                            case when service_spares_register.order_status = 10 then 'Deputed' End End End End End End End End End End End as Order_status
+
+                                            from complaint_register,service_spares_register
+                                            where complaint_register.id = service_spares_register.complaint_register_id
+                                            and complaint_register.document_status != 3 
+                                            and complaint_register.complaint_type = 0)a
+                                            group by a.order_status");
+        
+        /*foreach($modeldatas as $modeldata)
+         {
+             if($modeldata->mode_of_complaint == 0)
+             {
+                 $phone = $phone+1;
+             }
+             else
+             {
+                 $email = $email+1;
+             }
+             if($modeldata->document_status == 2)
+             {
+                 $completed = $completed+1;
+             }
+             else if($modeldata->document_status == 1 || $modeldata->document_status == 0)
+             {
+                 $pending = $pending+1;
+             }
+             
+                 
+         }*/
+         foreach($sprmodeldatas as $sprmodeldata)
+         {
+             if($sprmodeldata->mode_of_complaint == 0)
+             {
+                 $sprphone = $sprphone+1;
+             }
+             else
+             {
+                 $spremail = $spremail+1;
+             }
+         }
+         
+         foreach($sermodeldatas as $sermodeldata)
+         {
+             if($sermodeldata->mode_of_complaint == 0)
+             {
+                 $serphone = $serphone+1;
+             }
+             else
+             {
+                 $seremail = $seremail+1;
+             }
+             if($sermodeldata->document_status == 2)
+             {
+                 $completed = $completed+1;
+             }
+             else if($sermodeldata->document_status == 1 || $sermodeldata->document_status == 0)
+             {
+                 $pending = $pending+1;
+             }
+         }
+         
+        foreach($pastmodeldatas as $pastmodeldata)
+        {
+
+            if($pastmodeldata->complaint_type == 0)
+            {
+                $service = $service+1;
+            }
+            else if ($pastmodeldata->complaint_type == 1)
+            {
+                $spare = $spare+1;
+            }
+            else
+            {
+                $serviceandspares = $serviceandspares+1;
+            }
+
+        }
+        
+        foreach($spenqdatas as $spenqdata)
+         {
+            if($spenqdata->order_status == 0)
+            {
+                $enq = $enq+1;
+            }
+            if($spenqdata->order_status == 1)
+            {
+                $ofrsent = $ofrsent+1;
+            }
+            if($spenqdata->order_status == 3)
+            {
+                $pisent = $pisent+1;
+            }
+            if($spenqdata->order_status == 5)
+            {
+                $dispatch = $dispatch+1;
+            }
+             
+                 
+         }
+         
+       $data['sprphone']=$sprphone;
+        $data['serphone']=$serphone;
+        $data['spremail']=$spremail;
+        $data['seremail']=$seremail;
+        $data['completed']=$completed;
+        $data['pending']=$pending;
+        $data['enq']=$enq;
+        $data['ofrsent']=$ofrsent;
+        $data['pisent']=$pisent;
+        $data['dispatch']=$dispatch;
+        $data['service']=$service;
+        $data['spare']=$spare;
+        $data['penenqs']=$pendenqs;
+        $data['newenqs']=$newenqs;
+        $data['orderstatus']=$orderstatus;
+        $data['serviceandspares']=$serviceandspares;
     }
 }

@@ -200,7 +200,52 @@
                     }); 
             });
             
-            
+            $(".editterms").click(function()
+            {
+                $(".editterms").hide();
+                var id = $(this).data('offerid');
+                $("#terms_"+id).removeAttr('readonly');
+                $(".offerdetailsedit").append("<button type='button' class='m-t-25 btn btn-default bgm-cyan wave-effect submit_terms' data-offerid='"+id+"' name='submit_terms' >Update</button>");
+                $(".submit_terms").click(function()
+                {
+                    var id = $(this).data('offerid');
+                    var terms = $("#terms_"+id).val();
+                    var dataConfig = {
+                        terms: terms,
+                        id:id,
+                        };
+
+                    var controller = 'servicespareregister/';
+
+                        $.ajax({
+                            method: "POST",
+                            url: _site_url + controller + "updateterms",
+                            data: dataConfig,
+
+                        }).done( function( data, textStatus, jqXHR ) {
+                            console.log( " ajax done " );
+                            if(data.status ==1)
+                            {
+                                $("#terms_"+id).attr('readonly','true');
+                                $(".offerdetailsedit").find("button").remove();
+                            }
+                            else
+                            {
+                                $("#terms_"+id).attr('readonly','true');
+                                $(".offerdetailsedit").find("button").remove();
+                            }
+
+
+                        }).fail( function( jqXHR, textStatus, errorThrown ) {
+                            console.log( " ajax fail " );
+                            console.log( jqXHR, textStatus, errorThrown );
+                        }).always ( function( data_jqXHR, textStatus, jqXHR_errorThrown ) {
+                            console.log( " ajax always " );
+                            console.log( data_jqXHR, textStatus, jqXHR_errorThrown );
+                            $(".editterms").show();
+                        }); 
+                });
+            });
             
             /*$(".summernote").summernote({
                             placeholder: '',
@@ -469,6 +514,7 @@
             
             $(".thingsadd").click(function()
             {
+                var visit_id =$(this).data('visitid');
                 $("#modalthings3").find("#modalthings1").remove();
                 var things = $("#modalthings").find("#modalthings1").clone();
                 $("#modalthings3").append(things);
@@ -477,6 +523,7 @@
                 $("#modalthings3").find(".thingsnew2 form").append(thigsnew);
                 arrayreset();
                 $("#modalthings3").find(".thingsnew .thingsnew1 .things0").hide();
+                $("#modalthings3").find(".thingsnew2 form").find("#visitplan_id").val(visit_id);
                 $("#modalthings3").find(".thingsform").modal();
                 $("#modalthings3").find(".newline").on('click',function()
                 {
@@ -546,6 +593,7 @@
                 $("#modalprint").find("#modalofferprint1").remove();
                 var print_offer = $("#modalofferprint").find("#modalofferprint1").clone();
                 $("#modalprint").append(print_offer);
+                $("#modalprint").find("#offerid").selectpicker();
                 $("#modalprint").find("button#printoffernew").on("click",function()
                 {
                     $(this).hide();
@@ -1188,7 +1236,45 @@
                         //console.log( data_jqXHR, textStatus, jqXHR_errorThrown );
                     });
                 }
-                
+            
+            function offtaxcalc(qty,amt,tax_id,serviceid)
+            {
+                var datanew = {tax_id:tax_id};
+
+                var controller = 'complaintregister/';
+
+                $.ajax({
+                    method: "POST",
+                    url: _site_url + controller + "taxcalc",
+                    data: datanew,
+
+                }).done( function( data, textStatus, jqXHR ) {
+                    console.log(data);
+                    if(data.status ==1)
+                    {
+                        var netamt= parseFloat(qty)*parseFloat(amt);
+                        var taxamt = (parseFloat(netamt)*parseFloat(data.rate))/100;
+                        var tot = parseFloat(netamt)+parseFloat(taxamt);
+                        $("#offermodal .offerrevision_"+serviceid).find('.off_tax_amt').val(taxamt.toFixed(2));
+                        $("#offermodal .offerrevision_"+serviceid).find('.off_total').val(tot.toFixed(2));
+                    }
+                    else
+                    {
+                        $("#offermodal .offerrevision_"+serviceid).find('.off_qty').val(0);
+                        $("#offermodal .offerrevision_"+serviceid).find('.off_tax_amt').val(0);
+                        $("#offermodal .offerrevision_"+serviceid).find('.off_total').val(0);
+                    }
+
+
+                }).fail( function( jqXHR, textStatus, errorThrown ) {
+                    console.log( " ajax fail " );
+                    //console.log( jqXHR, textStatus, errorThrown );
+                }).always ( function( data_jqXHR, textStatus, jqXHR_errorThrown ) {
+                    console.log( " ajax always " );
+                    //console.log( data_jqXHR, textStatus, jqXHR_errorThrown );
+                });
+            }
+              
             //$("#prdmodal").on('focusin','.product',function(){
             $("#prdmodal").on('click','.prd_search',function(){
                 var _this= this;
@@ -1281,10 +1367,6 @@
                 
        
             });
-            
-            
-
-
             
             /*$("#modal3").on('click','.product',function(){
                 var _this= this;
@@ -2386,9 +2468,94 @@
                         });
                 });
                 
+                
+                
+                 $("#offermodal").on('change','.off_tax_id',function(){
+                     var tax_id = $(this).val();
+                     var serviceid = $(this).data("serviceid");
+                    
+                    var quantity = $("#offermodal .offerrevision_"+serviceid).find(".off_qty").val();
+                     
+                    var price = $("#offermodal .offerrevision_"+serviceid).find(".off_unit_price").val();
+                    var tot = parseFloat(price)*parseFloat(quantity);
+                    $("#offermodal .offerrevision_"+serviceid).find(".off_total").val(tot);
+                    offtaxcalc(quantity,price,tax_id,serviceid);
+                });
+                
+                $("#offermodal").on('change','.off_unit_price',function(){
+                    
+                    var serviceid = $(this).data("serviceid");
+                    var price = $(this).val();
+                    var quantity = $("#offermodal .offerrevision_"+serviceid).find(".off_qty").val();
+                    var tax_id = $("#offermodal .offerrevision_"+serviceid).find(".off_tax_id").val();
+                    var tot = parseFloat(price)*parseFloat(quantity);
+                    $("#offermodal .offerrevision_"+serviceid).find(".off_total").val(tot);
+                    if(tax_id =="" || typeof(tax_id) === "undefined")
+                    {
+
+                    }
+                    else
+                    {
+                        offtaxcalc(quantity,price,tax_id,serviceid);
+                    }
+                });
+                
+                $("#offermodal").on('change','.off_qty',function(){
+                    var serviceid = $(this).data("serviceid");
+                    var price = $("#offermodal .offerrevision_"+serviceid).find(".off_unit_price").val();
+                    var quantity = $(this).val();
+                    var tot = parseFloat(price)*parseFloat(quantity);
+                    var tax_id = $("#offermodal .offerrevision_"+serviceid).find(".off_tax_id").val();
+                    $("#offermodal .offerrevision_"+serviceid).find(".off_total").val(tot);
+                    if(tax_id =="" || typeof(tax_id) === "undefined")
+                    {
+
+                    }
+                    else
+                    {
+                        offtaxcalc(quantity,price,tax_id,serviceid);
+                    }
+                });
+                 
+                
             });
             
-                
+             $(".approve_expense").on('click',function()
+                {
+                    var visitid = $(this).data('visitid');
+                    
+                    swal({   
+                                title: "Verified!",   
+                                text: "Expense Verified",   
+                                type: "success",   
+                                allowOutsideClick: false,
+                                showCancelButton: true,   
+                                confirmButtonText: "Ok",
+                                closeOnConfirm: "Cancel",
+                            },function(){ 
+                                var controller = 'servicespareregister/';
+
+                                $.ajax({
+                                method: "POST",
+                                url: _site_url + controller + "updateexpense",
+                                data: {visitid:visitid,},
+
+                                }).done( function( data, textStatus, jqXHR ) {
+                                console.log( " ajax done " );
+                                window.location.reload();
+
+                                }).fail( function( jqXHR, textStatus, errorThrown ) {
+                                    console.log( " ajax fail " );
+                                    console.log( jqXHR, textStatus, errorThrown );
+                                }).always ( function( data_jqXHR, textStatus, jqXHR_errorThrown ) {
+                                    console.log( " ajax always " );
+                                    console.log( data_jqXHR, textStatus, jqXHR_errorThrown );
+                                });
+                            });
+
+                    
+                                
+                });   
             
     });
 </script>

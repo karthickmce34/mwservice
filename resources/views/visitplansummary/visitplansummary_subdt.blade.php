@@ -18,12 +18,72 @@
                                             <div class="card">
                                                 <div class="card-head card-padding pd-10-20">
                                                     <div class="row" style="    padding: 8px 0 8px 0px;">       
+                                                        <div class="col-sm-3"><i class="zmdi "></i><b>Outgoing Load</b></div>
+                                                        <div class="col-sm-3">{{$record->outgoing_load}}</div>
+                                                        <div class="col-sm-3"><i class="zmdi "></i><b>Relay Make/Type</b></div>
+                                                        <div class="col-sm-3">{{$record->relay_make_type}}</div>
+                                                    </div>
+                                                    <div class="row" style="    padding: 8px 0 8px 0px;">
+                                                        <div class="col-sm-3"><i class="zmdi "></i><b>Cable Length/Size</b></div>
+                                                        <div class="col-sm-3">{{$record->cable_length}}</div>
+                                                        <div class="col-sm-3"><i class="zmdi "></i><b>Fault Current</b></div>
+                                                        <div class="col-sm-3">{{$record->fault_current}}</div>
+                                                    </div>
+                                                    <div class="row" style="    padding: 8px 0 8px 0px;">    
+                                                        <div class="col-sm-3"><i class="zmdi "></i><b>Interlock Condition</b></div>
+                                                        <div class="col-sm-3">{{$record->vcb_interlock}}</div>
+                                                        <div class="col-sm-3"><i class="zmdi "></i><b>After Commissioning</b></div>
+                                                        <div class="col-sm-3">{{$record->after_commissioned}}</div>
+                                                    </div>
+                                                    <div class="row" style="    padding: 8px 0 8px 0px;">    
+                                                        <div class="col-sm-3"><i class="zmdi "></i><b>Event before Failure</b></div>
+                                                        <div class="col-sm-3">{{$record->event_before_failure}}</div>
+                                                        <div class="col-sm-3"><i class="zmdi "></i><b>Serial number</b></div>
+                                                        <div class="col-sm-3">{{$record->serial_no}}</div>
+                                                    </div>
+                                                    <div class="row" style="    padding: 8px 0 8px 0px;">       
+                                                        <div class="col-sm-3"><i class="zmdi "></i><b>Transformer Rating</b></div>
+                                                        <div class="col-sm-3">{{$record->transformer_rating}}</div>
+                                                        <div class="col-sm-3"><i class="zmdi "></i><b>Others</b></div>
+                                                        <div class="col-sm-3">{{$record->others}}</div>
+                                                    </div>
+                                                    <div class="row" style="    padding: 8px 0 8px 0px;">       
                                                         <div class="col-sm-4"><i class="zmdi "></i><b>Description</b></div>
                                                         <div class="col-sm-8">{{$record->work_description}}</div>
                                                     </div>
                                                     <div class="row" style="    padding: 8px 0 8px 0px;">       
                                                         <div class="col-sm-4"><i class="zmdi "></i><b>Service Report</b></div>
                                                         <div class="col-sm-8"><a style="width: inherit;" href="{{url('/')}}/{{$record->file_path}}/{{$record->file_name}}" tabindex="_self">{{$record->file_name}}</a></div>
+                                                    </div>
+                                                    <div class="row" style="    padding: 8px 0 8px 0px;">       
+                                                        <div class="col-sm-4"><i class="zmdi "></i><b>SLD</b></div>
+                                                        <div class="col-sm-8 text-center">@if($record->sld_file_path == "")  @else
+                                                            <img style="width: 25%;height: 25%;" src="{{url('/')}}/{{$record->sld_file_path}}/{{$record->sld_file_name}}" /> @endif
+                                                        </div>
+                                                    </div>
+                                                    <div class="row" style="    padding: 8px 0 8px 0px;">       
+                                                        <div class="col-sm-4"><i class="zmdi "></i><b>Panel Front</b></div>
+                                                        <div class="col-sm-8 text-center">@if($record->panelfront_file_path == "")  @else
+                                                            <img style="width: 25%;height: 25%;" src="{{url('/')}}/{{$record->panelfront_file_path}}/{{$record->panelfront_file_name}}" /> @endif
+                                                        </div>
+                                                    </div>
+                                                    <div class="row" style="    padding: 8px 0 8px 0px;">       
+                                                        <div class="col-sm-4"><i class="zmdi "></i><b>Panel Inside</b></div>
+                                                        <div class="col-sm-8 text-center">@if($record->panelinside_file_path == "")  @else
+                                                            <img style="width: 25%;height: 25%;" src="{{url('/')}}/{{$record->panelinside_file_path}}/{{$record->panelinside_file_name}}" /> @endif
+                                                        </div>
+                                                    </div>
+                                                    <div class="row" style="    padding: 8px 0 8px 0px;">       
+                                                        <div class="col-sm-4"><i class="zmdi "></i><b>Panel Left</b></div>
+                                                        <div class="col-sm-8 text-center">@if($record->panelleft_file_path == "")  @else
+                                                            <img style="width: 25%;height: 25%;" src="{{url('/')}}/{{$record->panelleft_file_path}}/{{$record->panelleft_file_name}}" /> @endif
+                                                        </div>
+                                                    </div>
+                                                    <div class="row" style="    padding: 8px 0 8px 0px;">       
+                                                        <div class="col-sm-4"><i class="zmdi "></i><b>Panel Right</b></div>
+                                                        <div class="col-sm-8 text-center">@if($record->panelright_file_path == "")  @else
+                                                            <img style="width: 25%;height: 25%;" src="{{url('/')}}/{{$record->panelright_file_path}}/{{$record->panelright_file_name}}" /> @endif
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>

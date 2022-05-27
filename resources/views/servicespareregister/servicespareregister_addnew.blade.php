@@ -24,7 +24,7 @@
 <div class="">
     <!--BEGIN INPUT TEXT FIELDS-->
     <div class="text-center">
-        <h2 class="f-400">Spares/Service Call Documents</h2>
+        <h2 class="f-400">Service Call Documents</h2>
     </div>
     <br>
     <div class="clearfix"></div>
@@ -32,7 +32,7 @@
         <div class="card-header">
             <h2>
                 Upload <span class="label label-default">New</span>
-                Spares/Service Call Register Documents
+                Service Call Register Documents
             </h2>
         </div>
         <div class="card-body card-padding">

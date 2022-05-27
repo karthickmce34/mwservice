@@ -16,7 +16,7 @@ use Microsoft\Graph\Model;
 
 
 use App\Models\EmailHeaderModel;
-//use App\Models\EmailLinesModel;
+use App\Models\TicketModel;
 
 
 class EmailController extends Controller
@@ -31,6 +31,7 @@ class EmailController extends Controller
     public $modelDocseq     = 'App\Models\DocseqModel';
     public $modelAttend     = 'App\Models\AttendanceModel';
     public $modelUser       = 'App\Models\UserModel';
+    public $modelTicket     = 'App\Models\TicketModel';
     public $baseRedirect    = 'email.index';
     public $baseName        = 'email';
     public $basePath        = 'email/';
@@ -44,6 +45,7 @@ class EmailController extends Controller
     
     public function index()
     {
+        
         $model = new $this->modelName();
 	$usrtype=session()->get('user_type');
         
@@ -76,6 +78,7 @@ class EmailController extends Controller
     {
         
         return $this->index();
+        
     }
 
     public function getShowEmail($id)
@@ -192,6 +195,58 @@ class EmailController extends Controller
                                 }
                                 else
                                 {
+                                    $usrtype = session()->get('user_type');
+                                    $email_id=$modelName->id;
+                                    $modelConvData = $modelName->where('conversation_id',$conversationid)
+                                                                ->first();
+                                    //print_r($usrtype);die;
+                                    if($modelConvData)
+                                    {
+                                        $messageticket='';
+                                    }
+                                    else
+                                    {
+                                        if($usrtype == 1 || $usrtype == 2)
+                                        {
+                                            if($usrtype == 2)
+                                                {
+                                                    $isspares=0;
+                                                }
+                                                else
+                                                {
+                                                    $isspares=1;
+                                                }
+                                                $seqmodel = new $this->modelDocseq();
+                                                $seqdata = $seqmodel->where('is_spares',$isspares)
+                                                                    ->where('doctype',2)->first();
+                                                $modelTicket = new $this->modelTicket();
+                                                $inp['doc_no']=$seqdata->prefix.$seqdata->seqno;
+                                                $inp['type']=session()->get('user_type');
+                                                $inp['mode']=1;
+                                                $inp['email_id']=null;
+                                                $inp['email_address']=$email;
+                                                $inp['customer_name']=$name;
+                                                $inp['contact_person']=$name;
+                                                $inp['mobileno']="";
+                                                $inp['complaint_nature']=$subject;
+                                                $inp['jobid']="";
+                                                $inp['created_by_id'] = session()->get('user_id');
+                                                $inp['status'] = 1;
+                                                $storedticket = $modelTicket->addRecord($inp);
+                                                
+                                                if($storedticket && is_array($storedticket))
+                                                {
+                                                    $this->data['status'] = 0;
+                                                    //return response()->json($this->data);
+                                                }
+                                                else
+                                                {
+                                                    $seqdata->seqno = $seqdata->seqno+1;
+                                                    $seqdata->save();
+                                                }
+                                        }
+                                    }
+                                    
                                     $inpData['emailid']=$id;
                                     $inpData['emailaddress']=$email;
                                     $inpData['name']=$name;
@@ -216,7 +271,10 @@ class EmailController extends Controller
                                     $inpData['isspares']=session()->get('user_type');
                                     $inpData['recieved_datetime']=$recievedate;
                                     $stored = $modelName->addRecord($inpData);
+                                    $modelTicket->email_id= $modelName->id;
+                                    $modelTicket->save();
                                 }
+                                
                                 
                                 $unreadData = $modelName->where('isread',0)->where('isspares',$usrtype)->orderBy('recieved_datetime','desc')->get();
                             }

@@ -14,7 +14,7 @@
                                     <th data-column-id="agent">Agent/Engineer Name</th>                                    
                                     <th data-column-id="departure_date">Depature Date</th>
                                     <th data-column-id="return_date" >Return Date</th>    
-                                    <th data-column-id="visitstatus"  data-visible="false">Visitstatus</th>
+                                    <th data-column-id="visitstatus"  data-visible="false">Expense Status</th>
                                     <th data-column-id="status"  data-visible="false">Status</th>
                                     <th data-column-id="commands" data-formatter="commands" data-sortable="false">Commands</th>
 
@@ -38,7 +38,15 @@
                                         </td>
                                         <td>{{$item->visitplan->date_of_depature}}</td>
                                         <td>{{$item->visitplan->date_of_return}}</td>
-                                        <td>{{$item->visitplan->visit_status}}</td>
+                                        <td>@if($item->visitplan->expense_status == 0)
+                                                Under Process
+                                            @else 
+                                                @if($item->visitplan->expense_status == 1)
+                                                    Approved By HQ
+                                                @else
+                                                    Rejected Completed
+                                                                                                        
+                                            @endif @endif</td>
                                         <td>@if($item->visitplan->status == 0) Inactive @else Active @endif</td>
                                     </tr>
                                 @endforeach

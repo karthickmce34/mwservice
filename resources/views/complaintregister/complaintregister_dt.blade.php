@@ -45,7 +45,7 @@
                                                             <li><?php $text = $record->address1;
                                                                         $newtext = wordwrap($text, 60, "\n", true);?>
                                                                 <i class="zmdi zmdi-pin"></i>
-                                                                <address class="m-b-0 ng-binding"><?=nl2br($newtext)?>
+                                                                <address class="m-b-0 ng-binding" style="width:6rem;"><?=nl2br($newtext)?>
                                                                 </address>
                                                             </li>
                                                             <li>
@@ -89,6 +89,9 @@
                                                     <div class="row" style="    padding: 8px 0 8px 0px;">       
                                                         <div class="col-sm-4"><i class="zmdi "></i><b>Site Location</b></div>
                                                         <div class="col-sm-8"><?=nl2br($record->site_location)?></div>
+                                                    </div>
+                                                    <div>
+                                                        
                                                     </div>
                                                     <!--div class="row" style="    padding: 8px 0 8px 0px;">       
                                                         <div class="col-sm-4"><i class="zmdi "></i><b>Created By</b></div>

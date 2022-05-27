@@ -4,19 +4,14 @@
                                         <div >
                                             <em class="m-r-25">Document No : {{$record->compreg->seqno}}</em>
                                             &nbsp;<!--em class="m-r-25 m-l-25">TYPE : {{$record->COMPLAINT_TYPE_VALUES[$record->complaint_type]}}</em-->
-                                        
                                             &nbsp;<em class="m-l-25 m-r-25">MODE : {{$record->COMPLAINT_MODE_VALUES[$record->compreg->mode_of_complaint]}}</em>
                                             &nbsp;<em class="m-l-25">Registered Date : <?= date('d-m-Y', strtotime($record->compreg->complaint_date)) ?></em>
-                                            &nbsp;<em class="m-l-25">Status : @if($record->order_status == 0) Enquiry Received @else @if($record->order_status == 1) Offer Sent @else @if($record->order_status == 2) PO Received  @else @if($record->order_status == 3) PI Sent @else @if($record->order_status == 4) Advance Received @else @if($record->order_status == 5) Payment Received @else @if($record->order_status == 6) DI Sent @else @if($record->order_status == 7) Partially Dispatched @else @if($record->order_status == 8) @if($record->complaint_type == 0) Completed @else Dispatched @endif @else @if($record->order_status == 10) Deputed @else Cancelled @endif @endif @endif @endif @endif @endif @endif @endif @endif @endif</em>
+                                            &nbsp;<em class="m-l-25">Status : @if($record->order_status == 0) Enquiry Received @else @if($record->order_status == 1) Offer Sent @else @if($record->order_status == 2) PO Received  @else @if($record->order_status == 3) PI Sent @else @if($record->order_status == 4) Advance Received @else @if($record->order_status == 5) Payment Received @else @if($record->order_status == 6) DI Sent @else @if($record->order_status == 7) Partially Dispatched @else @if($record->order_status == 8) @if($record->complaint_type == 0) Visit Completed @else Dispatched @endif @else @if($record->order_status == 10) Deputed @else @if($record->order_status == 11) Job completed @else @if($record->order_status == 12) Visit Rescheduled @else Cancelled @endif @endif @endif @endif @endif @endif @endif @endif @endif @endif @endif @endif</em>
                                         </div>
                                         <div class="text-center">
                                         </div> 
-
                                     </div>
-                                    
-
                                     <div class="pull-right">
-
                                         @if($record->complaint_type == 1)
                                             @if($record->order_status == 0)
                                                 <div class="header_button">
@@ -25,7 +20,6 @@
                                                         <ul class="dropdown-menu dm-icon bgm-blue" role="menu">
                                                             <li role="presentation"><a role="menuitem" tabindex="-1" href="#" data-id="{{$record->id}}" data-compid="{{$record->compreg->id}}"  data-mode="{{$record->compreg->mode_of_complaint}}" data-offer="{{$record->final_offer_id}}" class="offeremail "><i class="zmdi zmdi-email"> </i> Offer </a></li>
                                                         </ul>
-
                                                     </div>
                                                     <div class="dropdown pull-right">
                                                         <a href="#" class="dropdown-toggle btn bgm-orange waves-effect" data-toggle="dropdown" aria-expanded="false" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Print"><i class="zmdi zmdi-print"> </i></a>
@@ -34,11 +28,8 @@
                                                                 <a role="menuitem" tabindex="-1" href="#" data-id="{{$record->id}}" data-compid="{{$record->compreg->id}}"  data-mode="{{$record->compreg->mode_of_complaint}}" class="offerprint "><i class="zmdi zmdi-print"> </i> Offer    </a>
                                                             </li>
                                                         </ul>
-                                                        
                                                     </div>
                                                     <button type="button" data-id="{{$record->id}}"  class="btn btn-primary bgm-cyan waves-effect orderstatus">Status</button>                                    
-
-
                                                 </div>
                                             @endif
                                             @if($record->order_status == 1)
@@ -97,7 +88,6 @@
                                                             <li class="divider"></li>
                                                             <li role="presentation"><a role="menuitem" tabindex="-1" href="#" data-id="{{$record->id}}" data-compid="{{$record->compreg->id}}"  data-mode="{{$record->compreg->mode_of_complaint}}" class="invperformaemail "><i class="zmdi zmdi-email"> </i> Performa Invoice</a></li>
                                                         </ul>
-
                                                     </div>
                                                     <div class="dropdown pull-right">
                                                         <a href="#" class="dropdown-toggle btn bgm-orange waves-effect" data-toggle="dropdown" aria-expanded="false" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Print"><i class="zmdi zmdi-print"> </i></a>
@@ -227,6 +217,10 @@
                                                  @if($record->site_depute == 0)
                                                     <button type="button" data-id="{{$record->id}}" data-compid="{{$record->compreg->id}}"  data-mode="{{$record->compreg->mode_of_complaint}}"  class="btn btn-primary bgm-lightblue waves-effect depute pull-right" title="Site Deputation"><i class="zmdi zmdi-account"> </i></button>                                    
                                                  @endif
+                                            @endif
+                                            @if($record->order_status == 8)
+                                                <button type="button" data-id="{{$record->id}}" data-compid="{{$record->compreg->id}}"  data-mode="{{$record->compreg->mode_of_complaint}}"  class="btn btn-primary bgm-lightblue waves-effect depute pull-right" title="Site Deputation"><i class="zmdi zmdi-account"> </i></button>                                    
+                                                <button type="button" data-id="{{$record->id}}"  class="btn btn-primary bgm-cyan waves-effect orderstatus">Job Completed</button>                                    
                                             @endif
                                         @endif
                                     </div>
@@ -382,11 +376,12 @@
                                                                 <div class="col-sm-6 f-14"><?=date('d-m-Y', strtotime($record->compreg->commissioned_date))?></div>
                                                             </div>
                                                             @endif
+                                                            
                                                             <div class="row" style="    padding: 8px 0 8px 0px;">       
-                                                                <div class="col-sm-6 f-12"><i class="zmdi "></i><b>Customer Complaint</b></div>
+                                                                <div class="col-sm-4"><i class="zmdi "></i><b>Complaint Nature</b></div>
                                                                 <?php $complaint_nature = $record->compreg->complaint_nature;
-                                                                        $newcomplaint_nature = wordwrap($complaint_nature, 60, "\n", true);?>
-                                                                <div class="col-sm-6 f-14">{!! nl2br(e($newcomplaint_nature)) !!}</div>
+                                                                            $newcomplaint_nature = wordwrap($complaint_nature, 50, "\n", true);?>
+                                                                <div class="col-sm-8">{!! nl2br(e($newcomplaint_nature)) !!}</div>
                                                             </div>
                                                             @if($record->compreg->outgoing_load != "")
                                                             <div class="row" style="    padding: 8px 0 8px 0px;">       
@@ -440,11 +435,15 @@
                                                             </div>
                                                             <div class="row" style="    padding: 8px 0 8px 0px;">       
                                                                 <div class="col-sm-4 f-12"><i class="zmdi "></i><b>Remark/Comments</b></div>
-                                                                <div class="col-sm-8 f-14">{!! nl2br(e($record->compreg->remark)) !!}</div>
+                                                                <?php $remark = $record->compreg->remark;
+                                                                            $newremark = wordwrap($remark, 50, "\n", true);?>
+                                                                <div class="col-sm-8 f-14">{!! nl2br(e($remark)) !!}</div>
                                                             </div>
                                                             <div class="row" style="    padding: 8px 0 8px 0px;">       
                                                                 <div class="col-sm-4 f-12"><i class="zmdi "></i><b>Probable Cause of Failure</b></div>
-                                                                <div class="col-sm-8 f-14">{!! nl2br(e($record->failure_cause)) !!}</div>
+                                                                <?php $failure_cause = $record->failure_cause;
+                                                                            $newfailure_cause = wordwrap($failure_cause, 50, "\n", true);?>
+                                                                <div class="col-sm-8">{!! nl2br(e($newfailure_cause)) !!}</div>
                                                             </div>
                                                             @if($record->compreg->after_commissioned != "")
                                                             <div class="row" style="    padding: 8px 0 8px 0px;">       
@@ -650,6 +649,9 @@
                                                             @if($record->order_status == 2)  
                                                                 <button type="button" data-id="{{$record->id}}" data-orderstatus="3" class="btn btn-primary bgm-cyan waves-effect upstatus">PI Send</button>                                    
                                                             @endif
+                                                            @if($record->order_status == 8)  
+                                                                <button type="button" data-id="{{$record->id}}" data-orderstatus="11" class="btn btn-primary bgm-cyan waves-effect upstatus">Job Completed</button>                                    
+                                                            @endif
                                                          @endif
                                                     </div>
                                                     <div class="modal-footer">
@@ -660,6 +662,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                
                                 <div id="modaldepute">
                                     <div id="modaldepute1">
                                         <div class="modal fade deputeform" id="deputeform" role="dialog">
@@ -1124,7 +1127,7 @@
                                                     </div>
                                                     <div class="modal-body">
                                                            
-                                                        <select class="selectpicker" id="offerid">
+                                                        <select class="form-control input-sm" name="offerid" id="offerid">
                                                             @foreach($record->offerdata as $offerdata)
                                                             <option value="{{$offerdata->id}}">{{$offerdata->revision_no}}</option>
                                                             @endforeach

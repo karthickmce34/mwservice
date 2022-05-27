@@ -254,6 +254,131 @@
 
                         </div>
                     </div>
+                
+                    <div class="dash-widgets">
+                        <div class="row">
+                            @if(session()->get('user_type') == 2  || session()->get('user_type') == 0)
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h2>Order Status </h2>
+                                        <small>Over all</small>
+                                        <ul class="actions">
+                                            <li class="dropdown">
+                                                <a href="" data-toggle="dropdown">
+                                                    <i class="zmdi zmdi-more-vert"></i>
+                                                </a>
+
+                                                <ul class="dropdown-menu dropdown-menu-right">
+                                                    <li>
+                                                        <a href="">Current Week</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="">Current Month</a>
+                                                    </li>
+                                                    
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="card-body m-t-0">
+                                        <table class="table table-inner table-vmiddle">
+                                            <thead>
+                                                <tr>
+                                                    <th>Status</th>
+                                                    <th>No. of Order</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach($orderstatus as $status)
+                                                <tr>
+                                                    
+                                                    <td class="f-500 c-cyan">{{$status->order_status}}</td>
+                                                    <td class="f-500 c-cyan">{{$status->ordercount}}</td>
+                                                    
+                                                </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </div>
+                            @endif
+                            @if(session()->get('user_type') == 1  || session()->get('user_type') == 0)
+                            
+                            @endif
+                        </div>
+                        @if(session()->get('user_type') == 1 || session()->get('user_type') == 0)
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h2>Pending Enquiry <small>Pending Enquiry Detail</small></h2>
+                                        
+                                    </div>
+
+                                    <div class="card-body m-t-0" style="overflow: auto">
+                                        <table class="table table-inner table-vmiddle" id="pending_enq" >
+                                            <thead>
+                                                <tr>
+                                                    <th class="f-12">Enq no</th>
+                                                    <th class="f-12">Comp. Date</th>
+                                                    <th class="f-12">Name</th>
+                                                    <th class="f-12">Mobile</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach($penenqs as $penenq)
+                                                <tr>
+                                                    <td class="f-500 c-cyan f-12">{{$penenq->seqno}}</td>
+                                                    <td class="f-500 c-cyan f-12">{{$penenq->complaint_date}}</td>
+                                                    <td class="f-12">{{$penenq->customer_name}}</td>
+                                                    <td class="f-12">{{$penenq->mobileno}}</td>
+                                                </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h2>New Enquiry <small>New Enquiry Detail</small></h2>
+                                        
+                                    </div>
+
+                                    <div class="card-body m-t-0">
+                                        <table class="table table-inner table-vmiddle" id="new_enq">
+                                            <thead>
+                                                <tr>
+                                                    <th class="f-12">Enq no</th>
+                                                    <th class="f-12">Comp. Date</th>
+                                                    <th class="f-12">Name</th>
+                                                    <th class="f-12">Mobile</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach($newenqs as $newenq)
+                                                <tr>
+                                                    <td class="f-500 c-cyan f-12">{{$newenq->seqno}}</td>
+                                                    <td class="f-500 c-cyan f-12">{{$newenq->complaint_date}}</td>
+                                                    <td class="f-12">{{$newenq->customer_name}}</td>
+                                                    <td class="f-12">{{$newenq->mobileno}}</td>
+                                                </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        @endif
+                    </div>
                     <div class="col-sm-12">
                         <!-- Calendar -->
                         <div id="calendar-widget1"></div>

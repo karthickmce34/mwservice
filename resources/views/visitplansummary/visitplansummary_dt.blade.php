@@ -134,6 +134,21 @@
                                                             <div class="col-sm-4 text-center">{!! nl2br(e($record->visitplan->local_conveyance)) !!}</div>
                                                             <div class="col-sm-4 text-center">{!! nl2br(e($record->local_conveyance)) !!}</div>
                                                         </div>
+                                                        <div class="row" >       
+                                                            <div class="col-sm-4"><i class="zmdi "></i><b></b></div>
+                                                            <div class="col-sm-4 text-center">------------------------</div>
+                                                            <div class="col-sm-4 text-center">------------------------</div>
+                                                        </div>
+                                                        @php
+                                                        
+                                                        $planned_total=$record->visitplan->loading_expenses+$record->visitplan->boarding_expenses+$record->visitplan->travel_expenses+$record->visitplan->local_conveyance;
+                                                        $actual_total=$record->loading_expenses+$record->boarding_expenses+$record->travel_expenses+$record->local_conveyance;
+                                                        @endphp
+                                                        <div class="row">       
+                                                            <div class="col-sm-4"><i class="zmdi "></i><b>Total</b></div>
+                                                            <div class="col-sm-4 text-center">{{$planned_total}}</div>
+                                                            <div class="col-sm-4 text-center">{{$actual_total}}</div>
+                                                        </div>
                                                         <!--div class="row" style="    padding: 8px 0 8px 0px;">       
                                                             <div class="col-sm-4"><i class="zmdi "></i><b>Total Expenses</b></div>
                                                             <div class="col-sm-8"></div>

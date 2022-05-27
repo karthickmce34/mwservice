@@ -38,10 +38,27 @@
     $(function () {
             
             var _site_url = "{{url('/')}}/";
+            $(".billlodging").hide();
+            $(".billboarding").hide();
+            $(".billtravel").hide();
+            
+            var loading_expenses = $("#loading_expenses").val();
+            var boarding_expenses = $("#boarding_expenses").val();
+            var travel_expenses = $("#travel_expenses").val();
+            if(parseInt(loading_expenses) > 0)
+            {
+                $(".billlodging").show();
+            }
+            
+            
+            if(parseInt(travel_expenses) > 0)
+            {
+                $(".billtravel").show();
+            }
             
             $(".completed").click(function(){
                 //alert();return false;
-                
+                $("#modal3").find("#modalcomplete1").remove();
                 var model2 = $("#modalcomplete").find("#modalcomplete1").clone();
                 $("#modal3").append(model2);
                 
@@ -167,12 +184,42 @@
                         $(".thingsnew2").find(".things0").eq(i).find(".billimage").attr("name","billimage["+j+"]");
                     }
                 }
+                
+                $("#modal3").find("#loading_expenses").change(function()
+                {
+                    var loading_expenses = $("#modal3").find("#loading_expenses").val();
+                    if(parseInt(loading_expenses) > 0)
+                    {
+                        $("#modal3").find(".billlodging").show();
+                    }
+                    else
+                    {
+                        $("#modal3").find(".billlodging").hide();
+                    }
+                });
+                
+                
+                $("#modal3").find("#travel_expenses").change(function()
+                {
+                    var loading_expenses = $("#modal3").find("#travel_expenses").val();
+                    if(parseInt(loading_expenses) > 0)
+                    {
+                        $("#modal3").find(".billtravel").show();
+                    }
+                    else
+                    {
+                        $("#modal3").find(".billtravel").hide();
+                    }
+                });
             
         });  
         
         $(".complaint").click(function(){
             $("#blankModal").modal();
+
         });
+        
+        
             
     });
 </script>

@@ -29,7 +29,7 @@ Route::get('/', 'Auth\LoginController@getLogin');
 Route::post('login', 'Auth\LoginController@postLogin');
 Route::get('login/logout', 'Auth\LoginController@logout');
 Route::get('/callback', 'Auth\LoginController@callback');
-
+Route::get('login/location', 'Auth\LoginController@getLocation');
 
 Route::get('emailsingin', 'SigninController@getIndex')->name('emailsingin.index');
 Route::get('attendance', 'AttendanceController@getIndex')->name('attendance.index');
@@ -47,6 +47,9 @@ Route::get('home/docseq', 'HomeController@getDocseq');
 Route::get('home/attend_detail', 'HomeController@getAttendDetails');
 Route::get('home/attendadd', 'HomeController@getAttendadd');
 Route::get('home/calender', 'HomeController@getCalender');
+Route::get('home/ticketdata', 'HomeController@getTicketdata');
+Route::get('home/tollfree', 'HomeController@getTollfreedata');
+
 
 Route::resource('serviceengineer', 'ServiceEngineerController');
 Route::get('serviceengineer/delete/{id}', 'ServiceEngineerController@destroy');
@@ -100,6 +103,8 @@ Route::get('servicespareregister/deleteprd/{id}', 'ServiceSpareRegisterControlle
 Route::get('servicespareregister/deletethingstodo/{id}', 'ServiceSpareRegisterController@deletethingstodo');
 Route::post('servicespareregister/offeradd', 'ServiceSpareRegisterController@offeradd');
 Route::post('servicespareregister/updatedefault', 'ServiceSpareRegisterController@postUpdatedefault');
+Route::post('servicespareregister/updateterms', 'ServiceSpareRegisterController@postUpdateterms');
+Route::post('servicespareregister/updateexpense', 'ServiceSpareRegisterController@postUpdateexpense');
 
 
 Route::resource('visitplan', 'VisitplanController');
@@ -143,3 +148,7 @@ Route::post('email/emailstatus', 'EmailController@postEmailstatus');
 
 Route::resource('servicereport', 'ServiceReportController');
 Route::post('servicereport/servicedata', 'ServiceReportController@servicedata');
+
+Route::resource('ticket', 'TicketController');
+Route::post('ticket/appdata', 'TicketController@postAppdata');
+Route::post('ticket/ticketstatus', 'TicketController@postTicketstatus');

@@ -93,7 +93,7 @@
                                 $n = 0;
                                 ?>
                                 <div class="panel card" data-collapse-color="cyan" id="accordionCyan" role="tablist" aria-multiselectable="true">
-                                    @if(($record->servicespare->thingstodos))
+                                    @if(($record->thingstodos))
                                         <div class="row">
                                             <div class="col-sm-12">
                                                 <div class="card">
@@ -105,7 +105,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="card-body card-padding pd-10-20">
-                                                @foreach($record->servicespare->thingstodos as $thingstodo)
+                                                @foreach($record->thingstodos as $thingstodo)
                                                     <?php $n++; ?>
                                                         <div class="row" style="padding: 8px 0 8px 0px;">
                                                             <div class="col-sm-2 c-black text-center">{{$n}}</div>
@@ -147,7 +147,7 @@
                                 $n = 0;
                                 ?>
                                 <div class="panel card" data-collapse-color="cyan" id="accordionCyan" role="tablist" aria-multiselectable="true">
-                                    @if(($record->servicespare->prdtakens))
+                                    @if(($record->prdtakens))
                                         <div class="row">
                                             <div class="col-sm-12">
                                                 <div class="card">
@@ -160,7 +160,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="card-body card-padding pd-10-20">
-                                                @foreach($record->servicespare->prdtakens as $prdtaken)
+                                                @foreach($record->prdtakens as $prdtaken)
                                                     <?php $n++; ?>
                                                         <div class="row" style="padding: 8px 0 8px 0px;">
                                                             <div class="col-sm-4">{{$prdtaken->prd_description}}</div>
@@ -249,7 +249,7 @@
                                         @endforeach
                                     </div>
                                     @endif
-                                    @foreach($record->servicespare->registeraudits as $registeraudit)
+                                    @foreach($record->registeraudits as $registeraudit)
                                         <?php $m++; ?>
                                             
                                             <div class="col-sm-12">
