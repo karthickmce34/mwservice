@@ -915,7 +915,7 @@
                                                 <label for="warrenty" class="control-label col-sm-4 required">Warranty</label>
                                                 <div class="col-sm-8">
                                                     <div class="fg-line">
-                                                        <select class="form-control input-sm" placeholder="Warranty" aria-describedby="basic-addon1" required   id="warranty" name="warranty">
+                                                        <select class="form-control input-sm" placeholder="Warranty" aria-describedby="basic-addon1" required   id="warranty" name="warrenty">
                                                             <option value="">=== Select Warranty ===</option>
                                                             <option value="0">With Warranty</option>
                                                             <option value="1">Out of Warranty</option>

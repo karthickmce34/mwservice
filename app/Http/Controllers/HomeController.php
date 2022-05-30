@@ -714,6 +714,7 @@ class HomeController extends Controller
         
         $tollfreecall =0;
         $datas = json_decode($output, TRUE);
+        //print_r($datas);die;
         if($datas)
         {
             
@@ -738,9 +739,10 @@ class HomeController extends Controller
                 curl_close($ch2);
 
                 $datas2 = json_decode($output2, TRUE);
-               
+                
                 foreach($datas2 as $data2)
                 {
+                    print_r($data2);
                     $record['duration'] = $data2['duration'];
                     $record['receivedby'] = $data2['receivedBy'];
                     $record['disposition'] = $data2['disposition'];
@@ -762,6 +764,7 @@ class HomeController extends Controller
                 }
             }
         }
+        die;
     }
     
     public function getDashboarddata()
