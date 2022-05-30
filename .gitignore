@@ -23,8 +23,10 @@ Homestead.json
 .phpunit.result.cache
 
 public/static/uploads/serviceengineer/
-public/static/uploads/register/
 public/static/uploads/ServiceSpare/
+public/static/uploads/register/
 public/static/uploads/Visitplan/
+public/static/uploads/VisitplanSummary/
 public/static/uploads/VisitPlanSummary/
 public/reports/result/
+
