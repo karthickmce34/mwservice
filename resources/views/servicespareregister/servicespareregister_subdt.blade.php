@@ -1,7 +1,7 @@
         <div class="card">
             <div class="card-header ch-alt ">
                 <h4>Offer Details</h4>
-                @if($record->order_status == 8 && $record->order_status == 8 && $record->order_status != 9 && $record->order_status < 4)
+                @if($record->order_status != 9 && $record->order_status < 4 || $record->order_status == 4)
                 <div class="pull-right">
                     <button class="btn btn-success  waves-effect waves-float offeradd"><i class="zmdi zmdi-plus"> Offer</i></button>                                    
                 </div>
