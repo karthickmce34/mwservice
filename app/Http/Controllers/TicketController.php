@@ -97,7 +97,8 @@ class TicketController extends Controller
             $inputs['created_by_id'] = session()->get('user_id');
         }
         $inputs['complaint_type']=0;
-        $inputs['payment_status'] =$inputs['warranty'];
+        $inputs['payment_status'] =$inputs['warrenty'];
+        $inputs['warrenty'] =$inputs['warrenty'];
         $inputs['ticket_id']=$inputs['ticket_id'];
         $model = new $this->modelRegName();
         $inputs['status'] = 1;
