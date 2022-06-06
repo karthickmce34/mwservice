@@ -165,7 +165,8 @@ class HomeController extends Controller
             $inputs['created_by_id'] = session()->get('user_id');
         }
         $inputs['complaint_type']=0;
-        $inputs['payment_status'] =$inputs['warranty'];
+        $inputs['payment_status'] =$inputs['warrenty'];
+        $inputs['warrenty'] =$inputs['warrenty'];
         $model = new $this->modelName();
         $inputs['status'] = 1;
         $stored = $model->addRecord($inputs);
