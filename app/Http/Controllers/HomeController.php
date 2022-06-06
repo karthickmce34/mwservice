@@ -60,6 +60,8 @@ class HomeController extends Controller
         $closedrepmail=0;
         $ticketphne=0;
         
+        
+        
         if($user == 4)
         {
             $openticket = DB::table('ticket')->where('created_at', '>=', $currdate)->where('mode', '=', 0)->get();
@@ -67,6 +69,21 @@ class HomeController extends Controller
             $closedticket = DB::table('ticket')->where('created_at', '>=', $currdate)->where('mode', '=', 0)->where('ticket_status',3)->get();
             $pendingticket = DB::table('ticket')->where('created_at', '>=', $currdate)->where('mode', '=', 0)->where('ticket_status',0)->get();
             
+            if($openticket)
+            {
+                foreach($openticket as $opentkt)
+                {
+
+                    if($opentkt->mode == 0)
+                    {
+                        $ticketphne = $ticketphne+1; 
+                    }
+                    else
+                    {
+                        $ticketemail=$ticketemail+1;
+                    }
+                }
+            }
             $data['opentktdet']="Phone - $ticketphne";
 
 
@@ -78,6 +95,21 @@ class HomeController extends Controller
             $closedticket = DB::table('ticket')->where('created_at', '>=', $currdate)->where('ticket_status',3)->get();
             $pendingticket = DB::table('ticket')->where('created_at', '>=', $currdate)->where('ticket_status',0)->get();
             
+            if($openticket)
+            {
+                foreach($openticket as $opentkt)
+                {
+
+                    if($opentkt->mode == 0)
+                    {
+                        $ticketphne = $ticketphne+1; 
+                    }
+                    else
+                    {
+                        $ticketemail=$ticketemail+1;
+                    }
+                }
+            }
             $data['opentktdet']="Phone - $ticketphne , Email - $ticketemail";
 
         }
@@ -90,21 +122,7 @@ class HomeController extends Controller
         $tollfreevmsg = DB::table('tollfree')->where('tollfree_time', '>=', $currdate)->where('disposition','like','VOICEMSG')->get();
                 
         
-        if($openticket)
-        {
-            foreach($openticket as $opentkt)
-            {
-                
-                if($opentkt->mode == 0)
-                {
-                    $ticketphne = $ticketphne+1; 
-                }
-                else
-                {
-                    $ticketemail=$ticketemail+1;
-                }
-            }
-        }
+        
         
         foreach($closedticket as $closedtkt)
         {
@@ -743,7 +761,7 @@ class HomeController extends Controller
                 
                 foreach($datas2 as $data2)
                 {
-                    print_r($data2);
+                    //print_r($data2);
                     $record['duration'] = $data2['duration'];
                     $record['receivedby'] = $data2['receivedBy'];
                     $record['disposition'] = $data2['disposition'];
