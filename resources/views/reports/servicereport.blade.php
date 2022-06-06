@@ -28,7 +28,35 @@
             <div style="border: 2px gray solid;border-radius: 5px" >
                 <div class="row m-25">
                     <div class="row m-25">
-                        
+                        <div class="col-xs-3">
+                           <div class="form-group">
+                                <div class="fg-line">
+                                    <p class="c-black f-500 m-b-20">Order Status</p>
+
+                                    <div class="input-group form-group">
+                                        <select class="selectpicker" placeholder="Order Status" aria-describedby="basic-addon1"    id="order_status" name="order_status">
+                                            <option value="">=== Order Status ===</option>
+                                            <option value="pending">Pending</option>
+                                            <option value="8">Completed</option>
+                                            
+                                            
+                                        </select>   
+                                    </div>
+                                    
+                                    <select class="hide">
+                                        <option value="0">Enquiryreceived</option>
+                                            <option value="1">OfferSent</option>
+                                            <option value="2">Poreceived</option>
+                                            <option value="3">PIsent</option>
+                                            <option value="4">Advcance Received</option>
+                                            <option value="10">Deputed</option>
+                                            <option value="5">Payment Received</option>
+                                            <option value="6">DISent</option>
+                                            <option value="9">Cancelled</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
                         <div class="col-xs-3">
                            <div class="form-group">
                                 <div class="fg-line">
@@ -47,31 +75,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-xs-3">
-                           <div class="form-group">
-                                <div class="fg-line">
-                                    <p class="c-black f-500 m-b-20">Order Status</p>
-
-                                    <div class="input-group form-group">
-                                        <select class="selectpicker" placeholder="Order Status" aria-describedby="basic-addon1"    id="order_status" name="order_status">
-                                            <option value="">=== Order Status ===</option>
-                                            <option value="pending">Pending</option>
-                                            <option value="0">Enquiryreceived</option>
-                                            <option value="1">OfferSent</option>
-                                            <option value="2">Poreceived</option>
-                                            <option value="3">PIsent</option>
-                                            <option value="4">Advcance Received</option>
-                                            <option value="10">Deputed</option>
-                                            <option value="5">Payment Received</option>
-                                            <option value="6">DISent</option>
-                                            <option value="8">Completed</option>
-                                            <option value="9">Cancelled</option>
-                                            
-                                        </select>   
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        
                         <div class="col-xs-3 frmdt">
                             <div class="form-group">
                                 <div class="fg-line">

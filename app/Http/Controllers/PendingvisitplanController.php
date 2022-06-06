@@ -343,9 +343,11 @@ class PendingvisitplanController extends Controller
                     $modelService = new $this->modelSerSp();
                     $modelSerData = $modelService->find($registerData->servicespare_id);
                     $modelSerData->order_status = 8;
+                    
                     $modelSerData->save();
                     
                     $registerData->visit_status=2;
+                    $registerData->visit_completed_date = date('Y-m-d');
                     $registerData->save();
                 }
                 return redirect()->route('visitplansummary.show',$modelsum->id);
@@ -456,6 +458,7 @@ class PendingvisitplanController extends Controller
                 $modelSerData->save();
                 
                 $registerData->visit_status=2;
+                $registerData->visit_completed_date = date('Y-m-d');
                 $registerData->save();
             }
             return redirect()->route('visitplansummary.show',$modelsum->id);
