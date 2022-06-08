@@ -2,7 +2,7 @@
                         <div class="card-header">
                             <h2>{{ucfirst($baseName)}}</h2>
                         </div>
-                        <div class="col-sm-offset-8 col-sm-4">
+                        <div class="col-sm-offset-7 col-sm-4">
                             <label class="radio radio-inline m-r-20">
                                 <input type="radio" class="tkfilter" name="inlineRadioOptions" value="Pending" checked>
                                 <i class="input-helper"></i>  
@@ -33,7 +33,7 @@
                                         <th data-column-id="name" data-type="string">Name</th>                                    
                                         <th data-column-id="mobileno" >Mobile No</th>     
                                         <th data-column-id="emailaddress" >Email</th>
-                                        <th data-column-id="status"  > Status</th>
+                                        <th data-column-id="status" data-visible="false" > Status</th>
                                         <th data-column-id="commands" data-formatter="commands" data-sortable="false">Commands</th>
 
                                     </tr>
@@ -102,7 +102,7 @@
                         }
                     });*/
                     
-                    var table = $('#data-table-command').DataTable({pagingType: 'numbers'});
+                    var table = $('#data-table-command').DataTable({pagingType: 'numbers',autoWidth:true});
  
                     $("#data-table-command tfoot th").each( function ( i ) {
                         if(i ==5)
