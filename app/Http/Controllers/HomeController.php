@@ -118,7 +118,7 @@ class HomeController extends Controller
         $tollfreegeneral = DB::table('tollfree')->where('tollfree_time', '>=', $currdate)->where('ivrdata','like','General')->get();
         $tollfreespser = DB::table('tollfree')->where('tollfree_time', '>=', $currdate)->where('ivrdata','like','Service & Spare')->get();
         $tollfreeanswer = DB::table('tollfree')->where('tollfree_time', '>=', $currdate)->where('disposition','like','ANSWER')->get();
-        $tollfreenoanswer = DB::table('tollfree')->where('tollfree_time', '>=', $currdate)->where('disposition','like','NOANSWER')->get();
+        $tollfreenoanswer = DB::table('tollfree')->where('tollfree_time', '>=', $currdate)->whereIn('disposition',['NOANSWER','MISSED'])->get();
         $tollfreevmsg = DB::table('tollfree')->where('tollfree_time', '>=', $currdate)->where('disposition','like','VOICEMSG')->get();
                 
         
