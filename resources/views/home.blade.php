@@ -43,7 +43,10 @@
                     <h3>Home</h3>
                     <h2 class="c-black f-500">Welcome {{ strtoupper(session()->get('name')) }}</h2>
             </div>
+            <?php $user_type = session()->get('user_type')?>
+            
             <div class="card-body card-padding" >
+                @if($user_type == 0 || $user_type == 2 || $user_type == 4)
                 <div class="tl-header bgm-bluegray">
                     <h4 class='c-white'>Today Stats</h4>
                     <ul class="actions actions-alt">
@@ -120,7 +123,7 @@
                             </div>
                         </div>
                     </div>
-                
+                @endif
                 @if(session()->get('user_type') != 4)
                 <div class="col-sm-12">
                     <!-- Calendar -->
@@ -252,6 +255,7 @@
                 </div>
                 @endif
             </div>
+            
         </div>
                     
         

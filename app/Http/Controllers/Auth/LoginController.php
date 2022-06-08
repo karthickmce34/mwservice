@@ -75,7 +75,7 @@ class LoginController extends Controller
                 Session::put('name', $modelData->name);
                 Session::put('user_id', $modelData->id);
                 Session::put('token', $token );
-                Session::put('user_type', 4 );
+                Session::put('user_type', 5 );
                 //echo $String;
                 return redirect()->to('home')->with('Success','Welcome!');
                 //print_r($inputs);die;

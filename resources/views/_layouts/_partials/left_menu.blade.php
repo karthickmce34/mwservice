@@ -1,4 +1,5 @@
-        <?php $user_type = session()->get('user_type'); ?>
+        <?php $user_type = session()->get('user_type');
+        ?>
         <ul class="main-menu">
             @if($user_type == 0 || $user_type == 2)
             <li class="@yield('page_home_li_cls')">
