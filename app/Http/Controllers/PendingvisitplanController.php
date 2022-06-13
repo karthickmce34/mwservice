@@ -46,7 +46,7 @@ class PendingvisitplanController extends Controller
     {
         $user_type = session()->get('user_type');
         $user_id = session()->get('user_id');
-       
+        //print_r($user_type);die;
         if($user_type == 0 || $user_type == 2)
         {
            
@@ -54,7 +54,7 @@ class PendingvisitplanController extends Controller
             $registerData = $model->where('visit_status',1)->get();
             //print_r($registerData);die;
         }
-        else if ($user_type == 4)
+        else if ($user_type == 5)
         {
             $servicedatas = DB::select("SELECT distinct visit_plan.id FROM visit_plan,visitplan_engineer,service_engineer
                                         WHERE visit_plan.id = visitplan_engineer.visitplan_id

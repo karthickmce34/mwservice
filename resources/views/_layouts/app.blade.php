@@ -1564,10 +1564,10 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group col-sm-6">
-                                                    <label for="emailid" class="control-label col-sm-4 required">Email</label>
+                                                    <label for="emailid" class="control-label col-sm-4 ">Email</label>
                                                     <div class="col-sm-8">
                                                         <div class="fg-line">
-                                                            <input class="form-control input-sm" placeholder="Email" required name="emailid" type="text" id="tk_emailid" autocomplete="off" >                                        
+                                                            <input class="form-control input-sm" placeholder="Email"  name="emailid" type="text" id="tk_emailid" autocomplete="off" >                                        
                                                         </div>
                                                     </div>
                                                 </div>

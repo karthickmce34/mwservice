@@ -24,7 +24,7 @@
                                 Closed
                             </label>
                         </div>
-                        <div class="p-5" style="margin-top:40px;">
+                        <div class="p-5 card-body" style="margin-top:40px;">
                             <table id="data-table-command" class="table table-striped ">
                                 <thead>
                                     <tr>
@@ -33,7 +33,7 @@
                                         <th data-column-id="name" data-type="string">Name</th>                                    
                                         <th data-column-id="mobileno" >Mobile No</th>     
                                         <th data-column-id="emailaddress" >Email</th>
-                                        <th data-column-id="status" data-visible="false" > Status</th>
+                                        <th data-column-id="status" > Status</th>
                                         <th data-column-id="commands" data-formatter="commands" data-sortable="false">Commands</th>
 
                                     </tr>
@@ -124,6 +124,11 @@
                             
                             
                     } );
+                    
+                    table.columns.adjust().draw();
                 });
+                
+                
+
             </script>
         @stop

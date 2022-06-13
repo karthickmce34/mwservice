@@ -47,7 +47,7 @@ class VisitplansummaryController extends Controller
             $registerData = $model->all();
             //print_r($registerData);die;
         }
-        else if ($user_type == 4)
+        else if ($user_type == 5)
         {
             $servicedatas = DB::select("SELECT distinct visitplan_summary.id FROM visitplan_summary,visit_plan,visitplan_engineer,service_engineer
                                         WHERE visit_plan.id = visitplan_engineer.visitplan_id

@@ -12,7 +12,22 @@
 @section('style')
     @parent
     <style>
-       
+       #data-table-command {
+            table-layout: fixed;
+            width: 100% !important;
+          }
+          #data-table-command td{
+            width: auto !important;
+            text-overflow: ellipsis;
+            overflow: hidden;
+          }
+          #data-table-command th{
+            width: auto !important;
+            white-space: normal;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+          }
     </style> 
 @stop
 @section('menu')
