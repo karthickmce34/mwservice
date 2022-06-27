@@ -2163,18 +2163,24 @@
                     var orderstatus = $(this).data('orderstatus');
                     var order_ref_no = "";
                     var po_date = "";
+                    var completed_date = "";
 
                     if(orderstatus == 2)
                     {
                         order_ref_no = $("#modal3").find("#order_ref_no").val();
                         po_date = $("#modal3").find("#po_date").val();
                     }
+                    
+                    if(orderstatus == 11)
+                    {
+                        completed_date = $("#modal3").find("#completed_date").val();
+                    }
                     var controller = 'servicespareregister/';
                     
                     $.ajax({
                     method: "POST",
                     url: _site_url + controller + "updateorderstatus",
-                    data: {id:id,orderstatus:orderstatus,order_ref_no:order_ref_no,po_date:po_date},
+                    data: {id:id,orderstatus:orderstatus,order_ref_no:order_ref_no,po_date:po_date,completed_date:completed_date},
 
                     }).done( function( data, textStatus, jqXHR ) {
                     console.log( " ajax done " );

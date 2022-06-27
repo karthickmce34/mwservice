@@ -53,7 +53,7 @@ class ServiceReportController extends Controller
         {
             if($orderstatus == "pending")
             {
-                $statuspara = " and service_spares_register.order_status in ('10','2','3','5','6') ";
+                $statuspara = " and service_spares_register.order_status in ('10','2','3','5','6','8') ";
             }
             else
             {

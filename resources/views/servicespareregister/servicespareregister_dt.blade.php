@@ -649,8 +649,28 @@
                                                             @if($record->order_status == 2)  
                                                                 <button type="button" data-id="{{$record->id}}" data-orderstatus="3" class="btn btn-primary bgm-cyan waves-effect upstatus">PI Send</button>                                    
                                                             @endif
-                                                            @if($record->order_status == 8)  
-                                                                <button type="button" data-id="{{$record->id}}" data-orderstatus="11" class="btn btn-primary bgm-cyan waves-effect upstatus">Job Completed</button>                                    
+                                                            @if($record->order_status == 8) 
+                                                                <div class="form-group">
+                                                                    <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}"/>
+                                                                    <div class="form-row">
+                                                                        
+                                                                        <div class="col-sm-offset-4 col-sm-6 ordercalender">
+                                                                            <div class="form-group">
+                                                                                <span class="control-label"><i class="zmdi zmdi-calender"></i></span>
+                                                                                <div class="fg-line">
+                                                                                    <?php $retdate = date('Y-m-d');  ?>
+                                                                                    <input type='text' class="form-control datepicker" name="completed_date" value="{{$retdate}}">
+
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div> 
+                                                                    <div class="form-row">
+                                                                        <div class="col-sm-12">
+                                                                            <button type="button" data-id="{{$record->id}}" data-orderstatus="11" class="btn btn-primary bgm-cyan waves-effect upstatus">Job Completed</button>                                    
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
                                                             @endif
                                                          @endif
                                                     </div>

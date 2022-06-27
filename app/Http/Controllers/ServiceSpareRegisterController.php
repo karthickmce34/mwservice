@@ -1552,6 +1552,11 @@ class ServiceSpareRegisterController extends Controller
             $modelData->pi_date = date('Y-m-d');
         }
         
+        if($inputs['orderstatus']== 11)
+        {
+            $modelData->completed_date = date('Y-m-d');
+        }
+        
         $modelData->save();
         $this->data['status']=1;
         $this->data['message']="Status Updated Successfully";
