@@ -54,6 +54,9 @@
                     <li >
                         <a class="@yield('page_servicereport_li_cls')" href="{{ route('servicereport.index') }}"><i class="zmdi zmdi-assignment-o"></i>&nbsp;&nbsp; Service Report </a>
                     </li>
+                    <li >
+                        <a class="@yield('page_statusreport_li_cls')" href="{{ route('statusreport.index') }}"><i class="zmdi zmdi-assignment-o"></i>&nbsp;&nbsp; Status Report </a>
+                    </li>
                     
                 </ul>
             </li>

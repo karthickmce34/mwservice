@@ -149,6 +149,9 @@ Route::post('email/emailstatus', 'EmailController@postEmailstatus');
 Route::resource('servicereport', 'ServiceReportController');
 Route::post('servicereport/servicedata', 'ServiceReportController@servicedata');
 
+Route::resource('statusreport', 'StatusReportController');
+Route::post('statusreport/statusdata', 'StatusReportController@statusdata');
+
 Route::resource('ticket', 'TicketController');
 Route::post('ticket/appdata', 'TicketController@postAppdata');
 Route::post('ticket/ticketstatus', 'TicketController@postTicketstatus');
