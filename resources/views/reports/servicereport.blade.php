@@ -37,7 +37,7 @@
                                         <select class="selectpicker" placeholder="Order Status" aria-describedby="basic-addon1"    id="order_status" name="order_status">
                                             <option value="">=== Order Status ===</option>
                                             <option value="pending">Pending</option>
-                                            <option value="8">Completed</option>
+                                            <option value="11">Completed</option>
                                             
                                             
                                         </select>   

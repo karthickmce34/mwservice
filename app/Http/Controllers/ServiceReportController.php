@@ -58,8 +58,8 @@ class ServiceReportController extends Controller
             else
             {
                 $statuspara = " and service_spares_register.order_status = $orderstatus 
-                        and complaint_register.complaint_date >= '".$inputs['fromdate']."' 
-                          and complaint_register.complaint_date <= '".$inputs['todate']."'";
+                        and service_spares_register.completed_date >= '".$inputs['fromdate']."' 
+                          and service_spares_register.completed_date <= '".$inputs['todate']."'";
             }
                 
         }

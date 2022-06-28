@@ -12,7 +12,6 @@
 @section('style')
     @parent
     <style>
-       
     </style> 
 @stop
 @section('menu')
@@ -24,15 +23,18 @@
         <div class="card-header card-padding text-center">
             <h3>Service Report</h3>
         </div>
-        <?php echo json_encode($process_status); ?>
+        
     </div>   
     <div class="card">
         <div class="card col-sm-6">
+            <h5>Process Pending <span class="f-16 zmdi zmdi-widgets pull-right"></span></h5>
+            
             <div id="chart1">
                 
             </div>
         </div>
         <div class="card col-sm-6">
+            <h5>Job Pending <span class="f-16 zmdi zmdi-widgets pull-right"></span></h5>
             <div id="chart2">
                 
             </div>
@@ -66,7 +68,26 @@
             </table>
         </div>
     </div>
-        
+    <div id="modalreport">
+        <div class="modal fade servicestatus" id="servicestatus" role="dialog">
+            <div class="modal-dialog  modal-lg">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4>Details</h4>
+                    </div>
+                    
+                    <div class="modal-body">
+                                       
+                    </div>
+                    <div class="modal-footer m-t-25">
+                        <button data-dismiss="modal" class="btn bgm-cyan btn-icon waves-effect waves-circle waves-float pull-right"><i class="zmdi zmdi-close"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> 
 
 @stop
 
@@ -79,18 +100,70 @@
     <script src="{{asset('/')}}/c3/c3.min.js"></script>
     <script>
         $(function () {
+            var _site_url = "{{url('/')}}/";
+            
             var chart1 = c3.generate({
                         data: {
                             columns: <?php echo json_encode($process_status); ?>,
                             type : 'donut',
-                            onclick: function (d, i) { console.log("onclick", d, i); },
-                            onmouseover: function (d, i) { console.log("onmouseover", d, i); },
-                            onmouseout: function (d, i) { console.log("onmouseout", d, i); }
+                            onclick: function (d, i) { statusreport(d, i); },
+                           // onmouseover: function (d, i) { console.log("onmouseover", d, i); },
+                            //onmouseout: function (d, i) { console.log("onmouseout", d, i); }
                         },
                         donut: {
-                            title: "Process Pending"
+                            title: "Process Pending",
+                            label: {
+                              format: function(value, ratio, id) {
+                                return value;
+                              }
+                            },
+                            
                         },
+                        tooltip: {
+                                format: {
+                                    title: function (d) { return d; },
+                                    value: function (value, ratio, id) {
+                                        //var format = id === 'data1' ? d3.format(',') : d3.format('$');
+                                        //return format(value);
+                                        return value;
+                                        
+                                        },
+                                    }
+                                },
                         bindto:"#chart1",
+                    });
+                
+            var chart2 = c3.generate({
+                        data: {
+                            columns: <?php echo json_encode($job_status); ?>,
+                            type : 'donut',
+                            onclick: function (d, i) { statusreport(d, i , ''); },
+                           // onmouseover: function (d, i) { console.log("onmouseover", d, i); },
+                           // onmouseout: function (d, i) { console.log("onmouseout", d, i); }
+                        },
+                        donut: {
+                            title: "Job Pending",
+                            label: {
+                              format: function(value, ratio, id) {
+                                return value;
+                              }
+                            },
+                            
+                        
+                        },
+                        tooltip: {
+                                format: {
+                                    title: function (d) { return d; },
+                                    value: function (value, ratio, id) {
+                                        //var format = id === 'data1' ? d3.format(',') : d3.format('$');
+                                        //return format(value);
+                                        return value;
+                                        
+                                        },
+                        //            value: d3.format(',') // apply this format to both y and y2
+                                    }
+                                },
+                        bindto:"#chart2",
                     });
             var chart2 = c3.generate({
                         data: {
@@ -104,9 +177,52 @@
                             onmouseover: function (d, i) { console.log("onmouseover", d, i); },
                             onmouseout: function (d, i) { console.log("onmouseout", d, i); }
                         },
-                        bindto:"#chart2",
+                        bindto:"#chart3",
                     });
+                    
+            function statusreport(d, i)
+            {
+                console.log("onclick", d, i);
+
+                var orderstatus = d.id;
+
+                var dataConfig = {
+                        orderstatus: orderstatus
+                        };
+
+                var controller = 'statusreport/';
+
+                $.ajax({
+                            method: "POST",
+                            url: _site_url + controller + "statusdetails",
+                            data: dataConfig,
+
+                        }).done( function( data, textStatus, jqXHR ) {
+                            console.log( " ajax done " );
+                           // alert(data);
+                            if(data.status ==1)
+                            {
+                                
+                                $("#modalreport").find(".modal-body div").remove();
+                                $("#modalreport").find(".modal-body").append("<div class='statrep'></div>");
+                                $("#modalreport").find(".modal-body div").append("<table><thead<th>Seqno</th><th>Complaint Date</th><th>Customer Name</th><th>Mobileno</th><th>So No</th><th>Scope</th></table>");
+                                $("#modalreport").find("#servicestatus").modal();
+                            }
+
+                        }).fail( function( jqXHR, textStatus, errorThrown ) {
+                            console.log( " ajax fail " );
+                            //console.log( jqXHR, textStatus, errorThrown );
+                        }).always ( function( data_jqXHR, textStatus, jqXHR_errorThrown ) {
+                            console.log( " ajax always " );
+                            //console.log( data_jqXHR, textStatus, jqXHR_errorThrown );
+                        });
+
+
+                //alert(d.id);
+            }
         });
+        
+            
     </script>
 @stop
 

@@ -151,6 +151,8 @@ Route::post('servicereport/servicedata', 'ServiceReportController@servicedata');
 
 Route::resource('statusreport', 'StatusReportController');
 Route::post('statusreport/statusdata', 'StatusReportController@statusdata');
+Route::post('statusreport/statusdetails', 'StatusReportController@statusdetails');
+
 
 Route::resource('ticket', 'TicketController');
 Route::post('ticket/appdata', 'TicketController@postAppdata');

@@ -20,6 +20,9 @@ class StatusReportController extends Controller
     public $basePath        = 'reports/';
     public $detailName      = 'StatusReportController@getIndex';
     
+   static $ORDER_TYPE_VALUES = array('Enquiry Received' => '0', 'OfferSent' => '1', 'Po Received' => '2' , 'PI Sent' => '3' ,'Advance Received'=>'4' , 'Payment Received' => '5','Visit Completed'=>'8','Deputed'=>'10','Visit Resscheduled'=>'12');
+
+    
     public function __construct()
     {
         $this->middleware('auth');
@@ -56,11 +59,8 @@ class StatusReportController extends Controller
                                                 CASE
                                                 when service_spares_register.order_status = 8 then 'Visit Completed'
                                                 when service_spares_register.order_status = 10 then 'Deputed' 
-                                         		when service_spares_register.order_status = 11 then 'Job Completed' 
                                          		when service_spares_register.order_status = 12 then 'Visit Resscheduled' else 'No Data' end as orderstatus
                                                 
-                                                
-
                                     from 
                                         complaint_register,
                                         service_spares_register
@@ -74,15 +74,22 @@ class StatusReportController extends Controller
                                     and complaint_register.complaint_type = 0)A
                                     where A.orderstatus != 'No Data'
                                     group by A.orderstatus");
-        
+       $jobdata=array();
+       $processdata = array();
+       
        foreach($process_status as $process)
        {
            $processdata[]=array($process->orderstatus ,$process->cnt);
            //$processdata['processcnt'][] = $process->cnt;
        }
-       // print_r($processdata);die;
+       foreach($job_pending as $job)
+       {
+           $jobdata[]=array($job->orderstatus ,$job->cnt);
+           //$processdata['processcnt'][] = $process->cnt;
+       }
+        //print_r($jobdata);die;
         $data['process_status']=$processdata;
-        $data['job_status']=$job_pending;
+        $data['job_status']=$jobdata;
         
         return view($this->basePath . $this->baseName,$data);
     }
@@ -267,6 +274,36 @@ class StatusReportController extends Controller
         $this->data['servicedata']=$servicedata;
         return response()->json($this->data);
               
+    }
+    
+    public function statusdetails()
+    {
+        $inputs = request()->all();
+        
+        $ordervalue = StatusReportController::$ORDER_TYPE_VALUES[$inputs['orderstatus']];
+        
+        $servicedata = DB::select("select complaint_register.seqno,complaint_register.customer_name,
+                                    complaint_register.complaint_date,
+                                    complaint_register.mobileno,
+                                    complaint_register.salesorder_no,complaint_register.warrenty,
+                                    service_spares_register.scope_of_work
+                                    from 
+                                        complaint_register,
+                                        service_spares_register
+                                        left join visit_plan on visit_plan.servicespare_id = service_spares_register.id and visit_plan.deleted_at is null
+                                        left join visitplan_engineer on  visit_plan.id = visitplan_engineer.visitplan_id and visitplan_engineer.deleted_at is null
+                                        left join service_engineer on service_engineer.id = visitplan_engineer.engineer_id
+                                        left join service_agent on service_agent.id = visit_plan.agent_id
+                                        left join visitplan_summary on visitplan_summary.visitplan_id = visit_plan.id
+
+                                    where complaint_register.id = service_spares_register.complaint_register_id
+                                    and complaint_register.complaint_type = 0
+                                    and complaint_register.order_status = $ordervalue");
+        $this->data['status']=1;
+        $this->data['servicedata']=$servicedata;
+       // print_r($inputs);die;
+        //$this->data['servicedata']=$servicedata;
+        return response()->json($this->data);
     }
     
 }

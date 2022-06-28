@@ -54,7 +54,9 @@
         <!-- Material CSS -->
         <link href="{{asset($base_material_path)}}/css/app.min.1.css" rel="stylesheet">
         <link href="{{asset($base_material_path)}}/css/app.min.2.css" rel="stylesheet">
-        
+               
+        <link href="{{asset('/')}}/c3/c3.css" rel="stylesheet">
+
         
         @show
         
