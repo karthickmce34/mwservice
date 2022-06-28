@@ -113,6 +113,11 @@ class StatusReportController extends Controller
                                     from service_spares_register
                                      where service_spares_register.paid_date >= '2022-06-01'
                                      and service_spares_register.paid_date <= '2022-06-30')a");
+        
+        $scopeofwork = DB::select("SELECT count(scope_of_work) as cnt,replace(scope_of_work,'\"','') as scope_of_work 
+                                    FROM service_spares_register 
+                                    where scope_of_work != '' 
+                                    group by scope_of_work");
        $jobdata=array();
        $processdata = array();
        $jobprocessdata = array();
@@ -133,6 +138,12 @@ class StatusReportController extends Controller
            //$processdata['processcnt'][] = $process->cnt;
        }
        
+       foreach($scopeofwork as $scope)
+       {
+           $scopedata[]=array($scope->scope_of_work ,$scope->cnt);
+           //$processdata['processcnt'][] = $process->cnt;
+       }
+       
       /**************for overall expenses**************/
        
        $expensedata[]=array('Lodgeing Expenses',$overall_expenses[0]->lodgeing_expenses);
@@ -145,13 +156,14 @@ class StatusReportController extends Controller
        $received_expensedata[]=array('Received',$received_expenses[0]->recieved);
        $received_expensedata[]=array('Expenses',$received_expenses[0]->expenses);
        
-        //print_r($overall_expenses);die;
+        //print_r($scopedata);die;
         $data['process_status']=$processdata;
         $data['job_status']=$jobdata;
         $data['jobprocess_status']=$jobprocessdata;
         $data['overall_expenses']=$expensedata;
         $data['overallexptotal'] = $overallexptotal;
         $data['received_expenses'] = $received_expensedata;
+        $data['scopeofwork'] = $scopedata;
         
         return view($this->basePath . $this->baseName,$data);
     }
