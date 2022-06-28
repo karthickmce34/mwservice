@@ -32,13 +32,41 @@
             <div id="chart1">
                 
             </div>
+            <div id="table1" class='hide'>
+                
+            </div>
         </div>
         <div class="card col-sm-6">
             <h5>Job Pending <span class="f-16 zmdi zmdi-widgets pull-right"></span></h5>
             <div id="chart2">
                 
             </div>
-        </div>    
+        </div>
+        
+        <div class="card col-sm-6">
+            <h5>Pending Vs Completed <small> For Current Month</small> <span class="f-16 zmdi zmdi-widgets pull-right"></span></h5>
+            <div id="chart3">
+                
+            </div>
+        </div>
+        <div class="card col-sm-6">
+            <h5>Expenses <small> For Current Month</small> <span class="f-16 zmdi zmdi-widgets pull-right"></span><span class="pull-right m-r-25">Total : {{$overallexptotal}}</span></h5>
+            <div id="chart4">
+                
+            </div>
+        </div>
+        <div class="card col-sm-6">
+            <h5>Recieved vs Expenses <small> For Current Month</small> <span class="f-16 zmdi zmdi-widgets pull-right"></span><span class="pull-right m-r-25">Total : {{$overallexptotal}}</span></h5>
+            <div id="chart5">
+                
+            </div>
+        </div>
+        <div class="card col-sm-6">
+            <h5>Scope Of Work <small> For Current Month</small> <span class="f-16 zmdi zmdi-widgets pull-right"></span><span class="pull-right m-r-25">Total : {{$overallexptotal}}</span></h5>
+            <div id="chart6">
+                
+            </div>
+        </div>
     </div>
     <div class="newrow">
         <div id="row1" class=" table-responsive">
@@ -70,12 +98,12 @@
     </div>
     <div id="modalreport">
         <div class="modal fade servicestatus" id="servicestatus" role="dialog">
-            <div class="modal-dialog  modal-lg">
+            <div class="modal-dialog  modal-lg" style="width:95%">
                 <!-- Modal content-->
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4>Details</h4>
+                        <h4>Details <span class="detname"></span></h4>
                     </div>
                     
                     <div class="modal-body">
@@ -165,19 +193,61 @@
                                 },
                         bindto:"#chart2",
                     });
-            var chart2 = c3.generate({
+            var chart3 = c3.generate({
                         data: {
                             // iris data from R
-                            columns: [
-                                ['data1', 30],
-                                ['data2', 120],
-                            ],
-                            type : 'pie',
-                            onclick: function (d, i) { console.log("onclick", d, i); },
+                            columns: <?php echo json_encode($jobprocess_status); ?>,
+                            type : 'bar',
+                            /*onclick: function (d, i) { console.log("onclick", d, i); },
                             onmouseover: function (d, i) { console.log("onmouseover", d, i); },
-                            onmouseout: function (d, i) { console.log("onmouseout", d, i); }
+                            onmouseout: function (d, i) { console.log("onmouseout", d, i); }*/
                         },
                         bindto:"#chart3",
+                    });
+                
+            var chart4 = c3.generate({
+                        data: {
+                            // iris data from R
+                            columns: <?php echo json_encode($overall_expenses); ?>,
+                            type : 'bar',
+                            /*onclick: function (d, i) { console.log("onclick", d, i); },
+                            onmouseover: function (d, i) { console.log("onmouseover", d, i); },
+                            onmouseout: function (d, i) { console.log("onmouseout", d, i); }*/
+                        },
+                        bindto:"#chart4",
+                    });
+            var chart5 = c3.generate({
+                        data: {
+                            // iris data from R
+                            columns: <?php echo json_encode($received_expenses); ?>,
+                            type : 'pie',
+                            /*onclick: function (d, i) { console.log("onclick", d, i); },
+                            onmouseover: function (d, i) { console.log("onmouseover", d, i); },
+                            onmouseout: function (d, i) { console.log("onmouseout", d, i); }*/
+                        },
+                        pie: {
+                            title: "Recieved Vs Expenses",
+                            label: {
+                              format: function(value, ratio, id) {
+                                return value;
+                              }
+                            },
+                            
+                        
+                        },
+                        tooltip: {
+                                format: {
+                                    title: function (d) { return d; },
+                                    value: function (value, ratio, id) {
+                                        //var format = id === 'data1' ? d3.format(',') : d3.format('$');
+                                        //return format(value);
+                                        return value;
+                                        
+                                        },
+                        //            value: d3.format(',') // apply this format to both y and y2
+                                    }
+                                },
+                        bindto:"#chart5",
                     });
                     
             function statusreport(d, i)
@@ -200,12 +270,19 @@
                         }).done( function( data, textStatus, jqXHR ) {
                             console.log( " ajax done " );
                            // alert(data);
+                            $(".detname").html(" For "+orderstatus);
                             if(data.status ==1)
                             {
                                 
                                 $("#modalreport").find(".modal-body div").remove();
                                 $("#modalreport").find(".modal-body").append("<div class='statrep'></div>");
-                                $("#modalreport").find(".modal-body div").append("<table><thead<th>Seqno</th><th>Complaint Date</th><th>Customer Name</th><th>Mobileno</th><th>So No</th><th>Scope</th></table>");
+                                $("#modalreport").find(".modal-body .statrep").append("<table class='table'><thead><th>Seqno</th><th>Complaint Date</th><th>Customer Name</th><th>Mobileno</th><th>So No</th><th>Scope</th></thead><tbody></tbody></table>");
+                                var len = data.servicedata.length;
+                                for (var i=0;i<len;i++)
+                                {
+                                    $("#modalreport").find(".statrep tbody").append("<tr><td>"+data.servicedata[i].seqno+"</td><td>"+data.servicedata[i].complaint_date+"</td><td>"+data.servicedata[i].customer_name+"</td><td>"+data.servicedata[i].mobileno+"</td><td>"+data.servicedata[i].salesorder_no+"</td><td>"+data.servicedata[i].scope_of_work+"</td></tr>");
+                                }
+                                
                                 $("#modalreport").find("#servicestatus").modal();
                             }
 

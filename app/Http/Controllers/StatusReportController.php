@@ -44,11 +44,6 @@ class StatusReportController extends Controller
                                     from 
                                         complaint_register,
                                         service_spares_register
-                                        left join visit_plan on visit_plan.servicespare_id = service_spares_register.id and visit_plan.deleted_at is null
-                                        left join visitplan_engineer on  visit_plan.id = visitplan_engineer.visitplan_id and visitplan_engineer.deleted_at is null
-                                        left join service_engineer on service_engineer.id = visitplan_engineer.engineer_id
-                                        left join service_agent on service_agent.id = visit_plan.agent_id
-                                        left join visitplan_summary on visitplan_summary.visitplan_id = visit_plan.id
 
                                     where complaint_register.id = service_spares_register.complaint_register_id
                                     and complaint_register.complaint_type = 0)A
@@ -64,18 +59,63 @@ class StatusReportController extends Controller
                                     from 
                                         complaint_register,
                                         service_spares_register
-                                        left join visit_plan on visit_plan.servicespare_id = service_spares_register.id and visit_plan.deleted_at is null
-                                        left join visitplan_engineer on  visit_plan.id = visitplan_engineer.visitplan_id and visitplan_engineer.deleted_at is null
-                                        left join service_engineer on service_engineer.id = visitplan_engineer.engineer_id
-                                        left join service_agent on service_agent.id = visit_plan.agent_id
-                                        left join visitplan_summary on visitplan_summary.visitplan_id = visit_plan.id
 
                                     where complaint_register.id = service_spares_register.complaint_register_id
                                     and complaint_register.complaint_type = 0)A
                                     where A.orderstatus != 'No Data'
                                     group by A.orderstatus");
+        
+        $job_process_status = DB::select("select count(A.pendingorderstatus) as cnt,A.pendingorderstatus from
+                                            (select 
+                                                CASE
+                                                when service_spares_register.order_status = 0 then 'Process Pending'
+                                                when service_spares_register.order_status = 1 then 'Process Pending'
+                                                when service_spares_register.order_status = 2 then 'Process Pending'
+                                                when service_spares_register.order_status = 3 then 'Process Pending'
+                                                when service_spares_register.order_status = 4 then 'Process Pending'
+                                                when service_spares_register.order_status = 5 then 'Process Pending' 
+                                                when service_spares_register.order_status = 8 then 'Job Pending'
+                                                when service_spares_register.order_status = 10 then 'Job Pending' 
+                                         	when service_spares_register.order_status = 12 then 'Job Pending'
+                                                else 'No Data' end as pendingorderstatus
+                                                
+
+                                    from 
+                                        complaint_register,
+                                        service_spares_register
+
+                                    where complaint_register.id = service_spares_register.complaint_register_id
+                                    and complaint_register.complaint_type = 0
+                                    and complaint_register.complaint_date >= '2022-06-01'
+                                    and complaint_register.complaint_date <= '2022-06-30')A
+                                    where A.pendingorderstatus != 'No Data'
+                                    group by A.pendingorderstatus");
+        
+        $overall_expenses = DB::select("select sum(visitplan_summary.loading_expenses) as loading_expenses,
+                                            sum(visitplan_summary.boarding_expenses) as boarding_expenses,
+                                        sum(visitplan_summary.travel_expenses) as travel_expenses,
+                                        sum(visitplan_summary.local_conveyance) as local_conveyance
+                                    from visitplan_summary 
+                                    where visitplan_summary.date_of_complete >= '2022-06-01'
+                                    and visitplan_summary.date_of_complete <= '2022-06-30'");
+        
+        $received_expenses = DB::select("select sum(a.expenses) as expenses,sum(a.recieved) as recieved from 
+                                    (select sum(visitplan_summary.loading_expenses) + 
+                                            sum(visitplan_summary.boarding_expenses) +
+                                        sum(visitplan_summary.travel_expenses) +
+                                        sum(visitplan_summary.local_conveyance) as expenses,0 as recieved
+                                    from visitplan_summary
+                                    where visitplan_summary.date_of_complete >= '2022-06-01'
+                                    and visitplan_summary.date_of_complete <= '2022-06-30'
+                                    UNION ALL
+                                    select 0 as expenses,sum(service_spares_register.advance_amt) + sum(service_spares_register.payment_received) as recieved
+
+                                    from service_spares_register
+                                     where service_spares_register.paid_date >= '2022-06-01'
+                                     and service_spares_register.paid_date <= '2022-06-30')A");
        $jobdata=array();
        $processdata = array();
+       $jobprocessdata = array();
        
        foreach($process_status as $process)
        {
@@ -87,9 +127,31 @@ class StatusReportController extends Controller
            $jobdata[]=array($job->orderstatus ,$job->cnt);
            //$processdata['processcnt'][] = $process->cnt;
        }
-        //print_r($jobdata);die;
+       foreach($job_process_status as $jobprocess)
+       {
+           $jobprocessdata[]=array($jobprocess->pendingorderstatus ,$jobprocess->cnt);
+           //$processdata['processcnt'][] = $process->cnt;
+       }
+       
+      /**************for overall expenses**************/
+       
+       $expensedata[]=array('Loading Expenses',$overall_expenses[0]->loading_expenses);
+       $expensedata[]=array('Boarding Expenses',$overall_expenses[0]->boarding_expenses);
+       $expensedata[]=array('Travel Expenses',$overall_expenses[0]->travel_expenses);
+       $expensedata[]=array('Local Conveyance',$overall_expenses[0]->local_conveyance);
+       
+       $overallexptotal = ($overall_expenses[0]->loading_expenses+$overall_expenses[0]->boarding_expenses+$overall_expenses[0]->travel_expenses+$overall_expenses[0]->local_conveyance);
+       
+       $received_expensedata[]=array('Received',$received_expenses[0]->recieved);
+       $received_expensedata[]=array('Expenses',$received_expenses[0]->expenses);
+       
+        //print_r($overall_expenses);die;
         $data['process_status']=$processdata;
         $data['job_status']=$jobdata;
+        $data['jobprocess_status']=$jobprocessdata;
+        $data['overall_expenses']=$expensedata;
+        $data['overallexptotal'] = $overallexptotal;
+        $data['received_expenses'] = $received_expensedata;
         
         return view($this->basePath . $this->baseName,$data);
     }
@@ -282,10 +344,10 @@ class StatusReportController extends Controller
         
         $ordervalue = StatusReportController::$ORDER_TYPE_VALUES[$inputs['orderstatus']];
         
-        $servicedata = DB::select("select complaint_register.seqno,complaint_register.customer_name,
+        $servicedata = DB::select("select distinct complaint_register.seqno,complaint_register.customer_name,
                                     complaint_register.complaint_date,
                                     complaint_register.mobileno,
-                                    complaint_register.salesorder_no,complaint_register.warrenty,
+                                    case when complaint_register.salesorder_no is null then '' else complaint_register.salesorder_no end as salesorder_no,complaint_register.warrenty,
                                     service_spares_register.scope_of_work
                                     from 
                                         complaint_register,
@@ -298,7 +360,7 @@ class StatusReportController extends Controller
 
                                     where complaint_register.id = service_spares_register.complaint_register_id
                                     and complaint_register.complaint_type = 0
-                                    and complaint_register.order_status = $ordervalue");
+                                    and service_spares_register.order_status = $ordervalue order by complaint_register.seqno");
         $this->data['status']=1;
         $this->data['servicedata']=$servicedata;
        // print_r($inputs);die;

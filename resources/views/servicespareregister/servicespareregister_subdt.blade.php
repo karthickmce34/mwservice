@@ -1348,77 +1348,87 @@
                                
                                 <div class="form-row m-t-25">
                                     <div class="offerprd">
-                                            <input type="hidden" class="off_offer_id" name="offer_id" value="{{$offerdata->id}}" />
+                                        @php
+                                            if(isset($offerdata->id))
+                                                $offerid = $offerdata->id;
+                                            else
+                                                $offerid = '';
+                                            
+                                        @endphp
+                                            <input type="hidden" class="off_offer_id" name="offer_id" value="{{$offerid}}" />
                                             <input type="hidden" name="spares_register_id" value="{{$record->id}}">
                                             <input type="hidden" name="revision_no" id="revision_no" value="">
-                                            <input type="hidden" name="last_offer_id" id="last_offer_id" value="{{$offerdata->id}}">
+                                            <input type="hidden" name="last_offer_id" id="last_offer_id" value="{{$offerid}}">
                                         <?php $n=0; ?>
-                                        @foreach($offerdata->registerprds as $sercharge)
-                                            <?php $n++; ?>
-                                                <div class="row m-t-25 offerrevision_{{$sercharge->id}}">
-                                                    <div class="col-sm-12 ">
-                                                       
+                                            
+                                        @if(isset($offerdata->id))
+                                            @foreach($offerdata->registerprds as $sercharge)
+                                                <?php $n++; ?>
+                                                    <div class="row m-t-25 offerrevision_{{$sercharge->id}}">
+                                                        <div class="col-sm-12 ">
 
-                                                        <div class="col-sm-6">
-                                                            <div class="col-sm-7">
-                                                                <div class="form-group fg-line">
-                                                                    <label class="sr-only" for="product">Product</label>
-                                                                    <input type="hidden" class="off_product_id" name="product_id[{{$n}}]" value="{{$sercharge->product_id}}" />
-                                                                    <input type="text" class="form-control input-sm off_product" readonly name="product[{{$n}}]" placeholder="Product" autocomplete="off" value="{{$sercharge->prd_description}}">
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-sm-5">
-                                                                <div class="form-group fg-line">
-                                                                    <label class="sr-only" for="prd_description">Description</label>
-                                                                    <input type="text" class="form-control input-sm off_description" name="description[{{$n}}]" placeholder="Description" autocomplete="off" value="{{$sercharge->description}}">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-sm-6">
-                                                            <div class="col-sm-2">
-                                                                <div class="form-group fg-line">
-                                                                    <label class="sr-only" for="qty">Qty/Days</label>
-                                                                    <input type="text" class="form-control input-sm off_qty" data-serviceid ='{{$sercharge->id}}' placeholder="Qty" name="qty[{{$n}}]" autocomplete="off" value="{{$sercharge->quantity}}">
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-sm-2">
-                                                                <div class="form-group fg-line">
-                                                                    <input type="hidden" class="form-control input-sm off_isreturn" name="isreturn[{{$n}}]" value="{{$sercharge->isreturn}}">
-                                                                    <input type="hidden" class="form-control input-sm off_invoicable" name="invoicable[{{$n}}]" value="{{$sercharge->invoicable}}">
-                                                                    <input type="hidden" class="form-control input-sm off_isserviceproduct" name="isserviceproduct[{{$n}}]" value="{{$sercharge->isserviceproduct}}">
-                                                                    <label class="sr-only" for="unit_price">Price</label>
-                                                                    <input type="text" class="form-control input-sm off_unit_price" data-serviceid ='{{$sercharge->id}}' placeholder="Price" name="unit_price[{{$n}}]" autocomplete="off" value="{{$sercharge->unit_price}}">
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-sm-4">
-                                                                <div class="form-group fg-line">
-                                                                    <label class="sr-only" for="tax">Tax</label>
-                                                                    <select class="form-control input-sm off_tax_id" data-serviceid ='{{$sercharge->id}}' placeholder="Tax" aria-describedby="basic-addon1" data-validation="required" required="required" id="off_tax_id" name="tax_id[{{$n}}]">
-                                                                        @if($sercharge->tax_id == 1)
-                                                                        <option value="3">No Tax</option>
-                                                                        <option value="1" selected>GST 18%</option>
-                                                                        <option value="2">CGST 9% + SGST 9%</option>
-                                                                        @else
-                                                                        <option value="3">No Tax</option>
-                                                                        <option value="1">GST 18%</option>
-                                                                        <option value="2" selected>CGST 9% + SGST 9%</option>
-                                                                        @endif
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-sm-3">
-                                                                <div class="form-group fg-line">
-                                                                    <label class="sr-only" for="total">Total</label>
-                                                                    <input type="hidden" class="form-control input-sm off_tax_amt" name="tax_amt[{{$n}}]" value="{{$sercharge->tax_amt}}">
-                                                                    <input type="text" class="form-control input-sm off_total" readonly placeholder="Price" name="total[{{$n}}]" value="{{$sercharge->total_price}}">
-                                                                </div>
-                                                            </div>
-                                                        </div>
 
+                                                            <div class="col-sm-6">
+                                                                <div class="col-sm-7">
+                                                                    <div class="form-group fg-line">
+                                                                        <label class="sr-only" for="product">Product</label>
+                                                                        <input type="hidden" class="off_product_id" name="product_id[{{$n}}]" value="{{$sercharge->product_id}}" />
+                                                                        <input type="text" class="form-control input-sm off_product" readonly name="product[{{$n}}]" placeholder="Product" autocomplete="off" value="{{$sercharge->prd_description}}">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-5">
+                                                                    <div class="form-group fg-line">
+                                                                        <label class="sr-only" for="prd_description">Description</label>
+                                                                        <input type="text" class="form-control input-sm off_description" name="description[{{$n}}]" placeholder="Description" autocomplete="off" value="{{$sercharge->description}}">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <div class="col-sm-2">
+                                                                    <div class="form-group fg-line">
+                                                                        <label class="sr-only" for="qty">Qty/Days</label>
+                                                                        <input type="text" class="form-control input-sm off_qty" data-serviceid ='{{$sercharge->id}}' placeholder="Qty" name="qty[{{$n}}]" autocomplete="off" value="{{$sercharge->quantity}}">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-2">
+                                                                    <div class="form-group fg-line">
+                                                                        <input type="hidden" class="form-control input-sm off_isreturn" name="isreturn[{{$n}}]" value="{{$sercharge->isreturn}}">
+                                                                        <input type="hidden" class="form-control input-sm off_invoicable" name="invoicable[{{$n}}]" value="{{$sercharge->invoicable}}">
+                                                                        <input type="hidden" class="form-control input-sm off_isserviceproduct" name="isserviceproduct[{{$n}}]" value="{{$sercharge->isserviceproduct}}">
+                                                                        <label class="sr-only" for="unit_price">Price</label>
+                                                                        <input type="text" class="form-control input-sm off_unit_price" data-serviceid ='{{$sercharge->id}}' placeholder="Price" name="unit_price[{{$n}}]" autocomplete="off" value="{{$sercharge->unit_price}}">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-4">
+                                                                    <div class="form-group fg-line">
+                                                                        <label class="sr-only" for="tax">Tax</label>
+                                                                        <select class="form-control input-sm off_tax_id" data-serviceid ='{{$sercharge->id}}' placeholder="Tax" aria-describedby="basic-addon1" data-validation="required" required="required" id="off_tax_id" name="tax_id[{{$n}}]">
+                                                                            @if($sercharge->tax_id == 1)
+                                                                            <option value="3">No Tax</option>
+                                                                            <option value="1" selected>GST 18%</option>
+                                                                            <option value="2">CGST 9% + SGST 9%</option>
+                                                                            @else
+                                                                            <option value="3">No Tax</option>
+                                                                            <option value="1">GST 18%</option>
+                                                                            <option value="2" selected>CGST 9% + SGST 9%</option>
+                                                                            @endif
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-3">
+                                                                    <div class="form-group fg-line">
+                                                                        <label class="sr-only" for="total">Total</label>
+                                                                        <input type="hidden" class="form-control input-sm off_tax_amt" name="tax_amt[{{$n}}]" value="{{$sercharge->tax_amt}}">
+                                                                        <input type="text" class="form-control input-sm off_total" readonly placeholder="Price" name="total[{{$n}}]" value="{{$sercharge->total_price}}">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                
-                                        @endforeach
+
+                                            @endforeach
+                                        @endif
                                     </div>
                                 </div>
                                 <div class="form-row m-t-25">
