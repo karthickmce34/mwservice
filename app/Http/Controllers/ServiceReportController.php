@@ -99,9 +99,10 @@ class ServiceReportController extends Controller
                                                 when service_spares_register.order_status = 4 then 'Advance Received'
                                                 when service_spares_register.order_status = 5 then 'Payment Received'
                                                 when service_spares_register.order_status = 6 then 'DI Sent'
-                                                when service_spares_register.order_status = 8 then 'Completed'
+                                                when service_spares_register.order_status = 8 then 'Visit Completed'
                                                 when service_spares_register.order_status = 9 then 'Cancelled'
-                                                when service_spares_register.order_status = 10 then 'Deputed' end as orderstatus,
+                                                when service_spares_register.order_status = 10 then 'Deputed'
+                                                when service_spares_register.order_status = 12 then 'Visit Rescheduled' end as orderstatus,
                                                 visit_plan.is_agent as isagent,
                                                 coalesce(service_engineer.name,'') as serviceengineer,
                                                 service_agent.company_name as serviceagent,
