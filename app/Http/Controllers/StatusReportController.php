@@ -91,7 +91,7 @@ class StatusReportController extends Controller
                                     where A.pendingorderstatus != 'No Data'
                                     group by A.pendingorderstatus");
         
-        $overall_expenses = DB::select("select sum(visitplan_summary.loading_expenses) as loading_expenses,
+        $overall_expenses = DB::select("select sum(visitplan_summary.loading_expenses) as lodgeing_expenses,
                                             sum(visitplan_summary.boarding_expenses) as boarding_expenses,
                                         sum(visitplan_summary.travel_expenses) as travel_expenses,
                                         sum(visitplan_summary.local_conveyance) as local_conveyance
@@ -135,7 +135,7 @@ class StatusReportController extends Controller
        
       /**************for overall expenses**************/
        
-       $expensedata[]=array('Loading Expenses',$overall_expenses[0]->loading_expenses);
+       $expensedata[]=array('Lodgeing Expenses',$overall_expenses[0]->lodgeing_expenses);
        $expensedata[]=array('Boarding Expenses',$overall_expenses[0]->boarding_expenses);
        $expensedata[]=array('Travel Expenses',$overall_expenses[0]->travel_expenses);
        $expensedata[]=array('Local Conveyance',$overall_expenses[0]->local_conveyance);
