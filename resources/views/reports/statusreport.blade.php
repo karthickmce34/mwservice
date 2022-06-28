@@ -56,13 +56,13 @@
             </div>
         </div>
         <div class="card col-sm-6">
-            <h5>Recieved vs Expenses <small> For Current Month</small> <span class="f-16 zmdi zmdi-widgets pull-right"></span><span class="pull-right m-r-25">Total : {{$overallexptotal}}</span></h5>
+            <h5>Recieved vs Expenses <small> For Current Month</small> <span class="f-16 zmdi zmdi-widgets pull-right"></span></h5>
             <div id="chart5">
                 
             </div>
         </div>
         <div class="card col-sm-6">
-            <h5>Scope Of Work <small> For Current Month</small> <span class="f-16 zmdi zmdi-widgets pull-right"></span><span class="pull-right m-r-25">Total : {{$overallexptotal}}</span></h5>
+            <h5>Scope Of Work <small> For Current Month</small> <span class="f-16 zmdi zmdi-widgets pull-right"></span></h5>
             <div id="chart6">
                 
             </div>
