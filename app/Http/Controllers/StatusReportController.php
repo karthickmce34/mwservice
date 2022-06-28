@@ -115,8 +115,12 @@ class StatusReportController extends Controller
                                      and service_spares_register.paid_date <= '2022-06-30')a");
         
         $scopeofwork = DB::select("SELECT count(scope_of_work) as cnt,replace(scope_of_work,'\"','') as scope_of_work 
-                                    FROM service_spares_register 
-                                    where scope_of_work != '' 
+                                    FROM complaint_register,service_spares_register 
+                                    where complaint_register.id = service_spares_register.complaint_register_id
+                                    and complaint_register.complaint_type = 0
+                                    and complaint_register.complaint_date >= '2022-06-01'
+                                    and complaint_register.complaint_date <= '2022-06-30'
+                                    and scope_of_work != '' 
                                     group by scope_of_work");
        $jobdata=array();
        $processdata = array();
