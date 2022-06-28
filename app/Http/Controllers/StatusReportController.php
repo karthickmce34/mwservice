@@ -112,7 +112,7 @@ class StatusReportController extends Controller
 
                                     from service_spares_register
                                      where service_spares_register.paid_date >= '2022-06-01'
-                                     and service_spares_register.paid_date <= '2022-06-30')A");
+                                     and service_spares_register.paid_date <= '2022-06-30')a");
        $jobdata=array();
        $processdata = array();
        $jobprocessdata = array();
