@@ -140,7 +140,7 @@ class StatusReportController extends Controller
        $expensedata[]=array('Travel Expenses',$overall_expenses[0]->travel_expenses);
        $expensedata[]=array('Local Conveyance',$overall_expenses[0]->local_conveyance);
        
-       $overallexptotal = ($overall_expenses[0]->loading_expenses+$overall_expenses[0]->boarding_expenses+$overall_expenses[0]->travel_expenses+$overall_expenses[0]->local_conveyance);
+       $overallexptotal = ($overall_expenses[0]->lodgeing_expenses+$overall_expenses[0]->boarding_expenses+$overall_expenses[0]->travel_expenses+$overall_expenses[0]->local_conveyance);
        
        $received_expensedata[]=array('Received',$received_expenses[0]->recieved);
        $received_expensedata[]=array('Expenses',$received_expenses[0]->expenses);
