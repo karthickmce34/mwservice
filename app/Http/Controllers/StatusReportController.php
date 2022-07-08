@@ -188,6 +188,14 @@ class StatusReportController extends Controller
                                     FROM complaint_register,service_spares_register 
                                     where complaint_register.id = service_spares_register.complaint_register_id
                                     and complaint_register.complaint_type = 0
+                                    and complaint_register.complaint_date >= '2022-07-01'
+                                    and complaint_register.complaint_date <= '2022-07-30'
+                                    and scope_of_work != '' 
+                                    group by scope_of_work");
+        $previousscopeofwork = DB::select("SELECT count(scope_of_work) as cnt,replace(scope_of_work,'\"','') as scope_of_work 
+                                    FROM complaint_register,service_spares_register 
+                                    where complaint_register.id = service_spares_register.complaint_register_id
+                                    and complaint_register.complaint_type = 0
                                     and complaint_register.complaint_date >= '2022-06-01'
                                     and complaint_register.complaint_date <= '2022-06-30'
                                     and scope_of_work != '' 
@@ -219,6 +227,11 @@ class StatusReportController extends Controller
        foreach($scopeofwork as $scope)
        {
            $scopedata[]=array($scope->scope_of_work ,$scope->cnt);
+           //$processdata['processcnt'][] = $process->cnt;
+       }
+       foreach($previousscopeofwork as $previousscope)
+       {
+           $previousscopedata[]=array($previousscope->scope_of_work ,$previousscope->cnt);
            //$processdata['processcnt'][] = $process->cnt;
        }
        
@@ -271,6 +284,7 @@ class StatusReportController extends Controller
         $data['previous_received_expensedata'] = $previous_received_expensedata;
         
         $data['scopeofwork'] = $scopedata;
+        $data['previousscopeofwork'] = $previousscopedata;
         
         return view($this->basePath . $this->baseName,$data);
     }

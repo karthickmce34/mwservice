@@ -45,17 +45,18 @@
     </div>
     <div class="card">
         <div class="card col-sm-6">
-            <h5>Pending Vs Completed <small> For Current Month</small> <span class="f-16 zmdi zmdi-widgets pull-right"></span></h5>
-            <div id="chart3">
-                
-            </div>
-        </div>
-        <div class="card col-sm-6">
             <h5>Pending Vs Completed <small> For Previous Month</small> <span class="f-16 zmdi zmdi-widgets pull-right"></span></h5>
             <div id="chart3_previous">
                 
             </div>
         </div>
+        <div class="card col-sm-6">
+            <h5>Pending Vs Completed <small> For Current Month</small> <span class="f-16 zmdi zmdi-widgets pull-right"></span></h5>
+            <div id="chart3">
+                
+            </div>
+        </div>
+        
     </div>
     <div class="card">
         <div class="card col-sm-6">
@@ -93,6 +94,12 @@
         <div class="card col-sm-6">
             <h5>Recieved vs Expenses <small> For Current Month</small> <span class="f-16 zmdi zmdi-widgets pull-right"></span></h5>
             <div id="chart5_current">
+                
+            </div>
+        </div>
+        <div class="card col-sm-6">
+            <h5>Scope Of Work <small> For Previous Month</small> <span class="f-16 zmdi zmdi-widgets pull-right"></span></h5>
+            <div id="chart6_previous">
                 
             </div>
         </div>
@@ -396,6 +403,17 @@
                             onmouseout: function (d, i) { console.log("onmouseout", d, i); }*/
                         },
                         bindto:"#chart6",
+                    });
+             var chart6_previous = c3.generate({
+                        data: {
+                            // iris data from R
+                            columns: <?php echo json_encode($previousscopeofwork); ?>,
+                            type : 'bar',
+                            /*onclick: function (d, i) { console.log("onclick", d, i); },
+                            onmouseover: function (d, i) { console.log("onmouseover", d, i); },
+                            onmouseout: function (d, i) { console.log("onmouseout", d, i); }*/
+                        },
+                        bindto:"#chart6_previous",
                     });
                     
             function statusreport(d, i)
