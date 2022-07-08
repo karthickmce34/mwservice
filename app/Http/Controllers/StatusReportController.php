@@ -54,8 +54,7 @@ class StatusReportController extends Controller
                                                 CASE
                                                 when service_spares_register.order_status = 8 then 'Visit Completed'
                                                 when service_spares_register.order_status = 10 then 'Deputed' 
-                                         		when service_spares_register.order_status = 12 then 'Visit Resscheduled' 
-                                                        when service_spares_register.order_status = 11 then 'Job Completed' else 'No Data' end as orderstatus
+                                         		when service_spares_register.order_status = 12 then 'Visit Resscheduled' else 'No Data' end as orderstatus
                                                 
                                     from 
                                         complaint_register,
@@ -78,6 +77,7 @@ class StatusReportController extends Controller
                                                 when service_spares_register.order_status = 8 then 'Job Pending'
                                                 when service_spares_register.order_status = 10 then 'Job Pending' 
                                          	when service_spares_register.order_status = 12 then 'Job Pending'
+                                                when service_spares_register.order_status = 11 then 'Completed'
                                                 else 'No Data' end as pendingorderstatus
                                                 
 
