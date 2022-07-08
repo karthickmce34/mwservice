@@ -87,6 +87,32 @@ class StatusReportController extends Controller
 
                                     where complaint_register.id = service_spares_register.complaint_register_id
                                     and complaint_register.complaint_type = 0
+                                    and complaint_register.complaint_date >= '2022-07-01'
+                                    and complaint_register.complaint_date <= '2022-07-30')A
+                                    where A.pendingorderstatus != 'No Data'
+                                    group by A.pendingorderstatus");
+        $previous_job_process_status = DB::select("select count(A.pendingorderstatus) as cnt,A.pendingorderstatus from
+                                            (select 
+                                                CASE
+                                                when service_spares_register.order_status = 0 then 'Process Pending'
+                                                when service_spares_register.order_status = 1 then 'Process Pending'
+                                                when service_spares_register.order_status = 2 then 'Process Pending'
+                                                when service_spares_register.order_status = 3 then 'Process Pending'
+                                                when service_spares_register.order_status = 4 then 'Process Pending'
+                                                when service_spares_register.order_status = 5 then 'Process Pending' 
+                                                when service_spares_register.order_status = 8 then 'Job Pending'
+                                                when service_spares_register.order_status = 10 then 'Job Pending' 
+                                         	when service_spares_register.order_status = 12 then 'Job Pending'
+                                                when service_spares_register.order_status = 11 then 'Completed'
+                                                else 'No Data' end as pendingorderstatus
+                                                
+
+                                    from 
+                                        complaint_register,
+                                        service_spares_register
+
+                                    where complaint_register.id = service_spares_register.complaint_register_id
+                                    and complaint_register.complaint_type = 0
                                     and complaint_register.complaint_date >= '2022-06-01'
                                     and complaint_register.complaint_date <= '2022-06-30')A
                                     where A.pendingorderstatus != 'No Data'
@@ -185,7 +211,11 @@ class StatusReportController extends Controller
            $jobprocessdata[]=array($jobprocess->pendingorderstatus ,$jobprocess->cnt);
            //$processdata['processcnt'][] = $process->cnt;
        }
-       
+       foreach($previous_job_process_status as $previousjobprocess)
+       {
+           $previousjobprocessdata[]=array($previousjobprocess->pendingorderstatus ,$previousjobprocess->cnt);
+           //$processdata['processcnt'][] = $process->cnt;
+       }
        foreach($scopeofwork as $scope)
        {
            $scopedata[]=array($scope->scope_of_work ,$scope->cnt);
@@ -227,6 +257,7 @@ class StatusReportController extends Controller
         $data['process_status']=$processdata;
         $data['job_status']=$jobdata;
         $data['jobprocess_status']=$jobprocessdata;
+        $data['previousjobprocess_status']=$previousjobprocessdata;
         $data['overall_expenses']=$overall_expensedata;
         $data['current_expenses']=$current_expensedata;
         $data['previous_expenses']=$overall_expensedata;

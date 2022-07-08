@@ -42,13 +42,22 @@
                 
             </div>
         </div>
-        
+    </div>
+    <div class="card">
         <div class="card col-sm-6">
             <h5>Pending Vs Completed <small> For Current Month</small> <span class="f-16 zmdi zmdi-widgets pull-right"></span></h5>
             <div id="chart3">
                 
             </div>
         </div>
+        <div class="card col-sm-6">
+            <h5>Pending Vs Completed <small> For Previous Month</small> <span class="f-16 zmdi zmdi-widgets pull-right"></span></h5>
+            <div id="chart3_previous">
+                
+            </div>
+        </div>
+    </div>
+    <div class="card">
         <div class="card col-sm-6">
             <h5>Expenses <small> Overall</small> <span class="f-16 zmdi zmdi-widgets pull-right"></span><span class="pull-right m-r-25">Total : {{$overallexptotal}}</span></h5>
             <div id="chart4_overall">
@@ -67,6 +76,8 @@
                 
             </div>
         </div>
+    </div>
+    <div class="card">
         <div class="card col-sm-6">
             <h5>Recieved vs Expenses <small> For Overall</small> <span class="f-16 zmdi zmdi-widgets pull-right"></span></h5>
             <div id="chart5_overall">
@@ -227,6 +238,17 @@
                             onmouseout: function (d, i) { console.log("onmouseout", d, i); }*/
                         },
                         bindto:"#chart3",
+                    });
+              var chart3_previous = c3.generate({
+                        data: {
+                            // iris data from R
+                            columns: <?php echo json_encode($previousjobprocess_status); ?>,
+                            type : 'bar',
+                            /*onclick: function (d, i) { console.log("onclick", d, i); },
+                            onmouseover: function (d, i) { console.log("onmouseover", d, i); },
+                            onmouseout: function (d, i) { console.log("onmouseout", d, i); }*/
+                        },
+                        bindto:"#chart3_previous",
                     });
                 
             var chart4 = c3.generate({
