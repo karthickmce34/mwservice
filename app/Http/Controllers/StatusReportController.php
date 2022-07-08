@@ -54,7 +54,8 @@ class StatusReportController extends Controller
                                                 CASE
                                                 when service_spares_register.order_status = 8 then 'Visit Completed'
                                                 when service_spares_register.order_status = 10 then 'Deputed' 
-                                         		when service_spares_register.order_status = 12 then 'Visit Resscheduled' else 'No Data' end as orderstatus
+                                         		when service_spares_register.order_status = 12 then 'Visit Resscheduled' 
+                                                        when service_spares_register.order_status = 11 then 'Job Completed' else 'No Data' end as orderstatus
                                                 
                                     from 
                                         complaint_register,
@@ -91,7 +92,7 @@ class StatusReportController extends Controller
                                     where A.pendingorderstatus != 'No Data'
                                     group by A.pendingorderstatus");
         
-        $overall_expenses = DB::select("select sum(visitplan_summary.loading_expenses) as lodgeing_expenses,
+        $previous_expenses = DB::select("select sum(visitplan_summary.loading_expenses) as lodgeing_expenses,
                                             sum(visitplan_summary.boarding_expenses) as boarding_expenses,
                                         sum(visitplan_summary.travel_expenses) as travel_expenses,
                                         sum(visitplan_summary.local_conveyance) as local_conveyance
@@ -99,7 +100,50 @@ class StatusReportController extends Controller
                                     where visitplan_summary.date_of_complete >= '2022-06-01'
                                     and visitplan_summary.date_of_complete <= '2022-06-30'");
         
-        $received_expenses = DB::select("select sum(a.expenses) as expenses,sum(a.recieved) as recieved from 
+        $current_expenses = DB::select("select sum(visitplan_summary.loading_expenses) as lodgeing_expenses,
+                                            sum(visitplan_summary.boarding_expenses) as boarding_expenses,
+                                        sum(visitplan_summary.travel_expenses) as travel_expenses,
+                                        sum(visitplan_summary.local_conveyance) as local_conveyance
+                                    from visitplan_summary 
+                                    where visitplan_summary.date_of_complete >= '2022-07-01'
+                                    and visitplan_summary.date_of_complete <= '2022-07-31'");
+        
+        $overall_expenses = DB::select("select sum(visitplan_summary.loading_expenses) as lodgeing_expenses,
+                                            sum(visitplan_summary.boarding_expenses) as boarding_expenses,
+                                        sum(visitplan_summary.travel_expenses) as travel_expenses,
+                                        sum(visitplan_summary.local_conveyance) as local_conveyance
+                                    from visitplan_summary 
+                                    where visitplan_summary.date_of_complete <= '2022-07-31'");
+        
+        $overall_received_expenses = DB::select("select sum(a.expenses) as expenses,sum(a.recieved) as recieved from 
+                                    (select sum(visitplan_summary.loading_expenses) + 
+                                            sum(visitplan_summary.boarding_expenses) +
+                                        sum(visitplan_summary.travel_expenses) +
+                                        sum(visitplan_summary.local_conveyance) as expenses,0 as recieved
+                                    from visitplan_summary
+                                    where visitplan_summary.date_of_complete <= '2022-07-30'
+                                    UNION ALL
+                                    select 0 as expenses,sum(service_spares_register.advance_amt) + sum(service_spares_register.payment_received) as recieved
+
+                                    from service_spares_register
+                                     where service_spares_register.paid_date <= '2022-07-30')a");
+        
+        $current_received_expenses = DB::select("select sum(a.expenses) as expenses,sum(a.recieved) as recieved from 
+                                    (select sum(visitplan_summary.loading_expenses) + 
+                                            sum(visitplan_summary.boarding_expenses) +
+                                        sum(visitplan_summary.travel_expenses) +
+                                        sum(visitplan_summary.local_conveyance) as expenses,0 as recieved
+                                    from visitplan_summary
+                                    where visitplan_summary.date_of_complete >= '2022-07-01'
+                                    and visitplan_summary.date_of_complete <= '2022-07-30'
+                                    UNION ALL
+                                    select 0 as expenses,sum(service_spares_register.advance_amt) + sum(service_spares_register.payment_received) as recieved
+
+                                    from service_spares_register
+                                     where service_spares_register.paid_date >= '2022-07-01'
+                                     and service_spares_register.paid_date <= '2022-07-30')a");
+        
+        $previous_received_expenses = DB::select("select sum(a.expenses) as expenses,sum(a.recieved) as recieved from 
                                     (select sum(visitplan_summary.loading_expenses) + 
                                             sum(visitplan_summary.boarding_expenses) +
                                         sum(visitplan_summary.travel_expenses) +
@@ -150,23 +194,51 @@ class StatusReportController extends Controller
        
       /**************for overall expenses**************/
        
-       $expensedata[]=array('Lodgeing Expenses',$overall_expenses[0]->lodgeing_expenses);
-       $expensedata[]=array('Boarding Expenses',$overall_expenses[0]->boarding_expenses);
-       $expensedata[]=array('Travel Expenses',$overall_expenses[0]->travel_expenses);
-       $expensedata[]=array('Local Conveyance',$overall_expenses[0]->local_conveyance);
+       $overall_expensedata[]=array('Lodgeing Expenses',$overall_expenses[0]->lodgeing_expenses);
+       $overall_expensedata[]=array('Boarding Expenses',$overall_expenses[0]->boarding_expenses);
+       $overall_expensedata[]=array('Travel Expenses',$overall_expenses[0]->travel_expenses);
+       $overall_expensedata[]=array('Local Conveyance',$overall_expenses[0]->local_conveyance);
+       
+       $current_expensedata[]=array('Lodgeing Expenses',$current_expenses[0]->lodgeing_expenses);
+       $current_expensedata[]=array('Boarding Expenses',$current_expenses[0]->boarding_expenses);
+       $current_expensedata[]=array('Travel Expenses',$current_expenses[0]->travel_expenses);
+       $current_expensedata[]=array('Local Conveyance',$current_expenses[0]->local_conveyance);
+       
+       $previous_expensedata[]=array('Lodgeing Expenses',$previous_expenses[0]->lodgeing_expenses);
+       $previous_expensedata[]=array('Boarding Expenses',$previous_expenses[0]->boarding_expenses);
+       $previous_expensedata[]=array('Travel Expenses',$previous_expenses[0]->travel_expenses);
+       $previous_expensedata[]=array('Local Conveyance',$previous_expenses[0]->local_conveyance);
        
        $overallexptotal = ($overall_expenses[0]->lodgeing_expenses+$overall_expenses[0]->boarding_expenses+$overall_expenses[0]->travel_expenses+$overall_expenses[0]->local_conveyance);
+       $currentexptotal = ($current_expenses[0]->lodgeing_expenses+$current_expenses[0]->boarding_expenses+$current_expenses[0]->travel_expenses+$current_expenses[0]->local_conveyance);
+       $previousexptotal = ($previous_expenses[0]->lodgeing_expenses+$previous_expenses[0]->boarding_expenses+$previous_expenses[0]->travel_expenses+$previous_expenses[0]->local_conveyance);
+
        
-       $received_expensedata[]=array('Received',$received_expenses[0]->recieved);
-       $received_expensedata[]=array('Expenses',$received_expenses[0]->expenses);
+       $overall_received_expensedata[]=array('Received',$overall_received_expenses[0]->recieved);
+       $overall_received_expensedata[]=array('Expenses',$overall_received_expenses[0]->expenses);
+       
+       $current_received_expensedata[]=array('Received',$current_received_expenses[0]->recieved);
+       $current_received_expensedata[]=array('Expenses',$current_received_expenses[0]->expenses);
+       
+       $previous_received_expensedata[]=array('Received',$previous_received_expenses[0]->recieved);
+       $previous_received_expensedata[]=array('Expenses',$previous_received_expenses[0]->expenses);
        
         //print_r($scopedata);die;
         $data['process_status']=$processdata;
         $data['job_status']=$jobdata;
         $data['jobprocess_status']=$jobprocessdata;
-        $data['overall_expenses']=$expensedata;
+        $data['overall_expenses']=$overall_expensedata;
+        $data['current_expenses']=$current_expensedata;
+        $data['previous_expenses']=$overall_expensedata;
+        
         $data['overallexptotal'] = $overallexptotal;
-        $data['received_expenses'] = $received_expensedata;
+        $data['currentexptotal'] = $currentexptotal;
+        $data['previousexptotal'] = $previousexptotal;
+        
+        $data['overall_received_expensedata'] = $overall_received_expensedata;
+        $data['current_received_expensedata'] = $current_received_expensedata;
+        $data['previous_received_expensedata'] = $previous_received_expensedata;
+        
         $data['scopeofwork'] = $scopedata;
         
         return view($this->basePath . $this->baseName,$data);

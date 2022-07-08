@@ -50,14 +50,38 @@
             </div>
         </div>
         <div class="card col-sm-6">
-            <h5>Expenses <small> For Current Month</small> <span class="f-16 zmdi zmdi-widgets pull-right"></span><span class="pull-right m-r-25">Total : {{$overallexptotal}}</span></h5>
-            <div id="chart4">
+            <h5>Expenses <small> Overall</small> <span class="f-16 zmdi zmdi-widgets pull-right"></span><span class="pull-right m-r-25">Total : {{$overallexptotal}}</span></h5>
+            <div id="chart4_overall">
+                
+            </div>
+        </div>
+        <div class="card col-sm-6">
+            <h5>Expenses <small> For Previous Month</small> <span class="f-16 zmdi zmdi-widgets pull-right"></span><span class="pull-right m-r-25">Total : {{$previousexptotal}}</span></h5>
+            <div id="chart4_previous">
+                
+            </div>
+        </div>
+        <div class="card col-sm-6">
+            <h5>Expenses <small> For Current Month</small> <span class="f-16 zmdi zmdi-widgets pull-right"></span><span class="pull-right m-r-25">Total : {{$currentexptotal}}</span></h5>
+            <div id="chart4_current">
+                
+            </div>
+        </div>
+        <div class="card col-sm-6">
+            <h5>Recieved vs Expenses <small> For Overall</small> <span class="f-16 zmdi zmdi-widgets pull-right"></span></h5>
+            <div id="chart5_overall">
+                
+            </div>
+        </div>
+        <div class="card col-sm-6">
+            <h5>Recieved vs Expenses <small> For Previous Month</small> <span class="f-16 zmdi zmdi-widgets pull-right"></span></h5>
+            <div id="chart5_previous">
                 
             </div>
         </div>
         <div class="card col-sm-6">
             <h5>Recieved vs Expenses <small> For Current Month</small> <span class="f-16 zmdi zmdi-widgets pull-right"></span></h5>
-            <div id="chart5">
+            <div id="chart5_current">
                 
             </div>
         </div>
@@ -214,12 +238,35 @@
                             onmouseover: function (d, i) { console.log("onmouseover", d, i); },
                             onmouseout: function (d, i) { console.log("onmouseout", d, i); }*/
                         },
-                        bindto:"#chart4",
+                        bindto:"#chart4_overall",
                     });
-            var chart5 = c3.generate({
+            var chart4_previous = c3.generate({
                         data: {
                             // iris data from R
-                            columns: <?php echo json_encode($received_expenses); ?>,
+                            columns: <?php echo json_encode($previous_expenses); ?>,
+                            type : 'bar',
+                            /*onclick: function (d, i) { console.log("onclick", d, i); },
+                            onmouseover: function (d, i) { console.log("onmouseover", d, i); },
+                            onmouseout: function (d, i) { console.log("onmouseout", d, i); }*/
+                        },
+                        bindto:"#chart4_previous",
+                    });
+            var chart4_current = c3.generate({
+                        data: {
+                            // iris data from R
+                            columns: <?php echo json_encode($current_expenses); ?>,
+                            type : 'bar',
+                            /*onclick: function (d, i) { console.log("onclick", d, i); },
+                            onmouseover: function (d, i) { console.log("onmouseover", d, i); },
+                            onmouseout: function (d, i) { console.log("onmouseout", d, i); }*/
+                        },
+                        bindto:"#chart4_current",
+                    });
+                
+            var chart5_overall = c3.generate({
+                        data: {
+                            // iris data from R
+                            columns: <?php echo json_encode($overall_received_expensedata); ?>,
                             type : 'pie',
                             /*onclick: function (d, i) { console.log("onclick", d, i); },
                             onmouseover: function (d, i) { console.log("onmouseover", d, i); },
@@ -247,7 +294,74 @@
                         //            value: d3.format(',') // apply this format to both y and y2
                                     }
                                 },
-                        bindto:"#chart5",
+                        bindto:"#chart5_overall",
+                    });
+                
+            var chart5_previous = c3.generate({
+                        data: {
+                            // iris data from R
+                            columns: <?php echo json_encode($previous_received_expensedata); ?>,
+                            type : 'pie',
+                            /*onclick: function (d, i) { console.log("onclick", d, i); },
+                            onmouseover: function (d, i) { console.log("onmouseover", d, i); },
+                            onmouseout: function (d, i) { console.log("onmouseout", d, i); }*/
+                        },
+                        pie: {
+                            title: "Recieved Vs Expenses",
+                            label: {
+                              format: function(value, ratio, id) {
+                                return value;
+                              }
+                            },
+                            
+                        
+                        },
+                        tooltip: {
+                                format: {
+                                    title: function (d) { return d; },
+                                    value: function (value, ratio, id) {
+                                        //var format = id === 'data1' ? d3.format(',') : d3.format('$');
+                                        //return format(value);
+                                        return value;
+                                        
+                                        },
+                        //            value: d3.format(',') // apply this format to both y and y2
+                                    }
+                                },
+                        bindto:"#chart5_previous",
+                    });
+            var chart5_current = c3.generate({
+                        data: {
+                            // iris data from R
+                            columns: <?php echo json_encode($current_received_expensedata); ?>,
+                            type : 'pie',
+                            /*onclick: function (d, i) { console.log("onclick", d, i); },
+                            onmouseover: function (d, i) { console.log("onmouseover", d, i); },
+                            onmouseout: function (d, i) { console.log("onmouseout", d, i); }*/
+                        },
+                        pie: {
+                            title: "Recieved Vs Expenses",
+                            label: {
+                              format: function(value, ratio, id) {
+                                return value;
+                              }
+                            },
+                            
+                        
+                        },
+                        tooltip: {
+                                format: {
+                                    title: function (d) { return d; },
+                                    value: function (value, ratio, id) {
+                                        //var format = id === 'data1' ? d3.format(',') : d3.format('$');
+                                        //return format(value);
+                                        return value;
+                                        
+                                        },
+                        //            value: d3.format(',') // apply this format to both y and y2
+                                    }
+                                },
+                        bindto:"#chart5_current",
                     });
                 
             var chart6 = c3.generate({
