@@ -207,7 +207,7 @@ class StatusReportController extends Controller
                                     and scope_of_work != '' 
                                     group by scope_of_work");
         
-        $job_status_warrenty = DB::select("select count(A.pendingorderstatus) as cnt,A.pendingorderstatus,a.warrenty from
+        /*$job_status_warrenty = DB::select("select count(A.pendingorderstatus) as cnt,A.pendingorderstatus,a.warrenty from
                                             (select 
                                                 CASE
                                                 when service_spares_register.order_status = 0 then 'Process Pending'
@@ -234,7 +234,7 @@ class StatusReportController extends Controller
                                     and complaint_register.complaint_date <= '2022-07-30')A
                                     where A.pendingorderstatus != 'No Data'
                                     group by A.pendingorderstatus,a.warrenty
-                                    order by A.pendingorderstatus,a.warrenty");
+                                    order by A.pendingorderstatus,a.warrenty");*/
        $jobdata=array();
        $processdata = array();
        $jobprocessdata = array();
