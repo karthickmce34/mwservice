@@ -43,69 +43,249 @@
             </div>
         </div>
     </div>
-    <div class="card">
-        <div class="card col-sm-6">
-            <h5>Pending Vs Completed <small> For Previous Month</small> <span class="f-16 zmdi zmdi-widgets pull-right"></span></h5>
+    <div class="card col-sm-12">
+        <div class="card col-sm-6 pc-previous">
+            <div class="card-header">
+                <h2>Pending Vs Completed <small> For Previous Month</small></h2>
+            
+                <ul class="actions">
+                   
+                    <li class="dropdown">
+                        <a href="" data-toggle="dropdown">
+                            <i class="zmdi zmdi-widgets"></i>
+                        </a>
+
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            <li>
+                                <a href="" onclick="return false;" data-target='current' class="pc_dropdown">Current Month</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
             <div id="chart3_previous">
                 
             </div>
         </div>
-        <div class="card col-sm-6">
-            <h5>Pending Vs Completed <small> For Current Month</small> <span class="f-16 zmdi zmdi-widgets pull-right"></span></h5>
+        <div class="card col-sm-6 pc-current">
+            <div class="card-header">
+                <h2>Pending Vs Completed<small> For Current Month</small></h2>
+            
+                <ul class="actions">
+                   
+                    <li class="dropdown">
+                        <a href="" data-toggle="dropdown">
+                            <i class="zmdi zmdi-widgets"></i>
+                        </a>
+
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            <li>
+                                <a href="#" onclick="return false;"  data-target='previous' class="pc_dropdown">Previous Month</a>
+                            </li>
+                            
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            
             <div id="chart3">
                 
             </div>
         </div>
-        
+   
+        <div class="card col-sm-6 ex-overall">
+            <div class="card-header">
+                <h2>Expenses<small> For Overall</small></h2>
+            
+                <ul class="actions">
+                   
+                    <li class="dropdown">
+                        <a href="" data-toggle="dropdown">
+                            <i class="zmdi zmdi-widgets"></i>
+                        </a>
+
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            <li>
+                                <a href="" onclick="return false;" data-target='previous'  class="ex_dropdown">Previous</a>
+                            </li>
+                            <li>
+                                <a href="" onclick="return false;" data-target='current'  class="ex_dropdown">Current</a>
+                            </li>
+                            
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div id="expenses_overall">
+                
+            </div>
+        </div>
+        <div class="card col-sm-6 ex-previous">
+            <div class="card-header">
+                <h2>Expenses<small> For Previous Month</small></h2>
+            
+                <ul class="actions">
+                   
+                    <li class="dropdown">
+                        <a href="" data-toggle="dropdown">
+                            <i class="zmdi zmdi-widgets"></i>
+                        </a>
+
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            <li>
+                                <a href="" onclick="return false;" data-target='overall'  class="ex_dropdown">Overall</a>
+                            </li>
+                            <li>
+                                <a href="" onclick="return false;" data-target='current' class="ex_dropdown">Current</a>
+                            </li>
+                            
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div id="expenses_previous">
+                
+            </div>
+        </div>
+        <div class="card col-sm-6 ex-current">
+            <div class="card-header">
+                <h2>Expenses<small> For Current Month</small></h2>
+            
+                <ul class="actions">
+                    <li class="dropdown">
+                        <a href="" data-toggle="dropdown">
+                            <i class="zmdi zmdi-widgets"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            <li>
+                                <a href="" onclick="return false;" data-target='overall' class="ex_dropdown">Overall</a>
+                            </li>
+                            <li>
+                                <a href="" onclick="return false;" data-target='previous' class="ex_dropdown">Previous</a>
+                            </li>
+                            
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div id="expenses_current">
+                
+            </div>
+        </div>
     </div>
     <div class="card">
-        <div class="card col-sm-6">
-            <h5>Expenses <small> Overall</small> <span class="f-16 zmdi zmdi-widgets pull-right"></span><span class="pull-right m-r-25">Total : {{$overallexptotal}}</span></h5>
-            <div id="chart4_overall">
+        <div class="card col-sm-6 re-overall">
+            <div class="card-header">
+                <h2>Received vs Expenses<small> For Overall</small></h2>
+            
+                <ul class="actions">
+                    <li class="dropdown">
+                        <a href="" data-toggle="dropdown">
+                            <i class="zmdi zmdi-widgets"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            <li>
+                                <a href="" onclick="return false;" data-target='current' class="re_dropdown">Current</a>
+                            </li>
+                            <li>
+                                <a href="" onclick="return false;" data-target='previous' class="re_dropdown">Previous</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div id="received_exp_overall">
                 
             </div>
         </div>
-        <div class="card col-sm-6">
-            <h5>Expenses <small> For Previous Month</small> <span class="f-16 zmdi zmdi-widgets pull-right"></span><span class="pull-right m-r-25">Total : {{$previousexptotal}}</span></h5>
-            <div id="chart4_previous">
+        <div class="card col-sm-6 re-previous">
+            <div class="card-header">
+                <h2>Received vs Expenses<small> For Previous Month</small></h2>
+            
+                <ul class="actions">
+                    <li class="dropdown">
+                        <a href="" data-toggle="dropdown">
+                            <i class="zmdi zmdi-widgets"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            <li>
+                                <a href="" onclick="return false;" data-target='overall' class="re_dropdown">Over All</a>
+                            </li>
+                            <li>
+                                <a href="" onclick="return false;" data-target='previous' class="re_dropdown">Previous</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div id="received_exp_previous">
                 
             </div>
         </div>
-        <div class="card col-sm-6">
-            <h5>Expenses <small> For Current Month</small> <span class="f-16 zmdi zmdi-widgets pull-right"></span><span class="pull-right m-r-25">Total : {{$currentexptotal}}</span></h5>
-            <div id="chart4_current">
+        <div class="card col-sm-6 re-current">
+            <div class="card-header">
+                <h2>Received vs Expenses<small> For Current Month</small></h2>
+            
+                <ul class="actions">
+                    <li class="dropdown">
+                        <a href="" data-toggle="dropdown">
+                            <i class="zmdi zmdi-widgets"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            <li>
+                                <a href="" onclick="return false;" data-target='overall' class="re_dropdown">Overall</a>
+                            </li>
+                            <li>
+                                <a href="" onclick="return false;" data-target='previous' class="re_dropdown">Previous</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div id="received_exp_current">
                 
             </div>
         </div>
-    </div>
-    <div class="card">
-        <div class="card col-sm-6">
-            <h5>Recieved vs Expenses <small> For Overall</small> <span class="f-16 zmdi zmdi-widgets pull-right"></span></h5>
-            <div id="chart5_overall">
+        <div class="card col-sm-6 sw-previous">
+            <div class="card-header">
+                <h2>Scope Of Work<small> For Previous Month</small></h2>
+            
+                <ul class="actions">
+                    <li class="dropdown">
+                        <a href="" data-toggle="dropdown">
+                            <i class="zmdi zmdi-widgets"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            <li>
+                                <a href="" onclick="return false;" data-target='current' class="sw_dropdown">Current</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div id="work_previous">
                 
             </div>
         </div>
-        <div class="card col-sm-6">
-            <h5>Recieved vs Expenses <small> For Previous Month</small> <span class="f-16 zmdi zmdi-widgets pull-right"></span></h5>
-            <div id="chart5_previous">
-                
+        <div class="card col-sm-6 sw-current">
+            <div class="card-header">
+                <h2>Scope Of Work<small> For Current Month</small></h2>
+            
+                <ul class="actions">
+                    <li class="dropdown">
+                        <a href="" data-toggle="dropdown">
+                            <i class="zmdi zmdi-widgets"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            
+                            <li>
+                                <a href="" onclick="return false;" data-target='previous' class="sw_dropdown">Previous</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
             </div>
-        </div>
-        <div class="card col-sm-6">
-            <h5>Recieved vs Expenses <small> For Current Month</small> <span class="f-16 zmdi zmdi-widgets pull-right"></span></h5>
-            <div id="chart5_current">
-                
-            </div>
-        </div>
-        <div class="card col-sm-6">
-            <h5>Scope Of Work <small> For Previous Month</small> <span class="f-16 zmdi zmdi-widgets pull-right"></span></h5>
-            <div id="chart6_previous">
-                
-            </div>
-        </div>
-        <div class="card col-sm-6">
-            <h5>Scope Of Work <small> For Current Month</small> <span class="f-16 zmdi zmdi-widgets pull-right"></span></h5>
-            <div id="chart6">
+            <div id="work">
                 
             </div>
         </div>
@@ -240,63 +420,67 @@
                             // iris data from R
                             columns: <?php echo json_encode($jobprocess_status); ?>,
                             type : 'bar',
-                            /*onclick: function (d, i) { console.log("onclick", d, i); },
-                            onmouseover: function (d, i) { console.log("onmouseover", d, i); },
+                            onclick: function (d, i) { jb_compltedreport(d, i , 'current'); },
+                            /*onmouseover: function (d, i) { console.log("onmouseover", d, i); },
                             onmouseout: function (d, i) { console.log("onmouseout", d, i); }*/
                         },
                         bindto:"#chart3",
                     });
-              var chart3_previous = c3.generate({
+            var chart3_previous = c3.generate({
                         data: {
                             // iris data from R
                             columns: <?php echo json_encode($previousjobprocess_status); ?>,
                             type : 'bar',
-                            /*onclick: function (d, i) { console.log("onclick", d, i); },
-                            onmouseover: function (d, i) { console.log("onmouseover", d, i); },
+                            onclick: function (d, i) { jb_compltedreport(d, i , 'previous'); },
+                            /*onmouseover: function (d, i) { console.log("onmouseover", d, i); },
                             onmouseout: function (d, i) { console.log("onmouseout", d, i); }*/
                         },
                         bindto:"#chart3_previous",
                     });
                 
-            var chart4 = c3.generate({
+            var expenses_overall = c3.generate({
                         data: {
                             // iris data from R
                             columns: <?php echo json_encode($overall_expenses); ?>,
                             type : 'bar',
+                            onclick: function (d, i) { ex_compltedreport(d, i , 'overall'); },
                             /*onclick: function (d, i) { console.log("onclick", d, i); },
                             onmouseover: function (d, i) { console.log("onmouseover", d, i); },
                             onmouseout: function (d, i) { console.log("onmouseout", d, i); }*/
                         },
-                        bindto:"#chart4_overall",
+                        bindto:"#expenses_overall",
                     });
-            var chart4_previous = c3.generate({
+            var expenses_previous = c3.generate({
                         data: {
                             // iris data from R
                             columns: <?php echo json_encode($previous_expenses); ?>,
                             type : 'bar',
+                            onclick: function (d, i) { ex_compltedreport(d, i , 'previous'); },
                             /*onclick: function (d, i) { console.log("onclick", d, i); },
                             onmouseover: function (d, i) { console.log("onmouseover", d, i); },
                             onmouseout: function (d, i) { console.log("onmouseout", d, i); }*/
                         },
-                        bindto:"#chart4_previous",
+                        bindto:"#expenses_previous",
                     });
-            var chart4_current = c3.generate({
+            var expenses_current = c3.generate({
                         data: {
                             // iris data from R
                             columns: <?php echo json_encode($current_expenses); ?>,
                             type : 'bar',
+                            onclick: function (d, i) { ex_compltedreport(d, i , 'current'); },
                             /*onclick: function (d, i) { console.log("onclick", d, i); },
                             onmouseover: function (d, i) { console.log("onmouseover", d, i); },
                             onmouseout: function (d, i) { console.log("onmouseout", d, i); }*/
                         },
-                        bindto:"#chart4_current",
+                        bindto:"#expenses_current",
                     });
                 
-            var chart5_overall = c3.generate({
+            var received_exp_overall = c3.generate({
                         data: {
                             // iris data from R
                             columns: <?php echo json_encode($overall_received_expensedata); ?>,
                             type : 'pie',
+                            onclick: function (d, i) { received_exp_report(d, i , 'overall'); },
                             /*onclick: function (d, i) { console.log("onclick", d, i); },
                             onmouseover: function (d, i) { console.log("onmouseover", d, i); },
                             onmouseout: function (d, i) { console.log("onmouseout", d, i); }*/
@@ -323,14 +507,14 @@
                         //            value: d3.format(',') // apply this format to both y and y2
                                     }
                                 },
-                        bindto:"#chart5_overall",
+                        bindto:"#received_exp_overall",
                     });
-                
-            var chart5_previous = c3.generate({
+            var received_exp_previous = c3.generate({
                         data: {
                             // iris data from R
                             columns: <?php echo json_encode($previous_received_expensedata); ?>,
                             type : 'pie',
+                            onclick: function (d, i) { received_exp_report(d, i , 'previous'); },
                             /*onclick: function (d, i) { console.log("onclick", d, i); },
                             onmouseover: function (d, i) { console.log("onmouseover", d, i); },
                             onmouseout: function (d, i) { console.log("onmouseout", d, i); }*/
@@ -357,15 +541,16 @@
                         //            value: d3.format(',') // apply this format to both y and y2
                                     }
                                 },
-                        bindto:"#chart5_previous",
+                        bindto:"#received_exp_previous",
                     });
-            var chart5_current = c3.generate({
+            var received_exp_current = c3.generate({
                         data: {
                             // iris data from R
                             columns: <?php echo json_encode($current_received_expensedata); ?>,
                             type : 'pie',
-                            /*onclick: function (d, i) { console.log("onclick", d, i); },
-                            onmouseover: function (d, i) { console.log("onmouseover", d, i); },
+                            onclick: function (d, i) { received_exp_report(d, i , 'current'); },
+                            //onclick: function (d, i) { console.log("onclick", d, i); },
+                            /*onmouseover: function (d, i) { console.log("onmouseover", d, i); },
                             onmouseout: function (d, i) { console.log("onmouseout", d, i); }*/
                         },
                         pie: {
@@ -390,30 +575,32 @@
                         //            value: d3.format(',') // apply this format to both y and y2
                                     }
                                 },
-                        bindto:"#chart5_current",
+                        bindto:"#received_exp_current",
                     });
                 
-            var chart6 = c3.generate({
+            var work = c3.generate({
                         data: {
                             // iris data from R
                             columns: <?php echo json_encode($scopeofwork); ?>,
                             type : 'bar',
+                            onclick: function (d, i) { scopeofwork(d, i , 'current'); },
                             /*onclick: function (d, i) { console.log("onclick", d, i); },
                             onmouseover: function (d, i) { console.log("onmouseover", d, i); },
                             onmouseout: function (d, i) { console.log("onmouseout", d, i); }*/
                         },
-                        bindto:"#chart6",
+                        bindto:"#work",
                     });
-             var chart6_previous = c3.generate({
+             var work_previous = c3.generate({
                         data: {
                             // iris data from R
                             columns: <?php echo json_encode($previousscopeofwork); ?>,
                             type : 'bar',
+                            onclick: function (d, i) { scopeofwork(d, i , 'previous'); },
                             /*onclick: function (d, i) { console.log("onclick", d, i); },
                             onmouseover: function (d, i) { console.log("onmouseover", d, i); },
                             onmouseout: function (d, i) { console.log("onmouseout", d, i); }*/
                         },
-                        bindto:"#chart6_previous",
+                        bindto:"#work_previous",
                     });
                     
             function statusreport(d, i)
@@ -463,6 +650,300 @@
 
                 //alert(d.id);
             }
+            
+            function jb_compltedreport(d, i , type)
+            {
+                var orderstatus = d.id;
+
+                var dataConfig = {
+                        orderstatus: orderstatus,type:type
+                        };
+
+                var controller = 'statusreport/';
+
+                $.ajax({
+                            method: "POST",
+                            url: _site_url + controller + "jb_compltedreport",
+                            data: dataConfig,
+
+                        }).done( function( data, textStatus, jqXHR ) {
+                            console.log( " ajax done " );
+                           // alert(data);
+                            $(".detname").html(" For "+orderstatus);
+                            if(data.status ==1)
+                            {
+                                
+                                $("#modalreport").find(".modal-body div").remove();
+                                $("#modalreport").find(".modal-body").append("<div class='statrep'></div>");
+                                $("#modalreport").find(".modal-body .statrep").append("<table class='table'><thead><th>Seqno</th><th>Complaint Date</th><th>Customer Name</th><th>Mobileno</th><th>So No</th><th>Scope</th></thead><tbody></tbody></table>");
+                                var len = data.servicedata.length;
+                                for (var i=0;i<len;i++)
+                                {
+                                    $("#modalreport").find(".statrep tbody").append("<tr><td>"+data.servicedata[i].seqno+"</td><td>"+data.servicedata[i].complaint_date+"</td><td>"+data.servicedata[i].customer_name+"</td><td>"+data.servicedata[i].mobileno+"</td><td>"+data.servicedata[i].salesorder_no+"</td><td>"+data.servicedata[i].scope_of_work+"</td></tr>");
+                                }
+                                
+                                $("#modalreport").find("#servicestatus").modal();
+                            }
+
+                        }).fail( function( jqXHR, textStatus, errorThrown ) {
+                            console.log( " ajax fail " );
+                            //console.log( jqXHR, textStatus, errorThrown );
+                        }).always ( function( data_jqXHR, textStatus, jqXHR_errorThrown ) {
+                            console.log( " ajax always " );
+                            //console.log( data_jqXHR, textStatus, jqXHR_errorThrown );
+                        });  
+                
+            }
+            
+            function ex_compltedreport(d, i , type)
+           {
+                var orderstatus = d.id;
+
+                var dataConfig = {
+                        orderstatus: orderstatus,type:type
+                        };
+
+                var controller = 'statusreport/';
+
+                $.ajax({
+                            method: "POST",
+                            url: _site_url + controller + "ex_compltedreport",
+                            data: dataConfig,
+
+                        }).done( function( data, textStatus, jqXHR ) {
+                            console.log( " ajax done " );
+                           // alert(data);
+                            $(".detname").html(" For "+orderstatus);
+                            if(data.status ==1)
+                            {
+                                
+                                $("#modalreport").find(".modal-body div").remove();
+                                $("#modalreport").find(".modal-body").append("<div class='statrep'></div>");
+                                $("#modalreport").find(".modal-body .statrep").append("<table class='table'><thead><th>Seqno</th><th>Complaint Date</th><th>Customer Name</th><th>Engineer Name</th><th>Work</th><th>Attend From</th><th>Attend To</th><th>Lodging</th><th>Boarding</th><th>Travel</th><th>Local</th></thead><tbody></tbody></table>");
+                                var len = data.servicedata.length;
+                                for (var i=0;i<len;i++)
+                                {
+                                    $("#modalreport").find(".statrep tbody").append("<tr><td>"+data.servicedata[i].seqno+"</td><td>"+data.servicedata[i].complaint_date+"</td><td>"+data.servicedata[i].customer_name+"</td><td>"+data.servicedata[i].serviceengineer+"</td><td>"+data.servicedata[i].scope_of_work+"</td><td>"+data.servicedata[i].date_of_attend+"</td><td>"+data.servicedata[i].date_of_complete+"</td><td>"+data.servicedata[i].loading_expenses+"</td><td>"+data.servicedata[i].boarding_expenses+"</td><td>"+data.servicedata[i].travel_expenses+"</td><td>"+data.servicedata[i].local_conveyance+"</td></tr>");
+                                }
+                                $("#modalreport").find(".statrep .table").dataTable({'autoWidth':true});
+                                $("#modalreport").find("#servicestatus").modal();
+                            }
+
+                        }).fail( function( jqXHR, textStatus, errorThrown ) {
+                            console.log( " ajax fail " );
+                            //console.log( jqXHR, textStatus, errorThrown );
+                        }).always ( function( data_jqXHR, textStatus, jqXHR_errorThrown ) {
+                            console.log( " ajax always " );
+                            //console.log( data_jqXHR, textStatus, jqXHR_errorThrown );
+                        });  
+                
+            }
+            
+            function received_exp_report(d, i , type)
+            {
+                var orderstatus = d.id;
+
+                var dataConfig = {
+                        orderstatus: orderstatus,type:type
+                        };
+
+                var controller = 'statusreport/';
+
+                $.ajax({
+                            method: "POST",
+                            url: _site_url + controller + "received_exp_report",
+                            data: dataConfig,
+
+                        }).done( function( data, textStatus, jqXHR ) {
+                            console.log( " ajax done " );
+                           // alert(data);
+                            $(".detname").html(" For "+orderstatus);
+                            if(data.status ==1)
+                            {
+                                
+                                $("#modalreport").find(".modal-body div").remove();
+                                $("#modalreport").find(".modal-body").append("<div class='statrep'></div>");
+                                if(orderstatus == 'Received')
+                                {
+                                    $("#modalreport").find(".modal-body .statrep").append("<table class='table'><thead><th>Seqno</th><th>Complaint Date</th><th>Customer Name</th><th>SO No</th><th>Engineer Name</th><th>Work</th><th>Income</th></thead><tbody></tbody></table>");
+                                    var len = data.servicedata.length;
+                                    var totincomeamt = 0;
+                                    for (var i=0;i<len;i++)
+                                    {
+                                        $("#modalreport").find(".statrep tbody").append("<tr><td class='f-10'>"+data.servicedata[i].seqno+"</td><td class='f-10'>"+data.servicedata[i].complaint_date+"</td><td class='f-10'>"+data.servicedata[i].customer_name+"</td><td class='f-10'>"+data.servicedata[i].salesorder_no+"</td><td class='f-10'>"+data.servicedata[i].serviceengineer+"</td><td class='f-10'>"+data.servicedata[i].scope_of_work+"</td><td class='f-10'>"+data.servicedata[i].incomeamt+"</td></tr>");
+                                        totincomeamt = parseInt(totincomeamt)+parseInt(data.servicedata[i].incomeamt);
+                                    }
+                                    $("#modalreport").find(".statrep tbody").append("<tr><td></td><td></td><td></td><td></td><td></td><td>Total</td><td>"+parseInt(totincomeamt)+"</td></tr>");
+                                    //$("#modalreport").find(".statrep .table").dataTable({'autoWidth':true});
+                                    $("#modalreport").find("#servicestatus").modal();
+                                }
+                                else
+                                {
+                                    $("#modalreport").find(".modal-body .statrep").append("<table class='table'><thead><th>Seqno</th><th>Complaint Date</th><th>Customer Name</th><th>SO No</th><th>Engineer Name</th><th>Work</th><th>Attend From</th><th>Attend To</th><th>Expenses</th></thead><tbody></tbody></table>");
+                                    var len = data.servicedata.length;
+                                    var totexpenses = 0;
+                                    for (var i=0;i<len;i++)
+                                    {
+                                        $("#modalreport").find(".statrep tbody").append("<tr><td class='f-10'>"+data.servicedata[i].seqno+"</td><td class='f-10'>"+data.servicedata[i].complaint_date+"</td><td class='f-10'>"+data.servicedata[i].customer_name+"</td><td class='f-10'>"+data.servicedata[i].salesorder_no+"</td><td class='f-10'>"+data.servicedata[i].serviceengineer+"</td><td class='f-10'>"+data.servicedata[i].scope_of_work+"</td><td class='f-10'>"+data.servicedata[i].date_of_attend+"</td><td class='f-10'>"+data.servicedata[i].date_of_complete+"</td><td class='f-10'>"+data.servicedata[i].expenses+"</td></tr>");
+                                        totexpenses = parseInt(totexpenses)+parseInt(data.servicedata[i].expenses);
+                                    }
+                                    $("#modalreport").find(".statrep tbody").append("<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>Total</td><td>"+parseInt(totexpenses)+"</td></tr>");
+                                    //$("#modalreport").find(".statrep .table").dataTable();
+                                    $("#modalreport").find("#servicestatus").modal();
+                                }
+                                    
+                            }
+
+                        }).fail( function( jqXHR, textStatus, errorThrown ) {
+                            console.log( " ajax fail " );
+                            //console.log( jqXHR, textStatus, errorThrown );
+                        }).always ( function( data_jqXHR, textStatus, jqXHR_errorThrown ) {
+                            console.log( " ajax always " );
+                            //console.log( data_jqXHR, textStatus, jqXHR_errorThrown );
+                        });  
+            }
+            
+            function scopeofwork(d, i , type)
+            {
+                var orderstatus = d.id;
+
+                var dataConfig = {
+                        orderstatus: orderstatus,type:type
+                        };
+
+                var controller = 'statusreport/';
+
+                $.ajax({
+                            method: "POST",
+                            url: _site_url + controller + "scopeofwork_report",
+                            data: dataConfig,
+
+                        }).done( function( data, textStatus, jqXHR ) {
+                            console.log( " ajax done " );
+                           // alert(data);
+                            $(".detname").html(" For "+orderstatus);
+                            if(data.status ==1)
+                            {
+                                
+                                $("#modalreport").find(".modal-body div").remove();
+                                $("#modalreport").find(".modal-body").append("<div class='statrep'></div>");
+                                $("#modalreport").find(".modal-body .statrep").append("<table class='table'><thead><th>Seqno</th><th>Complaint Date</th><th>Customer Name</th><th>So no</th><th>Engineer Name</th><th>Work</th><th>Income</th><th>Expenses</th></thead><tbody></tbody></table>");
+                                var len = data.servicedata.length;
+                                var totincomeamt =0;
+                                var totexpenses = 0;
+                                
+                                for (var i=0;i<len;i++)
+                                {
+                                    $("#modalreport").find(".statrep tbody").append("<tr><td>"+data.servicedata[i].seqno+"</td><td>"+data.servicedata[i].complaint_date+"</td><td>"+data.servicedata[i].customer_name+"</td><td>"+data.servicedata[i].salesorder_no+"</td><td>"+data.servicedata[i].serviceengineer+"</td><td>"+data.servicedata[i].scope_of_work+"</td><td>"+data.servicedata[i].incomeamt+"</td><td>"+data.servicedata[i].expenses+"</td></tr>");
+                                    totexpenses = parseInt(totexpenses)+parseInt(data.servicedata[i].expenses);
+                                    totincomeamt = parseInt(totincomeamt)+parseInt(data.servicedata[i].incomeamt);
+                                }
+                                $("#modalreport").find(".statrep tbody").append("<tr><td></td><td></td><td></td><td></td><td></td><td>Total</td><td>"+parseInt(totincomeamt)+"</td><td>"+parseInt(totexpenses)+"</td></tr>");
+
+                                //$("#modalreport").find(".statrep .table").dataTable({'autoWidth':true});
+                                $("#modalreport").find("#servicestatus").modal();
+                                    
+                            }
+
+                        }).fail( function( jqXHR, textStatus, errorThrown ) {
+                            console.log( " ajax fail " );
+                            //console.log( jqXHR, textStatus, errorThrown );
+                        }).always ( function( data_jqXHR, textStatus, jqXHR_errorThrown ) {
+                            console.log( " ajax always " );
+                            //console.log( data_jqXHR, textStatus, jqXHR_errorThrown );
+                        });  
+            }
+            
+            
+            $('.pc-previous').hide();
+            $(".pc_dropdown").on('click',function()
+            {
+               var targetdata = $(this).data('target');
+               if(targetdata == 'previous')
+               {
+                   $('.pc-previous').show();
+                   $('.pc-current').hide();
+               }
+               else
+               {
+                   $('.pc-previous').hide();
+                   $('.pc-current').show();
+               }
+            });
+            
+            $('.ex-overall').hide();
+            $('.ex-previous').hide();
+            $(".ex_dropdown").on('click',function()
+            {
+               var targetdata = $(this).data('target');
+               if(targetdata == 'previous')
+               {
+                   $('.ex-previous').show();
+                   $('.ex-current').hide();
+                   $('.ex-overall').hide();
+               }
+               else
+               {
+                   if(targetdata == 'current')
+                   {
+                        $('.ex-previous').hide();
+                        $('.ex-current').show();
+                        $('.ex-overall').hide();
+                   }
+                   else
+                   {
+                        $('.ex-previous').hide();
+                        $('.ex-current').hide();
+                        $('.ex-overall').show();
+                   }
+                   
+               }
+            });
+            
+            $('.re-overall').hide();
+            $('.re-previous').hide();
+            $(".re_dropdown").on('click',function()
+            {
+               var targetdata = $(this).data('target');
+               if(targetdata == 'previous')
+               {
+                   $('.re-previous').show();
+                   $('.re-current').hide();
+                   $('.re-overall').hide();
+               }
+               else
+               {
+                   if(targetdata == 'current')
+                   {
+                        $('.re-previous').hide();
+                        $('.re-current').show();
+                        $('.re-overall').hide();
+                   }
+                   else
+                   {
+                        $('.re-previous').hide();
+                        $('.re-current').hide();
+                        $('.re-overall').show();
+                   }
+                   
+               }
+            });
+            
+            $('.sw-previous').hide();
+            $(".sw_dropdown").on('click',function()
+            {
+               var targetdata = $(this).data('target');
+               if(targetdata == 'previous')
+               {
+                   $('.sw-previous').show();
+                   $('.sw-current').hide();
+               }
+               else
+               {
+                   $('.sw-previous').hide();
+                   $('.sw-current').show();
+               }
+            });
         });
         
             

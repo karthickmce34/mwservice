@@ -124,7 +124,8 @@ class StatusReportController extends Controller
                                         sum(visitplan_summary.local_conveyance) as local_conveyance
                                     from visitplan_summary 
                                     where visitplan_summary.date_of_complete >= '2022-06-01'
-                                    and visitplan_summary.date_of_complete <= '2022-06-30'");
+                                    and visitplan_summary.date_of_complete <= '2022-06-30'
+                                    and visitplan_summary.deleted_at is null");
         
         $current_expenses = DB::select("select sum(visitplan_summary.loading_expenses) as lodgeing_expenses,
                                             sum(visitplan_summary.boarding_expenses) as boarding_expenses,
@@ -132,14 +133,16 @@ class StatusReportController extends Controller
                                         sum(visitplan_summary.local_conveyance) as local_conveyance
                                     from visitplan_summary 
                                     where visitplan_summary.date_of_complete >= '2022-07-01'
-                                    and visitplan_summary.date_of_complete <= '2022-07-31'");
+                                    and visitplan_summary.date_of_complete <= '2022-07-31'                                    
+                                    and visitplan_summary.deleted_at is null");
         
         $overall_expenses = DB::select("select sum(visitplan_summary.loading_expenses) as lodgeing_expenses,
                                             sum(visitplan_summary.boarding_expenses) as boarding_expenses,
                                         sum(visitplan_summary.travel_expenses) as travel_expenses,
                                         sum(visitplan_summary.local_conveyance) as local_conveyance
                                     from visitplan_summary 
-                                    where visitplan_summary.date_of_complete <= '2022-07-31'");
+                                    where visitplan_summary.date_of_complete <= '2022-07-31'
+                                    and visitplan_summary.deleted_at is null");
         
         $overall_received_expenses = DB::select("select sum(a.expenses) as expenses,sum(a.recieved) as recieved from 
                                     (select sum(visitplan_summary.loading_expenses) + 
@@ -147,7 +150,8 @@ class StatusReportController extends Controller
                                         sum(visitplan_summary.travel_expenses) +
                                         sum(visitplan_summary.local_conveyance) as expenses,0 as recieved
                                     from visitplan_summary
-                                    where visitplan_summary.date_of_complete <= '2022-07-30'
+                                    where visitplan_summary.date_of_complete <= '2022-07-30' 
+                                    and visitplan_summary.deleted_at is null
                                     UNION ALL
                                     select 0 as expenses,sum(service_spares_register.advance_amt) + sum(service_spares_register.payment_received) as recieved
 
@@ -162,6 +166,7 @@ class StatusReportController extends Controller
                                     from visitplan_summary
                                     where visitplan_summary.date_of_complete >= '2022-07-01'
                                     and visitplan_summary.date_of_complete <= '2022-07-30'
+                                    and visitplan_summary.deleted_at is null
                                     UNION ALL
                                     select 0 as expenses,sum(service_spares_register.advance_amt) + sum(service_spares_register.payment_received) as recieved
 
@@ -177,6 +182,7 @@ class StatusReportController extends Controller
                                     from visitplan_summary
                                     where visitplan_summary.date_of_complete >= '2022-06-01'
                                     and visitplan_summary.date_of_complete <= '2022-06-30'
+                                    and visitplan_summary.deleted_at is null
                                     UNION ALL
                                     select 0 as expenses,sum(service_spares_register.advance_amt) + sum(service_spares_register.payment_received) as recieved
 
@@ -200,9 +206,40 @@ class StatusReportController extends Controller
                                     and complaint_register.complaint_date <= '2022-06-30'
                                     and scope_of_work != '' 
                                     group by scope_of_work");
+        
+        $job_status_warrenty = DB::select("select count(A.pendingorderstatus) as cnt,A.pendingorderstatus,a.warrenty from
+                                            (select 
+                                                CASE
+                                                when service_spares_register.order_status = 0 then 'Process Pending'
+                                                when service_spares_register.order_status = 1 then 'Process Pending'
+                                                when service_spares_register.order_status = 2 then 'Process Pending'
+                                                when service_spares_register.order_status = 3 then 'Process Pending'
+                                                when service_spares_register.order_status = 4 then 'Process Pending'
+                                                when service_spares_register.order_status = 5 then 'Process Pending' 
+                                                when service_spares_register.order_status = 8 then 'Job Pending'
+                                                when service_spares_register.order_status = 10 then 'Job Pending' 
+                                         	when service_spares_register.order_status = 12 then 'Job Pending'
+                                                when service_spares_register.order_status = 11 then 'Completed'
+                                                else 'No Data' end as pendingorderstatus,
+                                                case when warrenty = 0 then 'Under Warrenty' else 'Out Of Warrenty' end as warrenty
+                                                
+
+                                    from 
+                                        complaint_register,
+                                        service_spares_register
+
+                                    where complaint_register.id = service_spares_register.complaint_register_id
+                                    and complaint_register.complaint_type = 0
+                                    and complaint_register.complaint_date >= '2022-07-01'
+                                    and complaint_register.complaint_date <= '2022-07-30')A
+                                    where A.pendingorderstatus != 'No Data'
+                                    group by A.pendingorderstatus,a.warrenty
+                                    order by A.pendingorderstatus,a.warrenty");
        $jobdata=array();
        $processdata = array();
        $jobprocessdata = array();
+       $scopedata = array();
+       $job_status_warrenty = array();
        
        foreach($process_status as $process)
        {
@@ -229,6 +266,7 @@ class StatusReportController extends Controller
            $scopedata[]=array($scope->scope_of_work ,$scope->cnt);
            //$processdata['processcnt'][] = $process->cnt;
        }
+       
        foreach($previousscopeofwork as $previousscope)
        {
            $previousscopedata[]=array($previousscope->scope_of_work ,$previousscope->cnt);
@@ -273,7 +311,7 @@ class StatusReportController extends Controller
         $data['previousjobprocess_status']=$previousjobprocessdata;
         $data['overall_expenses']=$overall_expensedata;
         $data['current_expenses']=$current_expensedata;
-        $data['previous_expenses']=$overall_expensedata;
+        $data['previous_expenses']=$previous_expensedata;
         
         $data['overallexptotal'] = $overallexptotal;
         $data['currentexptotal'] = $currentexptotal;
@@ -481,7 +519,7 @@ class StatusReportController extends Controller
                                     complaint_register.complaint_date,
                                     complaint_register.mobileno,
                                     case when complaint_register.salesorder_no is null then '' else complaint_register.salesorder_no end as salesorder_no,complaint_register.warrenty,
-                                    service_spares_register.scope_of_work
+                                    replace(service_spares_register.scope_of_work,'\"','') as scope_of_work
                                     from 
                                         complaint_register,
                                         service_spares_register
@@ -495,6 +533,308 @@ class StatusReportController extends Controller
                                     and complaint_register.complaint_type = 0
                                     and service_spares_register.order_status = $ordervalue order by complaint_register.seqno");
         $this->data['status']=1;
+        $this->data['servicedata']=$servicedata;
+       // print_r($inputs);die;
+        //$this->data['servicedata']=$servicedata;
+        return response()->json($this->data);
+    }
+    
+    public function jb_compltedreport()
+    {
+        $inputs = request()->all();
+        
+        $ordervalue = $inputs['orderstatus'];
+        $type = $inputs['type'];
+        
+        if($ordervalue == 'Process Pending')
+        {
+            $ordvalue = '0,1,2,3,4,5';
+        }
+        else
+        {
+            if($ordervalue == 'Job Pending')
+            {
+                $ordvalue = '8,10,12';
+            }
+            else
+            {
+                $ordvalue = '11';
+            }
+        }
+        
+        if($type == 'current')
+        {
+            $date = " and complaint_register.complaint_date >= '2022-07-01'
+                                    and complaint_register.complaint_date <= '2022-07-30'";
+        }
+        else
+        {
+            $date = " and complaint_register.complaint_date >= '2022-06-01'
+                                    and complaint_register.complaint_date <= '2022-06-30'";
+        }
+        
+        $servicedata = DB::select("select distinct complaint_register.seqno,complaint_register.customer_name,
+                                    complaint_register.complaint_date,
+                                    complaint_register.mobileno,
+                                    case when complaint_register.salesorder_no is null then '' else complaint_register.salesorder_no end as salesorder_no,complaint_register.warrenty,
+                                    replace(service_spares_register.scope_of_work,'\"','') as scope_of_work
+                                    from 
+                                        complaint_register,
+                                        service_spares_register
+                                        left join visit_plan on visit_plan.servicespare_id = service_spares_register.id and visit_plan.deleted_at is null
+                                        left join visitplan_engineer on  visit_plan.id = visitplan_engineer.visitplan_id and visitplan_engineer.deleted_at is null
+                                        left join service_engineer on service_engineer.id = visitplan_engineer.engineer_id
+                                        left join service_agent on service_agent.id = visit_plan.agent_id
+                                        left join visitplan_summary on visitplan_summary.visitplan_id = visit_plan.id
+
+                                    where complaint_register.id = service_spares_register.complaint_register_id
+                                    and complaint_register.complaint_type = 0
+                                    and service_spares_register.order_status in (".$ordvalue.") ".$date." order by complaint_register.seqno");
+        $this->data['status']=1;
+        $this->data['servicedata']=$servicedata;
+       // print_r($inputs);die;
+        //$this->data['servicedata']=$servicedata;
+        return response()->json($this->data);
+    }
+    
+    public function ex_compltedreport()
+    {
+        $inputs = request()->all();
+        
+        $ordervalue = $inputs['orderstatus'];
+        $type = $inputs['type'];
+        
+        
+        
+        if($type == 'current')
+        {
+            $date = " and complaint_register.complaint_date >= '2022-07-01'
+                                    and complaint_register.complaint_date <= '2022-07-30'";
+        }
+        else
+        {
+            if($type == 'previous')
+            {
+                $date = " and complaint_register.complaint_date >= '2022-06-01'
+                                        and complaint_register.complaint_date <= '2022-06-30'";
+            }
+            else
+            {
+                $date = " and complaint_register.complaint_date <= '2022-07-31'";
+            }
+                
+        }
+        
+        $servicedata = DB::select("select complaint_register.seqno,complaint_register.customer_name,
+                                    complaint_register.complaint_date,
+                                    visitplan_summary.date_of_attend,
+                                    visitplan_summary.date_of_complete,
+                                    GROUP_CONCAT(service_engineer.name) as serviceengineer,
+                                    replace(service_spares_register.scope_of_work,'\"','') as scope_of_work,
+                                    visitplan_summary.loading_expenses,
+                                    visitplan_summary.boarding_expenses,
+                                    visitplan_summary.travel_expenses,
+                                    visitplan_summary.local_conveyance
+                                    from visitplan_summary,visit_plan,complaint_register,visitplan_engineer,service_engineer,service_spares_register 
+                                    where visitplan_summary.visitplan_id = visit_plan.id
+                                    and visit_plan.complaint_register_id = complaint_register.id
+                                    and service_spares_register.complaint_register_id = complaint_register.id
+                                    and visit_plan.id = visitplan_engineer.visitplan_id
+                                    and service_engineer.id = visitplan_engineer.engineer_id
+                                    and visit_plan.status=1
+                                    and visit_plan.deleted_at is null
+                                    $date
+                                    and visitplan_summary.deleted_at is null
+                                    group by complaint_register.complaint_date,
+                                    complaint_register.seqno,
+                                    complaint_register.customer_name,
+                                    service_spares_register.scope_of_work,
+                                    visitplan_summary.date_of_attend,
+                                    visitplan_summary.date_of_complete,
+                                    visitplan_summary.loading_expenses,
+                                    visitplan_summary.boarding_expenses,
+                                    visitplan_summary.travel_expenses,
+                                    visitplan_summary.local_conveyance
+                                    order by  complaint_register.complaint_date,complaint_register.seqno  ");
+        $this->data['status']=1;
+        $this->data['servicedata']=$servicedata;
+       // print_r($inputs);die;
+        //$this->data['servicedata']=$servicedata;
+        return response()->json($this->data);
+    }
+    
+    public function received_exp_report()
+    {
+        $inputs = request()->all();
+        
+        $ordervalue = $inputs['orderstatus'];
+        $type = $inputs['type'];
+        
+        
+        
+        
+        
+        if($ordervalue == 'Received')
+        {
+            if($type == 'current')
+            {
+                $date = " and service_spares_register.paid_date >= '2022-07-01'
+                                        and service_spares_register.paid_date <= '2022-07-30'";
+            }
+            else
+            {
+                if($type == 'previous')
+                {
+                    $date = " and service_spares_register.paid_date >= '2022-06-01'
+                                            and service_spares_register.paid_date <= '2022-06-30'";
+                }
+                else
+                {
+                    $date = " and service_spares_register.paid_date <= '2022-07-31'";
+                }
+
+            }
+            
+            $servicedata = DB::select("SELECT complaint_register.seqno,complaint_register.customer_name,
+                                            complaint_register.complaint_date,
+                                            case when complaint_register.salesorder_no is null then '' else complaint_register.salesorder_no end as salesorder_no,
+                                            GROUP_CONCAT(coalesce(service_engineer.name,'')) as serviceengineer,
+                                            replace(service_spares_register.scope_of_work,'\"','') as scope_of_work,
+                                            service_spares_register.advance_amt + service_spares_register.payment_received as incomeamt
+                                        FROM complaint_register,
+                                            service_spares_register
+                                               left join visit_plan on visit_plan.servicespare_id = service_spares_register.id and visit_plan.status=1 and visit_plan.deleted_at is null
+                                               left join visitplan_engineer on visit_plan.id = visitplan_engineer.visitplan_id
+                                               left join service_engineer on service_engineer.id = visitplan_engineer.engineer_id
+
+                                        where service_spares_register.complaint_register_id = complaint_register.id
+                                        $date 
+                                        group by complaint_register.complaint_date,
+                                            complaint_register.seqno,
+                                            complaint_register.customer_name,
+                                            complaint_register.salesorder_no,
+                                            service_spares_register.scope_of_work,
+                                            service_spares_register.advance_amt,
+                                            service_spares_register.payment_received
+                                        order by  complaint_register.complaint_date,complaint_register.seqno   ");
+        }
+        else
+        {
+            if($type == 'current')
+            {
+                $date = " and visitplan_summary.date_of_complete >= '2022-07-01'
+                                    and visitplan_summary.date_of_complete <= '2022-07-30'";
+            }
+            else
+            {
+                if($type == 'previous')
+                {
+                    $date = " and visitplan_summary.date_of_complete >= '2022-06-01'
+                                    and visitplan_summary.date_of_complete <= '2022-06-30'";
+                }
+                else
+                {
+                    $date = " and visitplan_summary.date_of_complete <= '2022-07-30'";
+                }
+
+            }
+            $servicedata = DB::select("select complaint_register.seqno,complaint_register.customer_name,
+                                        complaint_register.complaint_date,
+                                        case when complaint_register.salesorder_no is null then '' else complaint_register.salesorder_no end as salesorder_no,
+                                        visitplan_summary.date_of_attend,
+                                        visitplan_summary.date_of_complete,
+                                        GROUP_CONCAT(service_engineer.name) as serviceengineer,
+                                        replace(service_spares_register.scope_of_work,'\"','') as scope_of_work,
+                                        visitplan_summary.loading_expenses + visitplan_summary.boarding_expenses + visitplan_summary.travel_expenses +
+                                        visitplan_summary.local_conveyance as expenses
+                                        from visitplan_summary,visit_plan,complaint_register,service_spares_register,visitplan_engineer,service_engineer 
+                                        where visitplan_summary.visitplan_id = visit_plan.id
+                                        and visit_plan.complaint_register_id = complaint_register.id
+                                        and visit_plan.id = visitplan_engineer.visitplan_id
+                                        and service_engineer.id = visitplan_engineer.engineer_id
+                                        and service_spares_register.complaint_register_id = complaint_register.id
+                                        and visit_plan.status=1
+                                        and visit_plan.deleted_at is null
+                                        $date
+                                        and visitplan_summary.deleted_at is null
+                                        group by complaint_register.complaint_date,
+                                        complaint_register.seqno,
+                                        complaint_register.customer_name,
+                                        complaint_register.salesorder_no,
+                                        service_spares_register.scope_of_work,
+                                        visitplan_summary.date_of_attend,
+                                        visitplan_summary.date_of_complete,
+                                        visitplan_summary.loading_expenses,
+                                        visitplan_summary.boarding_expenses,
+                                        visitplan_summary.travel_expenses,
+                                        visitplan_summary.local_conveyance
+                                        order by  complaint_register.complaint_date,complaint_register.seqno  ");
+        }
+        
+            
+        $this->data['status']=1;
+        
+        $this->data['servicedata']=$servicedata;
+       // print_r($inputs);die;
+        //$this->data['servicedata']=$servicedata;
+        return response()->json($this->data);
+    }
+    
+    public function scopeofwork_report()
+    {
+        $inputs = request()->all();
+        
+        $ordervalue = $inputs['orderstatus'];
+        $type = $inputs['type'];
+        
+        
+        
+        
+        
+        if($type == 'current')
+        {
+            $date = " and complaint_register.complaint_date >= '2022-07-01'
+                                    and complaint_register.complaint_date <= '2022-07-30'";
+        }
+        else
+        {
+            $date = " and complaint_register.complaint_date >= '2022-06-01'
+                                        and complaint_register.complaint_date <= '2022-06-30'";
+
+        }
+            
+            $servicedata = DB::select("select distinct complaint_register.seqno,complaint_register.customer_name,
+                                                        complaint_register.complaint_date,
+                                                        complaint_register.mobileno,
+                                                        GROUP_CONCAT(coalesce(service_engineer.name,'')) as serviceengineer,
+                                                        case when complaint_register.salesorder_no is null then '' else complaint_register.salesorder_no end as salesorder_no,
+                                                        replace(service_spares_register.scope_of_work,'\"','') as scope_of_work,
+                                                        sum(coalesce(service_spares_register.advance_amt,0)) + sum(coalesce(service_spares_register.payment_received,0)) as incomeamt,
+                                                        sum(coalesce(visitplan_summary.loading_expenses,0)) +  sum(coalesce(visitplan_summary.boarding_expenses,0)) + sum(coalesce(visitplan_summary.travel_expenses,0)) + sum(coalesce(visitplan_summary.local_conveyance,0)) as expenses
+                                                        
+                                                        from 
+                                                            complaint_register,
+                                                            service_spares_register
+                                                            left join visit_plan on visit_plan.servicespare_id = service_spares_register.id and visit_plan.deleted_at is null
+                                                            left join visitplan_engineer on  visit_plan.id = visitplan_engineer.visitplan_id and visitplan_engineer.deleted_at is null
+                                                            left join service_engineer on service_engineer.id = visitplan_engineer.engineer_id
+                                                            left join service_agent on service_agent.id = visit_plan.agent_id
+                                                            left join visitplan_summary on visitplan_summary.visitplan_id = visit_plan.id
+
+                                                        where complaint_register.id = service_spares_register.complaint_register_id
+                                                        and complaint_register.complaint_type = 0 ".$date ."
+                                                        and scope_of_work like  '%$ordervalue%' 
+                                                        group by complaint_register.seqno,
+                                                                complaint_register.customer_name,
+                                                                complaint_register.complaint_date,
+                                                                complaint_register.mobileno,
+                                                                complaint_register.salesorder_no,
+                                                                service_spares_register.scope_of_work
+                                                        order by complaint_register.seqno
+                                                            ");
+            
+        $this->data['status']=1;
+        
         $this->data['servicedata']=$servicedata;
        // print_r($inputs);die;
         //$this->data['servicedata']=$servicedata;
