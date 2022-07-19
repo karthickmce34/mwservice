@@ -70,8 +70,6 @@ class LoginController extends Controller
                                 ->where('mobileno',$pass)->first();
             if($modelData)
             {
-
-
                 Session::put('name', $modelData->name);
                 Session::put('user_id', $modelData->id);
                 Session::put('token', $token );

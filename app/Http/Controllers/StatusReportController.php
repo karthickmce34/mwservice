@@ -207,7 +207,7 @@ class StatusReportController extends Controller
                                     and scope_of_work != '' 
                                     group by scope_of_work");
         
-        /*$job_status_warrenty = DB::select("select count(A.pendingorderstatus) as cnt,A.pendingorderstatus,a.warrenty from
+        $job_status_warrenty = DB::select("select count(A.pendingorderstatus) as cnt,A.pendingorderstatus,A.warrenty from
                                             (select 
                                                 CASE
                                                 when service_spares_register.order_status = 0 then 'Process Pending'
@@ -230,16 +230,17 @@ class StatusReportController extends Controller
 
                                     where complaint_register.id = service_spares_register.complaint_register_id
                                     and complaint_register.complaint_type = 0
-                                    and complaint_register.complaint_date >= '2022-07-01'
+                                    and complaint_register.complaint_date >= '2022-05-01'
                                     and complaint_register.complaint_date <= '2022-07-30')A
                                     where A.pendingorderstatus != 'No Data'
-                                    group by A.pendingorderstatus,a.warrenty
-                                    order by A.pendingorderstatus,a.warrenty");*/
+                                    group by A.pendingorderstatus,A.warrenty
+                                    order by A.warrenty,A.pendingorderstatus");
        $jobdata=array();
        $processdata = array();
        $jobprocessdata = array();
        $scopedata = array();
-       $job_status_warrenty = array();
+       //$job_status_warrenty = array();
+       $jobwarrentydata = array();
        
        foreach($process_status as $process)
        {
@@ -272,7 +273,13 @@ class StatusReportController extends Controller
            $previousscopedata[]=array($previousscope->scope_of_work ,$previousscope->cnt);
            //$processdata['processcnt'][] = $process->cnt;
        }
+       foreach($job_status_warrenty as $jobwarrenty)
+       {
+           $jobwarrentydata[$jobwarrenty->warrenty][]=array($jobwarrenty->pendingorderstatus ,$jobwarrenty->cnt);
+           //$processdata['processcnt'][] = $process->cnt;
+       }
        
+       //print_r($jobwarrentydata);die;
       /**************for overall expenses**************/
        
        $overall_expensedata[]=array('Lodgeing Expenses',$overall_expenses[0]->lodgeing_expenses);
@@ -323,6 +330,8 @@ class StatusReportController extends Controller
         
         $data['scopeofwork'] = $scopedata;
         $data['previousscopeofwork'] = $previousscopedata;
+        
+        $data['jobwarrenty_status']=$jobwarrentydata;
         
         return view($this->basePath . $this->baseName,$data);
     }

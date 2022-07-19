@@ -22,6 +22,7 @@ class PendingvisitplanController extends Controller
     public $modelEngineer   = 'App\Models\ServiceEngineerModel';
     public $modelVsEng      = 'App\Models\VisitplanEngineerModel';
     public $modelVsSum      = 'App\Models\VisitplanSummaryModel';
+    public $modelVsExp      = 'App\Models\VisitExpensesModel';
     public $modelVsSumLn    = 'App\Models\VisitplanSummaryLineModel';
     public $modelProduct    = 'App\Models\VisitplanSummaryProductModel';
     public $modelComplaint  = 'App\Models\ComplaintRegisterModel';
@@ -118,6 +119,7 @@ class PendingvisitplanController extends Controller
         $panelleft_file = request()->file('panelleft');
         $panelright_file = request()->file('panelright');
         $panelinside_file = request()->file('panelinside');
+        $invoicecopy = request()->file('invoicecopy');
         $UPLOAD_PATH_URL   = Config::get('constant.UPLOAD_PATH_URL'); 
         $UPLOAD_PATH  = public_path($UPLOAD_PATH_URL);
         
@@ -147,10 +149,25 @@ class PendingvisitplanController extends Controller
                 if($inputs['is_agent']==0)
                 {
                     $inpData['days_site']= $inputs['days_site'];
-                    $inpData['loading_expenses']= $inputs['loading_expenses'];
-                    $inpData['boarding_expenses']= $inputs['boarding_expenses'];
-                    $inpData['travel_expenses']= $inputs['travel_expenses'];
-                    $inpData['local_conveyance']= $inputs['local_conveyance'];
+                    $loading=0;
+                    $boarding = 0;
+                    $travel = 0;
+                    $local = 0;
+                    for($i=1;$i<=count($inputs['engineer_id']);$i++)
+                    {
+                        $loading = $loading + $inputs['loading_expenses'][$i];
+                        $boarding = $boarding + $inputs['boarding_expenses'][$i];
+                        $travel = $travel + $inputs['travel_expenses'][$i];
+                        $local = $local + $inputs['local_conveyance'][$i];
+                    }
+                    $inpData['loading_expenses']= $loading;
+                    $inpData['boarding_expenses']= $boarding;
+                    $inpData['travel_expenses']= $travel;
+                    $inpData['local_conveyance']= $local;
+                }
+                else
+                {
+                    $inpData['invoice_bill'] = $inputs['invoice_bill'];
                 }
 
                 $inpData['date_of_attend']= $inputs['act_attend_date_from'];
@@ -179,6 +196,26 @@ class PendingvisitplanController extends Controller
                 }
                 else
                 {
+                    if($inputs['is_agent']==0)
+                    {
+                        for($i=1;$i<=count($inputs['engineer_id']);$i++)
+                        {
+                            $inpexp = array();
+                            $inpexp['visitplan_summary_id'] = $modelsum->id;
+                            $inpexp['engineer_id'] = $inputs['engineer_id'][$i];
+                            $inpexp['visitplan_id']= $docid;
+                            $inpexp['is_agent']= $inputs['is_agent'];
+                            $inpexp['loading_expenses'] = $inputs['loading_expenses'][$i];
+                            $inpexp['boarding_expenses'] = $inputs['boarding_expenses'][$i];
+                            $inpexp['travel_expenses'] = $inputs['travel_expenses'][$i];
+                            $inpexp['local_expenses'] = $inputs['local_conveyance'][$i];
+                            $inpexp['created_by_id'] = session()->get('user_id');
+                            $inpexp['status'] = 1;
+                            $modelsumexp = new $this->modelVsExp();
+                            $storedexp = $modelsumexp->addRecord($inpexp);
+                        }
+                    }
+                    
                     $service_report = $this->imageSummaryUploadFile($modelsum->id,$report_file,$UPLOAD_PATH,$UPLOAD_PATH_URL);
                     
                     $modelsum->file_path = $service_report['file_path'];
@@ -201,7 +238,15 @@ class PendingvisitplanController extends Controller
                         $modelsum->travelbill_file_path = $travel_bill['file_path'];
                         $modelsum->travelbill_file_name = $travel_bill['file_name'];
                     }
-                        
+                     
+                    if(isset($invoicecopy))
+                    {
+                        /*****invoicecopy****/
+                        $invoicecopy_bill = $this->imageSummaryUploadFile($modelsum->id,$invoicecopy,$UPLOAD_PATH,$UPLOAD_PATH_URL);
+
+                        $modelsum->invoicebill_file_path = $invoicecopy_bill['file_path'];
+                        $modelsum->invoicebill_file_name = $invoicecopy_bill['file_name'];
+                    }
                     
                     /*****sld****/
                     $sld = $this->imageSummaryUploadFile($modelsum->id,$sld_file,$UPLOAD_PATH,$UPLOAD_PATH_URL);
@@ -376,10 +421,25 @@ class PendingvisitplanController extends Controller
             if($inputs['is_agent']==0)
             {
                 $inpData['days_site']= $inputs['days_site'];
-                $inpData['loading_expenses']= $inputs['loading_expenses'];
-                $inpData['boarding_expenses']= $inputs['boarding_expenses'];
-                $inpData['travel_expenses']= $inputs['travel_expenses'];
-                $inpData['local_conveyance']= $inputs['local_conveyance'];
+                $loading=0;
+                $boarding = 0;
+                $travel = 0;
+                $local = 0;
+                for($i=1;$i<=count($inputs['engineer_id']);$i++)
+                {
+                    $loading = $loading + $inputs['loading_expenses'][$i];
+                    $boarding = $boarding + $inputs['boarding_expenses'][$i];
+                    $travel = $travel + $inputs['travel_expenses'][$i];
+                    $local = $local + $inputs['local_conveyance'][$i];
+                }
+                $inpData['loading_expenses']= $loading;
+                $inpData['boarding_expenses']= $boarding;
+                $inpData['travel_expenses']= $travel;
+                $inpData['local_conveyance']= $local;
+            }
+            else
+            {
+                $inpData['invoice_bill'] = $inputs['invoice_bill'];
             }
 
                 $inpData['date_of_attend']= $inputs['act_attend_date_from'];
@@ -407,6 +467,26 @@ class PendingvisitplanController extends Controller
             }
             else
             {
+                if($inputs['is_agent']==0)
+                {
+                    for($i=1;$i<=count($inputs['engineer_id']);$i++)
+                    {
+                        $inpexp = array();
+                        $inpexp['visitplan_summary_id'] = $modelsum->id;
+                        $inpexp['engineer_id'] = $inputs['engineer_id'][$i];
+                        $inpexp['visitplan_id']= $docid;
+                        $inpexp['is_agent']= $inputs['is_agent'];
+                        $inpexp['loading_expenses'] = $inputs['loading_expenses'][$i];
+                        $inpexp['boarding_expenses'] = $inputs['boarding_expenses'][$i];
+                        $inpexp['travel_expenses'] = $inputs['travel_expenses'][$i];
+                        $inpexp['local_expenses'] = $inputs['local_conveyance'][$i];
+                        $inpexp['created_by_id'] = session()->get('user_id');
+                        $inpexp['status'] = 1;
+                        $modelsumexp = new $this->modelVsExp();
+                        $storedexp = $modelsumexp->addRecord($inpexp);
+                    }
+                }
+                
                 $service_report = $this->imageSummaryUploadFile($modelsum->id,$report_file,$UPLOAD_PATH,$UPLOAD_PATH_URL);
                     
                 $modelsum->file_path = $service_report['file_path'];
@@ -432,6 +512,14 @@ class PendingvisitplanController extends Controller
                     $modelsum->travelbill_file_name = $travel_bill['file_name'];
                 }
 
+                if(isset($invoicecopy))
+                {
+                    /*****invoicecopy****/
+                    $invoicecopy_bill = $this->imageSummaryUploadFile($modelsum->id,$invoicecopy,$UPLOAD_PATH,$UPLOAD_PATH_URL);
+
+                    $modelsum->invoicebill_file_path = $invoicecopy_bill['file_path'];
+                    $modelsum->invoicebill_file_name = $invoicecopy_bill['file_name'];
+                }
 
                 /*****sld****/
                 $sld = $this->imageSummaryUploadFile($modelsum->id,$sld_file,$UPLOAD_PATH,$UPLOAD_PATH_URL);

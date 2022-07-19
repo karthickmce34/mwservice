@@ -92,6 +92,31 @@
                 
             </div>
         </div>
+        <div class="card col-sm-6 pc-current">
+            <div class="card-header">
+                <h2>Pending Vs Completed (Warrenty/Out Of Warrenty)<small> For Current Month</small></h2>
+            
+                <ul class="actions">
+                   
+                    <li class="dropdown">
+                        <a href="" data-toggle="dropdown">
+                            <i class="zmdi zmdi-widgets"></i>
+                        </a>
+
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            <li>
+                                <a href="#" onclick="return false;"  data-target='previous' class="pcwow_dropdown">Previous Month</a>
+                            </li>
+                            
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            
+            <div id="pcwow_chart">
+                
+            </div>
+        </div>
    
         <div class="card col-sm-6 ex-overall">
             <div class="card-header">
@@ -602,6 +627,19 @@
                         },
                         bindto:"#work_previous",
                     });
+                
+            var pcwow_current = c3.generate({
+                        data: {
+                            // iris data from R
+                            columns: <?php echo json_encode($jobwarrenty_status); ?>,
+                            type : 'bar',
+                            //onclick: function (d, i) { scopeofwork(d, i , 'previous'); },
+                            /*onclick: function (d, i) { console.log("onclick", d, i); },
+                            onmouseover: function (d, i) { console.log("onmouseover", d, i); },
+                            onmouseout: function (d, i) { console.log("onmouseout", d, i); }*/
+                        },
+                        bindto:"#pcwow_chart",
+                    });    
                     
             function statusreport(d, i)
             {

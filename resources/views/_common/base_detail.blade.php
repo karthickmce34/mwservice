@@ -44,11 +44,19 @@
                                 <div class="pti-header @if($record->status==1) bgm-lightgreen @else bgm-amber @endif">
                                     @include($baseName . '.' . $baseName .'_dt')  
                                     <div class="pti-footer lnk-wh-inh">
-                                        @if($baseName != 'visitplansummary' || $baseName != 'ticket')
+                                        
+                                        @if($baseName != 'visitplansummary' && $baseName != 'ticket' )
                                             @if(isset($record->visit_status))
-                                                @if($record->visit_status == 0)
-                                                    <a href="{{url($basePath)}}/{{$record->id}}/edit" target="_self" class="bgm-orange"><i class="zmdi zmdi-edit"></i></a>
+                                                @if($baseName == 'project')
+                                                    @if($record->visit_status == 0 && $record->approval_status == 0)
+                                                        <a href="{{url($basePath)}}/{{$record->id}}/edit" target="_self" class="bgm-orange"><i class="zmdi zmdi-edit"></i></a>
+                                                    @endif
+                                                @else 
+                                                    @if($record->visit_status == 0)
+                                                        <a href="{{url($basePath)}}/{{$record->id}}/edit" target="_self" class="bgm-orange"><i class="zmdi zmdi-edit"></i></a>
+                                                    @endif
                                                 @endif
+                                                    
                                             @else
                                                 @if(isset($record->order_status))
                                                     @if($record->order_status != 8 && $record->order_status != 9)
@@ -97,4 +105,11 @@
                         <div class="panel-group" data-collapse-color="amber" role="tablist" aria-multiselectable="true">
                             @include('visitplansummary.visitplansummary_subdt')
                         </div>
+                    @endif
+                    @if(ucfirst($baseName)=='Project')
+                        @if($record->visit_status == 1)
+                        <div class="panel-group" data-collapse-color="amber" role="tablist" aria-multiselectable="true">
+                            @include('project.project_subdt')
+                        </div>
+                        @endif
                     @endif

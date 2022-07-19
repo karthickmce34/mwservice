@@ -40,9 +40,6 @@
             
             $(".spdet").hide();
             
-            
-            
-            
             $(".invsolve").click(function(){
                 
                 $("#modal3").find("#modalservice1").remove();
@@ -74,7 +71,6 @@
                 var remove = $('.bootstrap-select');
                 $(remove).replaceWith($(remove).contents('.selectpicker'));
                 $('.selectpicker').selectpicker();
-                
                 
                 $("#modal3").find("#completeform").modal();
                 $(".spdet").hide();
@@ -166,14 +162,12 @@
                     var prd = $("#modal3").find(".appserfirst .row").clone();
                     $("#modal3").find(".appsersecond").append(prd).unbind().on('click','.prdclose',function(event){
                             event.preventDefault();
-                            alert();
+                            //alert();
                             $(this).closest(".row").remove();
                             productreset();
                             });
                     $("#modal3").find(".appserfirst").hide();
                    
-                        
-                    
                 }
                 $("#modal3").find(".appsersecond .product").on('click',function(){
                     var _this= this;
@@ -332,9 +326,6 @@
                     }
                 }
                 
-                
-                
-                
                 function taxcalc(qty,amt,tax_id,rowno)
                 {
                     $('.teruser').hide();
@@ -412,8 +403,6 @@
                         //console.log( data_jqXHR, textStatus, jqXHR_errorThrown );
                     });
                 }
-                
-                
                 
                 $('.teruser').click(function(){
                     $(this).hide();

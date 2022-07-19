@@ -383,7 +383,7 @@
                                                                             @if($record->is_agent == 1)
                                                                             <div class="row">
                                                                                 <input type='hidden' class="form-control input-sm" name="is_agent"  value="1">
-                                                                                <div class="form-group col-sm-3">
+                                                                                <div class="form-group col-sm-3 col-xs-12">
                                                                                     <label for="act_attend_date_from" class="control-label col-sm-6">Attend From</label>
                                                                                     <div class="col-sm-6">
                                                                                         <div class="fg-line">
@@ -392,7 +392,7 @@
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
-                                                                                <div class="form-group col-sm-3">
+                                                                                <div class="form-group col-sm-3 col-xs-12">
                                                                                     <?php if($record->date_of_return == "") { $retdate = $currentdate =date('Y-m-d'); } else {$retdate = $record->date_of_return;}  ?>
                                                                                     <label for="act_agent_date_to" class="control-label col-sm-6">Attend To</label>
                                                                                     <div class="col-sm-6">
@@ -401,18 +401,30 @@
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
-                                                                            </div>
-                                                                            <div class="row">
-                                                                                <div class="col-sm-3">
-                                                                                    <label for="work_description" class="control-label col-sm-6">Work Description</label>
-                                                                                    <div class="col-sm-6">
+                                                                                <div class="row form-group col-sm-3 col-xs-12">
+                                                                                    <label for="invoice_bill" class="control-label col-sm-6 col-xs-4">Invoice Value</label>
+                                                                                    <div class="col-sm-6 col-xs-8">
                                                                                         <div class="fg-line">
-                                                                                            <textarea class="form-control input-sm" cols="20" rows="3" placeholder="Work Description" name="work_description" id="work_description" ></textarea>                                        
+                                                                                            <input type='text' class="form-control input-sm " name="invoice_bill" id="invoice_bill" value="0">
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
-                                                                            </div>    
+                                                                            </div>
+                                                                            <div class="row">
+                                                                                <div class="form-group col-sm-3 invoicecopy1 col-xs-12">
+                                                                                    <label for="invoicecopy" class="control-label col-sm-2 m-l-10 col-xs-6"><b>Invoice Copy</b></label>
+                                                                                    <div class="col-sm-10 col-xs-12">
+                                                                                        <div class="fg-line">
+                                                                                            <input type='file' class="form-control input-sm invoicecopy "  name="invoicecopy" >
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                                
+                                                                                
+                                                                               
                                                                             @else
+                                                                            <div class="row">
                                                                                 <input type='hidden' class="form-control input-sm" name="is_agent"  value="0">
                                                                                 <div class="form-group col-sm-4 col-xs-12">
                                                                                     <label for="date_of_depature" class="control-label col-sm-6 col-xs-4">Departure Date</label>
@@ -440,40 +452,54 @@
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
+                                                                            </div>
+                                                                            <div class="row">
                                                                                 
-                                                                                <div class="form-group col-sm-4 col-xs-12">
-                                                                                    <label for="boarding_expenses" class="control-label col-sm-6 col-xs-4">Boarding Expenses</label>
-                                                                                    <div class="col-sm-6 col-xs-8">
-                                                                                        <div class="fg-line">
-                                                                                            <input type='text' class="form-control input-sm " name="boarding_expenses" id="boarding_expenses" value="{{$record->boarding_expenses}}">
+                                                                                    
+                                                                                
+                                                                                @php $cnt=0; @endphp
+                                                                                @foreach($record->visitengs as $index =>$visiteng)
+                                                                                    @php $cnt++; @endphp
+                                                                                    <div class="col-sm-4 col-xs-12">
+                                                                                    <input type='hidden' class="form-control input-sm required" name="engineer_id[{{$cnt}}]" id="engineer_id" required value="{{$visiteng->engineer->id}}">
+                                                                                    <input type='text' class="form-control input-sm text-center" name="engineer_name[{{$cnt}}]" id="engineer_id" readonly value="{{$visiteng->engineer->name}}">
+                                                                                    <div class="row form-group col-sm-12 col-xs-12">
+                                                                                        <label for="boarding_expenses" class="control-label col-sm-6 col-xs-4">Boarding Expenses</label>
+                                                                                        <div class="col-sm-6 col-xs-8">
+                                                                                            <div class="fg-line">
+                                                                                                <input type='text' class="form-control input-sm " name="boarding_expenses[{{$cnt}}]" id="boarding_expenses" value="{{$record->boarding_expenses}}">
+                                                                                            </div>
                                                                                         </div>
                                                                                     </div>
-                                                                                </div>
-                                                                                <div class="form-group col-sm-4 col-xs-12">
-                                                                                    <label for="local_conveyance" class=" control-label col-sm-6 col-xs-4">Local Conveyance</label>
-                                                                                    <div class="col-sm-6 col-xs-8">
-                                                                                        <div class="fg-line">
-                                                                                            <input type='text' class="form-control input-sm " name="local_conveyance" id="local_conveyance" value="{{$record->local_conveyance}}">
+                                                                                    <div class="row form-group col-sm-12 col-xs-12">
+                                                                                        <label for="local_conveyance" class=" control-label col-sm-6 col-xs-4">Local Conveyance</label>
+                                                                                        <div class="col-sm-6 col-xs-8">
+                                                                                            <div class="fg-line">
+                                                                                                <input type='text' class="form-control input-sm " name="local_conveyance[{{$cnt}}]" id="local_conveyance" value="{{$record->local_conveyance}}">
+                                                                                            </div>
                                                                                         </div>
                                                                                     </div>
-                                                                                </div>
-                                                                                <div class="form-group col-sm-4 col-xs-12">
-                                                                                    <label for="loading_expenses" class="control-label col-sm-6 col-xs-4">Lodging Expenses</label>
-                                                                                    <div class="col-sm-6 col-xs-8">
-                                                                                        <div class="fg-line">
-                                                                                            <input type='text' class="form-control input-sm " name="loading_expenses" id="loading_expenses" value="{{$record->loading_expenses}}">
+                                                                                    <div class="row form-group col-sm-12 col-xs-12">
+                                                                                        <label for="loading_expenses" class="control-label col-sm-6 col-xs-4">Lodging Expenses</label>
+                                                                                        <div class="col-sm-6 col-xs-8">
+                                                                                            <div class="fg-line">
+                                                                                                <input type='text' class="form-control input-sm " name="loading_expenses[{{$cnt}}]" id="loading_expenses" value="{{$record->loading_expenses}}">
+                                                                                            </div>
                                                                                         </div>
                                                                                     </div>
-                                                                                </div>
-                                                                                <div class="form-group col-sm-4">
-                                                                                    <label for="travel_expenses" class="control-label col-sm-6 col-xs-4">Travel Expenses</label>
-                                                                                    <div class="col-sm-6 col-xs-8">
-                                                                                        <div class="fg-line">
-                                                                                            <input type='text' class="form-control input-sm " name="travel_expenses" id="travel_expenses" value="{{$record->travel_expenses}}">
+                                                                                    <div class="row form-group col-sm-12 col-xs-12">
+                                                                                        <label for="travel_expenses" class="control-label col-sm-6 col-xs-4">Travel Expenses</label>
+                                                                                        <div class="col-sm-6 col-xs-8">
+                                                                                            <div class="fg-line">
+                                                                                                <input type='text' class="form-control input-sm " name="travel_expenses[{{$cnt}}]" id="travel_expenses" value="{{$record->travel_expenses}}">
+                                                                                            </div>
                                                                                         </div>
                                                                                     </div>
-                                                                                </div>
-                                                                                <div class="form-group col-sm-4 billlodging col-xs-12">
+                                                                                    
+                                                                                </div>    
+                                                                                        
+                                                                                @endforeach
+                                                                                <div class="row form-group col-sm-6 billlodging1 col-xs-12">
                                                                                     <label for="lodgingbill" class="control-label col-sm-2 m-l-10 col-xs-6"><b>Lodging Bill</b></label>
                                                                                     <div class="col-sm-10 col-xs-12">
                                                                                         <div class="fg-line">
@@ -481,19 +507,17 @@
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
-                                                                                
-                                                                                <div class="form-group col-sm-4 billtravel" >
+
+                                                                                <div class="row form-group col-sm-6 billtravel2 col-xs-12" >
                                                                                     <label for="travelbill" class="control-label col-sm-2 m-l-10 col-xs-8"><b>Travel Bill</b></label>
                                                                                     <div class="col-sm-10 ">
                                                                                         <div class="fg-line">
                                                                                             <input type='file' class="form-control input-sm travelbill"  name="travelbill" >
                                                                                         </div>
                                                                                     </div>
-                                                                                </div>
-                                                                                    
+                                                                                </div>    
+                                                                            </div>
                                                                                 
-                                                                                
-
                                                                             @endif
                                                                             
                                                                             

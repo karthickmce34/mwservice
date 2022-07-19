@@ -48,6 +48,14 @@
                     </li>
                 </ul>
             </li>
+            <li class="sub-menu @yield('page_project_li_cls')">
+                <a href="" data-ma-action="submenu-toggle"><i class="zmdi zmdi-collection-item"></i> Project</a>
+                <ul>
+                    <li >
+                        <a class="@yield('page_projectplan_li_cls')" href="{{ route('project.index') }}"><i class="zmdi zmdi-assignment-o"></i>&nbsp;&nbsp; Project Plan </a>
+                    </li>
+                </ul>
+            </li>
             <li class="sub-menu @yield('page_report_li_cls')">
                 <a href="" data-ma-action="submenu-toggle"><i class="zmdi zmdi-collection-item"></i> Report</a>
                 <ul>
@@ -110,6 +118,14 @@
                                 </li>
                                 <li >
                                     <a class="@yield('page_visitplansummary_li_cls')" href="{{ route('visitplansummary.index') }}"><i class="zmdi zmdi-case"></i>&nbsp;&nbsp; Visits Summary</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sub-menu @yield('page_project_li_cls')">
+                            <a href="" data-ma-action="submenu-toggle"><i class="zmdi zmdi-collection-item"></i> Project</a>
+                            <ul>
+                                <li >
+                                    <a class="@yield('page_projectplan_li_cls')" href="{{ route('project.index') }}"><i class="zmdi zmdi-assignment-o"></i>&nbsp;&nbsp; Project Plan </a>
                                 </li>
                             </ul>
                         </li>

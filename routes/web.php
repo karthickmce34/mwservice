@@ -161,3 +161,9 @@ Route::post('statusreport/scopeofwork_report', 'StatusReportController@scopeofwo
 Route::resource('ticket', 'TicketController');
 Route::post('ticket/appdata', 'TicketController@postAppdata');
 Route::post('ticket/ticketstatus', 'TicketController@postTicketstatus');
+
+Route::resource('project', 'ProjectController');
+Route::get('project/index', 'ProjectController@getIndex');
+Route::post('project/updateapprove', 'ProjectController@postUpdateapprove');
+Route::post('project/insertsummary', 'ProjectController@postInsertsummary');
+
