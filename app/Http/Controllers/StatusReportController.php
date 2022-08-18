@@ -229,7 +229,7 @@ class StatusReportController extends Controller
                                     and scope_of_work != '' 
                                     group by scope_of_work");
         
-        $job_status_uwarrenty = DB::select("select count(A.pendingorderstatus) as cnt,A.pendingorderstatus from
+        $job_status_uwarrenty = DB::select("select count(A.pendingorderstatus) as cnt,A.pendingorderstatus,'Under Warrenty' as warrenty from
                                             (select 
                                                 CASE
                                                 when service_spares_register.order_status = 0 then 'Process Pending'
@@ -320,7 +320,7 @@ class StatusReportController extends Controller
                      {
                         if($jobuwarrenty->pendingorderstatus == 'Completed')
                          {
-                            print_r($jobuwarrenty);
+                            //print_r($jobuwarrenty);
                              $jobuwarrentydata[$jobuwarrenty->pendingorderstatus][]=array($jobuwarrenty->warrenty ,$jobuwarrenty->cnt);
                          } 
                          else
@@ -338,7 +338,7 @@ class StatusReportController extends Controller
             }
        }
             
-       die;
+       //die;
        //print_r($jobuwarrentydata);die;
       /**************for overall expenses**************/
        
