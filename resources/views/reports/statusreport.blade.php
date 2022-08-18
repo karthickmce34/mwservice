@@ -649,21 +649,14 @@
                         bindto:"#work_previous",
                     });
                 
-            var jobstatus_col = <?php 
-            if(isset($jobwarrenty_status))
-            {
-                echo json_encode($jobwarrenty_status); 
-            }
-            else
-            {
-                
-            }
-                
-            ?>
+            //var jobstatus_col = 
             var pcwow_current = c3.generate({
                         data: {
                             // iris data from R
-                            columns: jobstatus_col,
+                            columns: <?php 
+                                        echo json_encode($jobwarrenty_status);
+                                        
+                                        ?>,
                             type : 'bar',
                             //onclick: function (d, i) { scopeofwork(d, i , 'previous'); },
                             /*onclick: function (d, i) { console.log("onclick", d, i); },

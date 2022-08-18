@@ -337,6 +337,10 @@ class StatusReportController extends Controller
                 //$processdata['processcnt'][] = $process->cnt;
             }
        }
+       else
+       {
+           $jobuwarrentydata= array('No Data',0);
+       }
             
        //die;
        //print_r($jobuwarrentydata);die;
@@ -395,9 +399,10 @@ class StatusReportController extends Controller
         $data['scopeofwork'] = $scopedata;
         $data['previousscopeofwork'] = $previousscopedata;
         
-        $data['jobuwarrenty_status']=$jobuwarrentydata;
+        $data['jobwarrenty_status']=$jobuwarrentydata;
         $data['jobwarrentydata2']=$jobwarrentydata2;
-        
+        //echo "<pre>";
+        //print_r($data);die;
         return view($this->basePath . $this->baseName,$data);
     }
     
