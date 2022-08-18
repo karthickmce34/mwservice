@@ -459,7 +459,7 @@ class HomeController extends Controller
         $inputs = $request->all();
         //print_r($inputs);die;
         $method = 'GET';
-        $url = "45.116.114.11:81/trialbalance/public/test/cusdetails?documentno=".$inputs['wrd'];
+        $url = "45.116.114.9:81/trialbalance/public/test/cusdetails?documentno=".$inputs['wrd'];
         $phpinpdata = false;
         $phpdata = $this->CallAPI($method,$url,$phpinpdata = false);
         $phpdecode=  json_decode($phpdata['result']);
