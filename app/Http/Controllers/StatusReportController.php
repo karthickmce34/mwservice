@@ -299,37 +299,45 @@ class StatusReportController extends Controller
            $previousscopedata[]=array($previousscope->scope_of_work ,$previousscope->cnt);
            //$processdata['processcnt'][] = $process->cnt;
        }
-       foreach($job_status_uwarrenty as $jobuwarrenty)
+       $jobuwarrentydata2=array();
+       $jobuwarrentydata = array();
+       if($job_status_uwarrenty)
        {
-           if($jobuwarrenty->pendingorderstatus == 'Process Pending')
-           {
-               $jobuwarrentydata[]=$jobuwarrenty->cnt;
-               //if($jobuwarrenty->cnt )
-           }
-           else
-           {
-               if($jobuwarrenty->pendingorderstatus == 'Job Pending')
+           foreach($job_status_uwarrenty as $jobuwarrenty)
+            {
+                if($jobuwarrenty->pendingorderstatus == 'Process Pending')
                 {
                     $jobuwarrentydata[]=$jobuwarrenty->cnt;
+                    //if($jobuwarrenty->cnt )
                 }
                 else
                 {
-                   if($jobuwarrenty->pendingorderstatus == 'Completed')
-                    {
-                        $jobuwarrentydata[$jobuwarrenty->pendingorderstatus][]=array($jobuwarrenty->warrenty ,$jobuwarrenty->cnt);
-                    } 
-                    else
-                    {
-                        
-                    }
+                    if($jobuwarrenty->pendingorderstatus == 'Job Pending')
+                     {
+                         $jobuwarrentydata[]=$jobuwarrenty->cnt;
+                     }
+                     else
+                     {
+                        if($jobuwarrenty->pendingorderstatus == 'Completed')
+                         {
+                             $jobuwarrentydata[$jobuwarrenty->pendingorderstatus][]=array($jobuwarrenty->warrenty ,$jobuwarrenty->cnt);
+                         } 
+                         else
+                         {
+
+                         }
+                     }
+
                 }
-                    
-           }
-            
-            $jobuwarrentydata2[]=array($jobuwarrenty->warrenty ,array('Count',$jobuwarrenty->cnt));    
-           //$processdata['processcnt'][] = $process->cnt;
+                //print_r("**********");
+                //print_r($jobuwarrentydata);
+
+                 $jobuwarrentydata2[]=array($jobuwarrenty->warrenty ,array('Count',$jobuwarrenty->cnt));    
+                //$processdata['processcnt'][] = $process->cnt;
+            }
        }
-       
+            
+       //die;
        //print_r($jobuwarrentydata);die;
       /**************for overall expenses**************/
        

@@ -649,10 +649,21 @@
                         bindto:"#work_previous",
                     });
                 
+            var jobstatus_col = <?php 
+            if(isset($jobwarrenty_status))
+            {
+                echo json_encode($jobwarrenty_status); 
+            }
+            else
+            {
+                
+            }
+                
+            ?>
             var pcwow_current = c3.generate({
                         data: {
                             // iris data from R
-                            columns: <?php echo json_encode($jobwarrenty_status); ?>,
+                            columns: jobstatus_col,
                             type : 'bar',
                             //onclick: function (d, i) { scopeofwork(d, i , 'previous'); },
                             /*onclick: function (d, i) { console.log("onclick", d, i); },
@@ -1006,18 +1017,18 @@
             
             /***************************/
             
-            var jobwarrenty_status = <?php echo json_encode($jobwarrenty_status); ?>;
+          /*  var jobwarrenty_status = <?php //echo json_encode($jobwarrenty_status); ?>;
             
             console.log(jobwarrenty_status);
             
-            console.log(<?php echo json_encode($jobwarrentydata2); ?>);
+            console.log(<?php //echo json_encode($jobwarrentydata2); ?>);
             jQuery.each( jobwarrenty_status, function( i, val ) {
                 //$( "#" + val ).text( "Mine is " + val + "." );
 
                 // Will stop running after "three"
                 console.log ( "Mine is " + jobwarrenty_status[i] + "." );
               });
-            var matrix = [<?php echo json_encode($jobwarrentydata2); ?>];
+            var matrix = [<?php //echo json_encode($jobwarrentydata2); ?>];
                           //countsData can be build using matrix
                           var countsData = [
                                       ['OutofWarrent', 2, 4, 6],
@@ -1067,7 +1078,7 @@
                                     return text + "</table>";
                                   }
                                }
-                          });
+                          });*/
         });
         
             
