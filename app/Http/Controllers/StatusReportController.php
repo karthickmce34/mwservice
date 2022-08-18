@@ -320,6 +320,7 @@ class StatusReportController extends Controller
                      {
                         if($jobuwarrenty->pendingorderstatus == 'Completed')
                          {
+                            print_r($jobuwarrenty);
                              $jobuwarrentydata[$jobuwarrenty->pendingorderstatus][]=array($jobuwarrenty->warrenty ,$jobuwarrenty->cnt);
                          } 
                          else
@@ -337,7 +338,7 @@ class StatusReportController extends Controller
             }
        }
             
-       //die;
+       die;
        //print_r($jobuwarrentydata);die;
       /**************for overall expenses**************/
        
