@@ -47,6 +47,7 @@ class ProjectController extends Controller
         
         $model = new $this->modelName();
         $record = $model->find($id);
+        print_r($record);die;
         if(!$record)
         {
             return redirect()->route($this->baseRedirect);    
