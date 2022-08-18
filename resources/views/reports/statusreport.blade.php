@@ -12,6 +12,22 @@
 @section('style')
     @parent
     <style>
+        #data-table-command {
+            table-layout: fixed;
+            width: 100% !important;
+          }
+          #data-table-command td{
+            width: auto !important;
+            text-overflow: ellipsis;
+            overflow: hidden;
+          }
+          #data-table-command th{
+            width: auto !important;
+            white-space: normal;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+          }
     </style> 
 @stop
 @section('menu')
@@ -26,6 +42,7 @@
         
     </div>   
     <div class="card">
+        <div class="card col-sm-12 text-center f-18">Total Pending : <b>{{$pendingorder}}</b></div>
         <div class="card col-sm-6">
             <h5>Process Pending <span class="f-16 zmdi zmdi-widgets pull-right"></span></h5>
             
@@ -46,7 +63,7 @@
     <div class="card col-sm-12">
         <div class="card col-sm-6 pc-previous">
             <div class="card-header">
-                <h2>Pending Vs Completed <small> For Previous Month</small></h2>
+                <h2>Pending Vs Completed <small> For Previous Month</small><span class="pull-right">Total : {{$job_precnt}}</span></h2>
             
                 <ul class="actions">
                    
@@ -69,7 +86,7 @@
         </div>
         <div class="card col-sm-6 pc-current">
             <div class="card-header">
-                <h2>Pending Vs Completed<small> For Current Month</small></h2>
+                <h2>Pending Vs Completed<small> For Current Month</small> <span class="pull-right">Total : {{$job_curcnt}}</span></h2>
             
                 <ul class="actions">
                    
@@ -117,10 +134,11 @@
                 
             </div>
         </div>
-   
+    </div>
+    <div class="card col-sm-12">
         <div class="card col-sm-6 ex-overall">
             <div class="card-header">
-                <h2>Expenses<small> For Overall</small></h2>
+                <h2>Expenses<small> For Overall</small> <span class="pull-right">Total : {{$overallexptotal}}</span></h2>
             
                 <ul class="actions">
                    
@@ -147,7 +165,7 @@
         </div>
         <div class="card col-sm-6 ex-previous">
             <div class="card-header">
-                <h2>Expenses<small> For Previous Month</small></h2>
+                <h2>Expenses<small> For Previous Month</small> <span class="pull-right">Total : {{$previousexptotal}}</span></h2>
             
                 <ul class="actions">
                    
@@ -174,7 +192,7 @@
         </div>
         <div class="card col-sm-6 ex-current">
             <div class="card-header">
-                <h2>Expenses<small> For Current Month</small></h2>
+                <h2>Expenses<small> For Current Month</small> <span class="pull-right">Total : {{$currentexptotal}}</span></h2>
             
                 <ul class="actions">
                     <li class="dropdown">
@@ -311,6 +329,9 @@
                 </ul>
             </div>
             <div id="work">
+                
+            </div>
+            <div id='cool-chart'>
                 
             </div>
         </div>
@@ -667,13 +688,13 @@
                                 
                                 $("#modalreport").find(".modal-body div").remove();
                                 $("#modalreport").find(".modal-body").append("<div class='statrep'></div>");
-                                $("#modalreport").find(".modal-body .statrep").append("<table class='table'><thead><th>Seqno</th><th>Complaint Date</th><th>Customer Name</th><th>Mobileno</th><th>So No</th><th>Scope</th></thead><tbody></tbody></table>");
+                                $("#modalreport").find(".modal-body .statrep").append("<table id='data-table-command' class='table table-striped'><thead><th class='f-10 text-center'>Seqno</th><th class='f-10 text-center'>Complaint Date</th><th class='f-10 text-center'>Customer Name</th><th class='f-10 text-center'>Mobileno</th><th class='f-10 text-center'>So No</th><th class='f-10 text-center'>Scope</th></thead><tbody></tbody></table>");
                                 var len = data.servicedata.length;
                                 for (var i=0;i<len;i++)
                                 {
-                                    $("#modalreport").find(".statrep tbody").append("<tr><td>"+data.servicedata[i].seqno+"</td><td>"+data.servicedata[i].complaint_date+"</td><td>"+data.servicedata[i].customer_name+"</td><td>"+data.servicedata[i].mobileno+"</td><td>"+data.servicedata[i].salesorder_no+"</td><td>"+data.servicedata[i].scope_of_work+"</td></tr>");
+                                    $("#modalreport").find(".statrep tbody").append("<tr><td class='f-10 text-center'>"+data.servicedata[i].seqno+"</td><td class='f-10 text-center'>"+data.servicedata[i].complaint_date+"</td><td class='f-10 text-center'>"+data.servicedata[i].customer_name+"</td><td class='f-10 text-center'>"+data.servicedata[i].mobileno+"</td><td  class='f-10 text-center'>"+data.servicedata[i].salesorder_no+"</td><td  class='f-10 text-center'>"+data.servicedata[i].scope_of_work+"</td></tr>");
                                 }
-                                
+                                $("#modalreport").find(".statrep table").dataTable({autoWidth:true});
                                 $("#modalreport").find("#servicestatus").modal();
                             }
 
@@ -756,14 +777,14 @@
                             {
                                 
                                 $("#modalreport").find(".modal-body div").remove();
-                                $("#modalreport").find(".modal-body").append("<div class='statrep'></div>");
-                                $("#modalreport").find(".modal-body .statrep").append("<table class='table'><thead><th>Seqno</th><th>Complaint Date</th><th>Customer Name</th><th>Engineer Name</th><th>Work</th><th>Attend From</th><th>Attend To</th><th>Lodging</th><th>Boarding</th><th>Travel</th><th>Local</th></thead><tbody></tbody></table>");
+                                $("#modalreport").find(".modal-body").append("<div class='statrep' style='width:100%'></div>");
+                                $("#modalreport").find(".modal-body .statrep").append("<table id='data-table-command' class='table table-striped'><thead><th>Seqno</th><th>Complaint Date</th><th>Customer Name</th><th>Engineer Name</th><th>Work</th><th>Attend From</th><th>Attend To</th><th>Lodging</th><th>Boarding</th><th>Travel</th><th>Local</th></thead><tbody></tbody></table>");
                                 var len = data.servicedata.length;
                                 for (var i=0;i<len;i++)
                                 {
                                     $("#modalreport").find(".statrep tbody").append("<tr><td>"+data.servicedata[i].seqno+"</td><td>"+data.servicedata[i].complaint_date+"</td><td>"+data.servicedata[i].customer_name+"</td><td>"+data.servicedata[i].serviceengineer+"</td><td>"+data.servicedata[i].scope_of_work+"</td><td>"+data.servicedata[i].date_of_attend+"</td><td>"+data.servicedata[i].date_of_complete+"</td><td>"+data.servicedata[i].loading_expenses+"</td><td>"+data.servicedata[i].boarding_expenses+"</td><td>"+data.servicedata[i].travel_expenses+"</td><td>"+data.servicedata[i].local_conveyance+"</td></tr>");
                                 }
-                                $("#modalreport").find(".statrep .table").dataTable({'autoWidth':true});
+                                $("#modalreport").find(".statrep .table").dataTable();
                                 $("#modalreport").find("#servicestatus").modal();
                             }
 
@@ -800,7 +821,7 @@
                             {
                                 
                                 $("#modalreport").find(".modal-body div").remove();
-                                $("#modalreport").find(".modal-body").append("<div class='statrep'></div>");
+                                $("#modalreport").find(".modal-body").append("<div class='statrep' ></div>");
                                 if(orderstatus == 'Received')
                                 {
                                     $("#modalreport").find(".modal-body .statrep").append("<table class='table'><thead><th>Seqno</th><th>Complaint Date</th><th>Customer Name</th><th>SO No</th><th>Engineer Name</th><th>Work</th><th>Income</th></thead><tbody></tbody></table>");
@@ -982,6 +1003,71 @@
                    $('.sw-current').show();
                }
             });
+            
+            /***************************/
+            
+            var jobwarrenty_status = <?php echo json_encode($jobwarrenty_status); ?>;
+            
+            console.log(jobwarrenty_status);
+            
+            console.log(<?php echo json_encode($jobwarrentydata2); ?>);
+            jQuery.each( jobwarrenty_status, function( i, val ) {
+                //$( "#" + val ).text( "Mine is " + val + "." );
+
+                // Will stop running after "three"
+                console.log ( "Mine is " + jobwarrenty_status[i] + "." );
+              });
+            var matrix = [<?php echo json_encode($jobwarrentydata2); ?>];
+                          //countsData can be build using matrix
+                          var countsData = [
+                                      ['OutofWarrent', 2, 4, 6],
+                                      ['UnderWarrenty', 20, 40, 60],
+                                  ];
+
+                          var riskToColor = {
+                                      OutofWarrent: '#9ACD32',
+                                      UnderWarrenty: '#FFD700',
+                                  };
+                          var categoriesList = ['Job', 'Proceess', 'Completed'];
+
+                          var chart = c3.generate({
+                            bindto: '#pcwow_chart',
+                            
+                              data: {
+                                  columns: countsData,
+                                  type: 'bar',
+                                  colors: riskToColor,
+                                  groups: [
+                                      ['OutofWarrent', 'UnderWarrenty']
+                                  ],
+                                 order: null,
+                                 
+                                },
+                                axis: {
+                                   //rotated: true,
+                                   x: {
+                                    type: 'category',
+                                    categories: categoriesList
+                                   },
+                                  //y: {show: false}
+                                 },
+                                tooltip: {
+                                  contents: function (d) {
+                                    var $$ = this, config = $$.config,text;
+                                    //console.log(d[0]);
+                                    text = "<table class='" + $$.CLASS.tooltip + "'><tr><th colspan='3'>"+categoriesList[d[0].index]+"</th></tr>"; 
+                                    text += "<tr class='" + $$.CLASS.tooltipName + "'>";
+                                    text += "<td class='name'>Type</td>";
+                                    text += "<td class='name'>Count</td>";
+                                    for (i = 0; i < d.length; i++) {
+                                      text += "<tr class='" + $$.CLASS.tooltipName + "'>";
+                                      text += "<td class='name'><span style='background-color:"+riskToColor[d[i].name]+"'></span>"+d[i].name+"</td>";
+                                      text += "<td class='value'>"+d[i].value+"</td></tr>";
+                                     }
+                                    return text + "</table>";
+                                  }
+                               }
+                          });
         });
         
             

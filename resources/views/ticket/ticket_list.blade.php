@@ -2,7 +2,7 @@
                         <div class="card-header">
                             <h2>{{ucfirst($baseName)}}</h2>
                         </div>
-                        <div class="col-sm-offset-7 col-sm-4">
+                        <div class="col-sm-offset-6 col-sm-4">
                             <label class="radio radio-inline m-r-20">
                                 <input type="radio" class="tkfilter" name="inlineRadioOptions" value="Pending" checked>
                                 <i class="input-helper"></i>  
@@ -16,7 +16,7 @@
                             <label class="radio radio-inline m-r-20">
                                 <input type="radio" class="tkfilter" name="inlineRadioOptions" value="Completed">
                                 <i class="input-helper"></i>  
-                                Completed
+                                Job Completed
                             </label>
                             <label class="radio radio-inline m-r-20">
                                 <input type="radio" class="tkfilter" name="inlineRadioOptions" value="Closed">
@@ -46,7 +46,7 @@
                                             <td>{{$item->customer_name}}</td>
                                             <td>{{$item->mobileno}}</td>
                                             <td>{{$item->email_address}}</td>
-                                            <td>@if($item->ticket_status ==0) Pending @else @if($item->ticket_status == 1) Inprogress @else @if($item->ticket_status == 2) Completed @else Closed @endif @endif @endif</td>
+                                            <td>@if($item->ticket_status ==0) Pending @else @if($item->ticket_status == 1) Inprogress @else @if($item->ticket_status == 2) Job Completed @else Closed @endif @endif @endif</td>
                                             <td><a href="{{url($basePath)}}/{{$item->id}}" target="_self" class="btn bgm-lightblue btn-icon waves-effect waves-circle"><i class="zmdi zmdi-view-web"></i></a></td>
                                         </tr>
                                     @endforeach
