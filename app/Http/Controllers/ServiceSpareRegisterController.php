@@ -1557,7 +1557,18 @@ class ServiceSpareRegisterController extends Controller
             $modelData->completed_date = date('Y-m-d');
         }
         
+        if($inputs['orderstatus']== 9)
+        {
+            $modelData->cancel_remark = $inputs['remark'];
+        }
+        
         $modelData->save();
+        
+        
+        $modelComplnt = new $this->modelCompName();
+        $modelCompData = $modelComplnt->find($modelData->complaint_register_id);
+        $modelCompData->document_status=3;
+        $modelCompData->save();
         $this->data['status']=1;
         $this->data['message']="Status Updated Successfully";
         return response()->json($this->data);

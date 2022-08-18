@@ -12,6 +12,7 @@
                                         </div> 
                                     </div>
                                     <div class="pull-right">
+
                                         @if($record->complaint_type == 1)
                                             @if($record->order_status == 0)
                                                 <div class="header_button">
@@ -30,6 +31,7 @@
                                                         </ul>
                                                     </div>
                                                     <button type="button" data-id="{{$record->id}}"  class="btn btn-primary bgm-cyan waves-effect orderstatus">Status</button>                                    
+                                                    
                                                 </div>
                                             @endif
                                             @if($record->order_status == 1)
@@ -213,7 +215,7 @@
 
                                             </div>
                                             @endif
-                                            @if($record->order_status > 4)
+                                            @if($record->order_status > 4 && $record->order_status != 9)
                                                  @if($record->site_depute == 0)
                                                     <button type="button" data-id="{{$record->id}}" data-compid="{{$record->compreg->id}}"  data-mode="{{$record->compreg->mode_of_complaint}}"  class="btn btn-primary bgm-lightblue waves-effect depute pull-right" title="Site Deputation"><i class="zmdi zmdi-account"> </i></button>                                    
                                                  @endif
@@ -474,6 +476,10 @@
                                                                 <div class="col-sm-4 f-12"><i class="zmdi "></i><b>Warranty</b></div>
                                                                 <div class="col-sm-8 f-14"><?php if($record->compreg->warrenty == 0){echo'With Warranty';}else{echo' Without Warranty';} ?></div>
                                                             </div>
+                                                            <div class="row" style="    padding: 8px 0 8px 0px;">       
+                                                                <div class="col-sm-4 f-12"><i class="zmdi "></i><b>Cancel Remarks</b></div>
+                                                                <div class="col-sm-8 f-14">{!! nl2br(e($record->cancel_remark)) !!}</div>
+                                                            </div>
                                                         </div>
 
 
@@ -609,57 +615,32 @@
                                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                         <h4> Status Form </h4>
                                                     </div>
-                                                    <div class="modal-body">
-                                                         @if($record->complaint_type == 1 || $record->complaint_type == 0)
-                                                            @if($record->order_status == 0)  
-                                                                <button type="button" data-id="{{$record->id}}" data-orderstatus="1" class="btn btn-primary bgm-cyan waves-effect upstatus">Offer Send</button>                                    
-                                                            @endif
-                                                            @if($record->order_status == 1) 
-                                                            <div class="form-group">
-                                                                <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}"/>
-                                                                <div class="form-row">
-                                                                    <div class="col-sm-6">
-                                                                        <div class="form-group">
-                                                                            <span class="control-label"><i class="zmdi zmdi-sun"></i></span>
-                                                                            <div class="fg-line">
-                                                                                <input type="text" class="form-control" placeholder="Po Ref" id="order_ref_no">
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                  
-                                                                    <div class="col-sm-6 ordercalender">
-                                                                        <div class="form-group">
-                                                                            <span class="control-label"><i class="zmdi zmdi-calender"></i></span>
-                                                                            <div class="fg-line">
-                                                                                <?php $retdate = date('Y-m-d');  ?>
-                                                                                <input type='text' class="form-control datepicker" name="po_date" value="{{$retdate}}">
+                                                    <div id="normalstatus">
+                                                        <div class="modal-body">
 
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div> 
-                                                                <div class="form-row">
-                                                                    <div class="col-sm-12">
-                                                                        <button type="button" data-id="{{$record->id}}" data-orderstatus="2" class="btn btn-primary bgm-cyan waves-effect upstatus">PO Received</button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                                
-                                                            @endif
-                                                            @if($record->order_status == 2)  
-                                                                <button type="button" data-id="{{$record->id}}" data-orderstatus="3" class="btn btn-primary bgm-cyan waves-effect upstatus">PI Send</button>                                    
-                                                            @endif
-                                                            @if($record->order_status == 8) 
+                                                             @if($record->complaint_type == 1 || $record->complaint_type == 0)
+                                                                @if($record->order_status == 0)  
+                                                                    <button type="button" data-id="{{$record->id}}" data-orderstatus="1" class="btn btn-primary bgm-cyan waves-effect upstatus">Offer Send</button>                                    
+                                                                @endif
+                                                                @if($record->order_status == 1) 
                                                                 <div class="form-group">
                                                                     <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}"/>
                                                                     <div class="form-row">
-                                                                        
-                                                                        <div class="col-sm-offset-4 col-sm-6 ordercalender">
+                                                                        <div class="col-sm-6">
+                                                                            <div class="form-group">
+                                                                                <span class="control-label"><i class="zmdi zmdi-sun"></i></span>
+                                                                                <div class="fg-line">
+                                                                                    <input type="text" class="form-control" placeholder="Po Ref" id="order_ref_no">
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="col-sm-6 ordercalender">
                                                                             <div class="form-group">
                                                                                 <span class="control-label"><i class="zmdi zmdi-calender"></i></span>
                                                                                 <div class="fg-line">
                                                                                     <?php $retdate = date('Y-m-d');  ?>
-                                                                                    <input type='text' class="form-control datepicker" name="completed_date" value="{{$retdate}}">
+                                                                                    <input type='text' class="form-control datepicker" name="po_date" value="{{$retdate}}">
 
                                                                                 </div>
                                                                             </div>
@@ -667,16 +648,74 @@
                                                                     </div> 
                                                                     <div class="form-row">
                                                                         <div class="col-sm-12">
-                                                                            <button type="button" data-id="{{$record->id}}" data-orderstatus="11" class="btn btn-primary bgm-cyan waves-effect upstatus">Job Completed</button>                                    
+                                                                            <button type="button" data-id="{{$record->id}}" data-orderstatus="2" class="btn btn-primary bgm-cyan waves-effect upstatus">PO Received</button>
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                            @endif
-                                                         @endif
+
+                                                                @endif
+                                                                @if($record->order_status == 2)  
+                                                                    <button type="button" data-id="{{$record->id}}" data-orderstatus="3" class="btn btn-primary bgm-cyan waves-effect upstatus">PI Send</button>                                    
+                                                                @endif
+                                                                @if($record->order_status == 8) 
+                                                                    <div class="form-group">
+                                                                        <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}"/>
+                                                                        <div class="form-row">
+
+                                                                            <div class="col-sm-offset-4 col-sm-6 ordercalender">
+                                                                                <div class="form-group">
+                                                                                    <span class="control-label"><i class="zmdi zmdi-calender"></i></span>
+                                                                                    <div class="fg-line">
+                                                                                        <?php $retdate = date('Y-m-d');  ?>
+                                                                                        <input type='text' class="form-control datepicker" name="completed_date" value="{{$retdate}}">
+
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div> 
+                                                                        <div class="form-row">
+                                                                            <div class="col-sm-12">
+                                                                                <button type="button" data-id="{{$record->id}}" data-orderstatus="11" class="btn btn-primary bgm-cyan waves-effect upstatus">Job Completed</button>                                    
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                @endif
+                                                             @endif
+
+
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button data-dismiss="modal" class="btn bgm-cyan btn-icon waves-effect waves-circle waves-float pull-right"><i class="zmdi zmdi-close"></i></button>
+                                                        </div>
+
+                                                        <button type="button" data-id="{{$record->id}}"  class="btn btn-warning waves-effect ordercancel">Cancel Order At this Moment</button>                                    
                                                     </div>
-                                                    <div class="modal-footer">
-                                                        <button data-dismiss="modal" class="btn bgm-cyan btn-icon waves-effect waves-circle waves-float pull-right"><i class="zmdi zmdi-close"></i></button>
+                                                    <div id="cancelstatus">
+                                                        <div class="modal-body">
+                                                            <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}"/>
+                                                            <div class="form-group">
+                                                                <div class="form-row">
+                                                                    <div class="col-sm-6">
+                                                                        <div class="form-group">
+                                                                            <span class="control-label"><i class="zmdi zmdi-sun"></i></span>
+                                                                            <div class="fg-line">
+                                                                                <textarea class="form-control input-sm" cols="20" rows="3" placeholder="Remark" name="remark" id="remark" data-validation="required" required="required"></textarea>                                        
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-row">
+                                                                    <div class="col-sm-12">
+                                                                        <button type="button" data-id="{{$record->id}}" data-orderstatus="9" class="btn btn-primary bgm-red waves-effect upstatus">Cancel</button>                                    
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button data-dismiss="modal" class="btn bgm-cyan btn-icon waves-effect waves-circle waves-float pull-right"><i class="zmdi zmdi-close"></i></button>
+                                                        </div>
                                                     </div>
+                                                    
                                                 </div>
                                             </div>
                                         </div>

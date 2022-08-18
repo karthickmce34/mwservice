@@ -229,6 +229,7 @@
                                                                                 <select class="selectpicker form-control input-sm" placeholder="Type" name="comp_status" id="comp_status">    
                                                                                     <option value="0">Solved By Call/Email</option>
                                                                                     <option value="1">Depute Engineer</option>
+                                                                                    <!--option value="5">Rectified And Return</option>
                                                                                     <!--option value="3">Spares Only</option>
                                                                                     <option value="4">Spares With Depute Site Engineer</option-->
                                                                                 </select>
@@ -323,7 +324,24 @@
                                                                             </div>
                                                                         </div>
                                                                         
-                                                                        
+                                                                        <div class="form-group col-sm-12">
+                                                                            <label for="department" class="control-label col-sm-5">Department</label>
+                                                                            <div class="col-sm-7">
+                                                                                <div class="fg-line">
+                                                                                    <select class="selectpicker form-control input-sm" placeholder="Department" name="department" id="department">    
+                                                                                        <option value=""></option>
+                                                                                        <option value="VCB">VCB</option>
+                                                                                        <option value="CT/PT/Spout">CT/PT/Spout</option>
+                                                                                        <option value="Relay">Relay</option>
+                                                                                        <option value="Railway">Railway</option>
+                                                                                        <option value="RMU">RMU</option>
+                                                                                        <option value="Projects">Projects</option>
+                                                                                        <option value="Transformer">Transformer</option>
+                                                                                        <option value="Sensor">Sensor</option>
+                                                                                    </select>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
                                                                         
                                                                         <div class="form-group col-sm-12">
                                                                             <div class="card card-body">

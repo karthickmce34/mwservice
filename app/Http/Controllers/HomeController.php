@@ -457,7 +457,7 @@ class HomeController extends Controller
     public function getCusdetail(Request $request)
     {
         $inputs = $request->all();
-        
+        print_r($inputs);die;
         $method = 'GET';
         $url = "45.116.114.11:81/trialbalance/public/test/cusdetails?documentno=".$inputs['wrd'];
         $phpinpdata = false;

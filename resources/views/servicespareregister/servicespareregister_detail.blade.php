@@ -40,6 +40,7 @@
             $(".loader").hide();
             $(".prdfirst").hide();
             $(".offerfirst").hide();
+            $("#cancelstatus").hide();
             $(".payment").click(function(){
                 $("#modal3").find("#modalpayment1").remove();
                 var id = $(this).data('id');
@@ -2155,7 +2156,12 @@
                 //$("#upmodal").find("#po_date").datepicker({dateFormat: 'yy-mm-dd'});
               
                   
-
+                $("#modal3").on('click','.ordercancel',function()
+                {
+                    
+                    $("#modal3").find("#cancelstatus").show();
+                    $("#modal3").find("#normalstatus").hide();
+                });
                 
                 $("#modal3").on('click','.upstatus',function()
                 {
@@ -2164,6 +2170,7 @@
                     var order_ref_no = "";
                     var po_date = "";
                     var completed_date = "";
+                    var remark = "";
 
                     if(orderstatus == 2)
                     {
@@ -2175,12 +2182,17 @@
                     {
                         completed_date = $("#modal3").find("#completed_date").val();
                     }
+                    
+                    if(orderstatus == 9)
+                    {
+                        remark = $("#modal3").find("#remark").val();
+                    }
                     var controller = 'servicespareregister/';
                     
                     $.ajax({
                     method: "POST",
                     url: _site_url + controller + "updateorderstatus",
-                    data: {id:id,orderstatus:orderstatus,order_ref_no:order_ref_no,po_date:po_date,completed_date:completed_date},
+                    data: {id:id,orderstatus:orderstatus,order_ref_no:order_ref_no,po_date:po_date,completed_date:completed_date,remark:remark},
 
                     }).done( function( data, textStatus, jqXHR ) {
                     console.log( " ajax done " );
