@@ -75,7 +75,27 @@ class PendingvisitplanController extends Controller
             $model = new $this->modelName();
             $registerData = $model->whereIn('id',$id)                    
                     ->get();
+            
    //print_r($registerData);die;
+        }
+        else if($user_type == 6)
+        {
+            $servicedatas = DB::select("SELECT distinct visit_plan.id FROM visit_plan
+                                        WHERE visit_plan.agent_id = '$user_id'
+                                        and visit_plan.deleted_at is null
+                                        and visit_status in (1)");
+            $id=array();
+             foreach($servicedatas as $servicedata)
+             {
+                 if(isset($servicedata->id))
+                 {
+                    $id[]=$servicedata->id;
+                 }
+             }
+
+            $model = new $this->modelName();
+            $registerData = $model->whereIn('id',$id)                    
+                    ->get();
         }
 
         $data['data'] = $registerData;
@@ -275,30 +295,40 @@ class PendingvisitplanController extends Controller
                     $modelsum->panelinside_file_name = $panelinside['file_name'];
                     $modelsum->save();
                     
-
-                    for($i=1;$i<=$cnt;$i++)
+                    if($inputs['is_agent']==0)
                     {
-                        $inpLnData['visitplan_summary_id']= $modelsum->id;
-                        $inpLnData['things_to_do_id']= $inputs['todo_id'][$i];
-
-                        if(isset($inputs['ischecked'][$i]))
+                        for($i=1;$i<=$cnt;$i++)
                         {
-                            $inpLnData['remarks']= $inputs['remarks'][$i];
-                            $inpLnData['ischecked']= $inputs['ischecked'][$i];
-                            if(isset($inputs['img_upload'][$i]))
+                            $inpLnData['visitplan_summary_id']= $modelsum->id;
+                            $inpLnData['things_to_do_id']= $inputs['todo_id'][$i];
+
+                            if(isset($inputs['ischecked'][$i]))
                             {
-                                $assetUpload = $this->postSummaryAsset($modelsum->id,$i);
-                                if($assetUpload['uploaded'])
+                                $inpLnData['remarks']= $inputs['remarks'][$i];
+                                $inpLnData['ischecked']= $inputs['ischecked'][$i];
+                                if(isset($inputs['img_upload'][$i]))
                                 {
-                                    $inpLnData['file_path'] = $assetUpload['file_path'];
-                                    $inpLnData['file_name'] = $assetUpload['file_name'];
-                                    $inpLnData['file_ext']  = $assetUpload['file_ext'];
-                                    $inpLnData['file_type'] = 0;
+                                    $assetUpload = $this->postSummaryAsset($modelsum->id,$i);
+                                    if($assetUpload['uploaded'])
+                                    {
+                                        $inpLnData['file_path'] = $assetUpload['file_path'];
+                                        $inpLnData['file_name'] = $assetUpload['file_name'];
+                                        $inpLnData['file_ext']  = $assetUpload['file_ext'];
+                                        $inpLnData['file_type'] = 0;
+                                    }
+                                    else
+                                    {
+                                        $inpLnData['remarks']= "";
+                                        $inpLnData['ischecked']= 0;
+                                        $inpLnData['file_path'] = "";
+                                        $inpLnData['file_name'] = "";
+                                        $inpLnData['file_ext'] = "";
+                                        $inpLnData['file_type'] = 0;
+                                    }
                                 }
                                 else
                                 {
-                                    $inpLnData['remarks']= "";
-                                    $inpLnData['ischecked']= 0;
+
                                     $inpLnData['file_path'] = "";
                                     $inpLnData['file_name'] = "";
                                     $inpLnData['file_ext'] = "";
@@ -307,77 +337,70 @@ class PendingvisitplanController extends Controller
                             }
                             else
                             {
-                                
+                                $inpLnData['remarks']= "";
+                                $inpLnData['ischecked']= 0;
                                 $inpLnData['file_path'] = "";
                                 $inpLnData['file_name'] = "";
                                 $inpLnData['file_ext'] = "";
                                 $inpLnData['file_type'] = 0;
                             }
-                        }
-                        else
-                        {
-                            $inpLnData['remarks']= "";
-                            $inpLnData['ischecked']= 0;
-                            $inpLnData['file_path'] = "";
-                            $inpLnData['file_name'] = "";
-                            $inpLnData['file_ext'] = "";
-                            $inpLnData['file_type'] = 0;
-                        }
-                        if($this->created_by)
-                        {
-                            $inpLnData['created_by_id'] = session()->get('user_id');
-                        }
-                        $inpLnData['status'] = 1;
-                        
-                        $modelsumln = new $this->modelVsSumLn();
-                        $storedln = $modelsumln->addRecord($inpLnData);
-                    }
-
-                    $cnt2 = count($inputs['product']);
-                    
-                    if($cnt2 > 0)
-                    {
-                        for($j=1;$j<=$cnt2;$j++)
-                        {
-                           
-                            if($inputs['product'][$j] != "")
+                            if($this->created_by)
                             {
-                                $inpLnData1['visitplan_summary_id']= $modelsum->id;
-                                $inpLnData1['product']= $inputs['product'][$j];
-                                $inpLnData1['qty']= $inputs['qty'][$j];
-                                $inpLnData1['unitprice']= $inputs['unitprice'][$j];
-                                $inpLnData1['amount']= $inputs['amount'][$j];
-                                
-                                if(isset($inputs['billimage'][$j]))
+                                $inpLnData['created_by_id'] = session()->get('user_id');
+                            }
+                            $inpLnData['status'] = 1;
+
+                            $modelsumln = new $this->modelVsSumLn();
+                            $storedln = $modelsumln->addRecord($inpLnData);
+                        }
+
+                        $cnt2 = count($inputs['product']);
+
+                        if($cnt2 > 0)
+                        {
+                            for($j=1;$j<=$cnt2;$j++)
+                            {
+
+                                if($inputs['product'][$j] != "")
                                 {
-                                    $assetUpload2 = $this->postProductSummaryAsset($modelsum->id,$j);
-                                    if($assetUpload2['uploaded'])
+                                    $inpLnData1['visitplan_summary_id']= $modelsum->id;
+                                    $inpLnData1['product']= $inputs['product'][$j];
+                                    $inpLnData1['qty']= $inputs['qty'][$j];
+                                    $inpLnData1['unitprice']= $inputs['unitprice'][$j];
+                                    $inpLnData1['amount']= $inputs['amount'][$j];
+
+                                    if(isset($inputs['billimage'][$j]))
                                     {
-                                        $inpLnData1['file_path'] = $assetUpload2['file_path'];
-                                        $inpLnData1['file_name'] = $assetUpload2['file_name'];
+                                        $assetUpload2 = $this->postProductSummaryAsset($modelsum->id,$j);
+                                        if($assetUpload2['uploaded'])
+                                        {
+                                            $inpLnData1['file_path'] = $assetUpload2['file_path'];
+                                            $inpLnData1['file_name'] = $assetUpload2['file_name'];
+                                        }
+                                        else
+                                        {
+                                            $inpLnData1['file_path'] = "";
+                                            $inpLnData1['file_name'] = "";
+                                        }
                                     }
                                     else
                                     {
                                         $inpLnData1['file_path'] = "";
                                         $inpLnData1['file_name'] = "";
                                     }
-                                }
-                                else
-                                {
-                                    $inpLnData1['file_path'] = "";
-                                    $inpLnData1['file_name'] = "";
-                                }
 
-                                if($this->created_by)
-                                {
-                                    $inpLnData1['created_by_id'] = session()->get('user_id');
+                                    if($this->created_by)
+                                    {
+                                        $inpLnData1['created_by_id'] = session()->get('user_id');
+                                    }
+                                    $inpLnData1['status'] = 1;
+                                    $modelsumprd = new $this->modelProduct();
+                                    $storedprd = $modelsumprd->addRecord($inpLnData1);
                                 }
-                                $inpLnData1['status'] = 1;
-                                $modelsumprd = new $this->modelProduct();
-                                $storedprd = $modelsumprd->addRecord($inpLnData1);
                             }
                         }
                     }
+                        
                     
                     $modelComp = new $this->modelComplaint();
                     $compdata = $modelComp->find($registerData->complaint_register_id);
@@ -547,52 +570,57 @@ class PendingvisitplanController extends Controller
                 $modelsum->panelinside_file_path = $panelinside['file_path'];
                 $modelsum->panelinside_file_name = $panelinside['file_name'];
                 $modelsum->save();
-
-                $cnt2 = count($inputs['product']);
-                if($cnt2 > 0)
+                
+                if($inputs['is_agent']==0)
                 {
-                    for($j=1;$j<=$cnt2;$j++)
+                    $cnt2 = count($inputs['product']);
+                    if($cnt2 > 0)
                     {
-                        if($inputs['product'][$j] != "")
+                        for($j=1;$j<=$cnt2;$j++)
                         {
-                            $inpLnData1['visitplan_summary_id']= $modelsum->id;
-                            $inpLnData1['product']= $inputs['product'][$j];
-                            $inpLnData1['qty']= $inputs['qty'][$j];
-                            $inpLnData1['unitprice']= $inputs['unitprice'][$j];
-                            $inpLnData1['amount']= $inputs['amount'][$j];
-
-                            if(isset($inputs['billimage'][$j]))
+                            if($inputs['product'][$j] != "")
                             {
-                                $assetUpload2 = $this->postProductSummaryAsset($modelsum->id,$j);
-                                if($assetUpload2['uploaded'])
+                                $inpLnData1['visitplan_summary_id']= $modelsum->id;
+                                $inpLnData1['product']= $inputs['product'][$j];
+                                $inpLnData1['qty']= $inputs['qty'][$j];
+                                $inpLnData1['unitprice']= $inputs['unitprice'][$j];
+                                $inpLnData1['amount']= $inputs['amount'][$j];
+
+                                if(isset($inputs['billimage'][$j]))
                                 {
-                                    $inpLnData1['file_path'] = $assetUpload2['file_path'];
-                                    $inpLnData1['file_name'] = $assetUpload2['file_name'];
+                                    $assetUpload2 = $this->postProductSummaryAsset($modelsum->id,$j);
+                                    if($assetUpload2['uploaded'])
+                                    {
+                                        $inpLnData1['file_path'] = $assetUpload2['file_path'];
+                                        $inpLnData1['file_name'] = $assetUpload2['file_name'];
+                                    }
+                                    else
+                                    {
+                                        $inpLnData1['file_path'] = "";
+                                        $inpLnData1['file_name'] = "";
+                                    }
                                 }
                                 else
                                 {
                                     $inpLnData1['file_path'] = "";
                                     $inpLnData1['file_name'] = "";
                                 }
+
+                                if($this->created_by)
+                                {
+                                    $inpLnData1['created_by_id'] = session()->get('user_id');
+                                }
+                                $inpLnData1['status'] = 1;
+                                $modelsumprd = new $this->modelProduct();
+                                $storedprd = $modelsumprd->addRecord($inpLnData1);
+
                             }
-                            else
-                            {
-                                $inpLnData1['file_path'] = "";
-                                $inpLnData1['file_name'] = "";
-                            }
-                            
-                            if($this->created_by)
-                            {
-                                $inpLnData1['created_by_id'] = session()->get('user_id');
-                            }
-                            $inpLnData1['status'] = 1;
-                            $modelsumprd = new $this->modelProduct();
-                            $storedprd = $modelsumprd->addRecord($inpLnData1);
-                            
                         }
+
                     }
-                   
                 }
+                    
+                
                 $modelComp = new $this->modelComplaint();
                 $compdata = $modelComp->find($registerData->complaint_register_id);
                 $compdata->document_status = 2;

@@ -215,6 +215,86 @@
                 
             </div>
         </div>
+        
+        <div class="card col-sm-6 exwc-overall">
+            <div class="card-header">
+                <h2>Expenses Engineer Wise<small> For Overall</small> <span class="pull-right">Total : {{$overallexptotal}}</span></h2>
+            
+                <ul class="actions">
+                   
+                    <li class="dropdown">
+                        <a href="" data-toggle="dropdown">
+                            <i class="zmdi zmdi-widgets"></i>
+                        </a>
+
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            <li>
+                                <a href="" onclick="return false;" data-target='previous'  class="exew_dropdown">Previous</a>
+                            </li>
+                            <li>
+                                <a href="" onclick="return false;" data-target='current'  class="exew_dropdown">Current</a>
+                            </li>
+                            
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div id="expenses_engwc_overall">
+                
+            </div>
+        </div>
+        <div class="card col-sm-6 exwc-previous">
+            <div class="card-header">
+                <h2>Expenses Engineer Wise<small> For Previous Month</small> <span class="pull-right">Total : {{$previousexptotal}}</span></h2>
+            
+                <ul class="actions">
+                   
+                    <li class="dropdown">
+                        <a href="" data-toggle="dropdown">
+                            <i class="zmdi zmdi-widgets"></i>
+                        </a>
+
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            <li>
+                                <a href="" onclick="return false;" data-target='overall'  class="exwc_dropdown">Overall</a>
+                            </li>
+                            <li>
+                                <a href="" onclick="return false;" data-target='current' class="exwc_dropdown">Current</a>
+                            </li>
+                            
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div id="expenses_engwc_previous">
+                
+            </div>
+        </div>
+        <div class="card col-sm-6 exwc-current">
+            <div class="card-header">
+                <h2>Expenses Engineer Wise<small> For Current Month</small> <span class="pull-right">Total : {{$currentexptotal}}</span></h2>
+            
+                <ul class="actions">
+                    <li class="dropdown">
+                        <a href="" data-toggle="dropdown">
+                            <i class="zmdi zmdi-widgets"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            <li>
+                                <a href="" onclick="return false;" data-target='overall' class="exwc_dropdown">Overall</a>
+                            </li>
+                            <li>
+                                <a href="" onclick="return false;" data-target='previous' class="exwc_dropdown">Previous</a>
+                            </li>
+                            
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div id="expenses_engwc_current">
+                
+            </div>
+        </div>
     </div>
     <div class="card">
         <div class="card col-sm-6 re-overall">
@@ -664,7 +744,46 @@
                             onmouseout: function (d, i) { console.log("onmouseout", d, i); }*/
                         },
                         bindto:"#pcwow_chart",
-                    });    
+                    });   
+            
+            var expenses_engwc_overall = c3.generate({
+                data: {
+                            // iris data from R
+                            columns: <?php echo json_encode($joboverall_exp_engwise); ?>,
+                            type : 'bar',
+                            onclick: function (d, i) { exwc_compltedreport(d, i , 'overall'); },
+                            /*onclick: function (d, i) { console.log("onclick", d, i); },
+                            onmouseover: function (d, i) { console.log("onmouseover", d, i); },
+                            onmouseout: function (d, i) { console.log("onmouseout", d, i); }*/
+                        },
+                        bindto:"#expenses_engwc_overall",
+            });
+            
+            var expenses_engwc_previous = c3.generate({
+                data: {
+                            // iris data from R
+                            columns: <?php echo json_encode($jobprev_exp_engwise); ?>,
+                            type : 'bar',
+                            onclick: function (d, i) { exwc_compltedreport(d, i , 'previous'); },
+                            /*onclick: function (d, i) { console.log("onclick", d, i); },
+                            onmouseover: function (d, i) { console.log("onmouseover", d, i); },
+                            onmouseout: function (d, i) { console.log("onmouseout", d, i); }*/
+                        },
+                        bindto:"#expenses_engwc_previous",
+            });
+            
+            var expenses_engwc_current = c3.generate({
+                data: {
+                            // iris data from R
+                            columns: <?php echo json_encode($jobcur_exp_engwise); ?>,
+                            type : 'bar',
+                            onclick: function (d, i) { exwc_compltedreport(d, i , 'current'); },
+                            /*onclick: function (d, i) { console.log("onclick", d, i); },
+                            onmouseover: function (d, i) { console.log("onmouseover", d, i); },
+                            onmouseout: function (d, i) { console.log("onmouseout", d, i); }*/
+                        },
+                        bindto:"#expenses_engwc_current",
+            });
                     
             function statusreport(d, i)
             {
@@ -1005,6 +1124,35 @@
                {
                    $('.sw-previous').hide();
                    $('.sw-current').show();
+               }
+            });
+            
+            $('.exwc-overall').hide();
+            $('.exwc-previous').hide();
+            $(".exwc_dropdown").on('click',function()
+            {
+               var targetdata = $(this).data('target');
+               if(targetdata == 'previous')
+               {
+                   $('.exwc-previous').show();
+                   $('.exwc-current').hide();
+                   $('.exwc-overall').hide();
+               }
+               else
+               {
+                   if(targetdata == 'current')
+                   {
+                        $('.exwc-previous').hide();
+                        $('.exwc-current').show();
+                        $('.exwc-overall').hide();
+                   }
+                   else
+                   {
+                        $('.exwc-previous').hide();
+                        $('.exwc-current').hide();
+                        $('.exwc-overall').show();
+                   }
+                   
                }
             });
             

@@ -32,8 +32,20 @@ class ProjectController extends Controller
      */
     public function index()
     {
+        $user_type = session()->get('user_type');
+        $user_id = session()->get('user_id');
+        
         $model = new $this->modelName();
-        $registerData = $model->get();
+        
+        if($user_type == 0 || $user_type == 2)
+        {
+            $registerData = $model->get();
+        }
+        else if ($user_type == 5 || $user_type == 6)
+        {
+            $registerData = $model->where('engineer_id','=',$user_id) ->get();
+        }
+            
         
         $data['data'] = $registerData;
         

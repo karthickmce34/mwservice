@@ -1567,7 +1567,16 @@ class ServiceSpareRegisterController extends Controller
         
         $modelComplnt = new $this->modelCompName();
         $modelCompData = $modelComplnt->find($modelData->complaint_register_id);
-        $modelCompData->document_status=3;
+        if($inputs['orderstatus']== 9)
+        {
+            $modelCompData->document_status=3;
+        }
+        
+        if($inputs['orderstatus']== 11)
+        {
+            $modelCompData->document_status=2;
+        }
+            
         $modelCompData->save();
         $this->data['status']=1;
         $this->data['message']="Status Updated Successfully";

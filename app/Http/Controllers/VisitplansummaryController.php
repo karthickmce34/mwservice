@@ -66,6 +66,23 @@ class VisitplansummaryController extends Controller
                     ->get();
             
         }
+        else if ($user_type == 6)
+        {
+            $servicedatas = DB::select("SELECT distinct visitplan_summary.id FROM visitplan_summary,visit_plan,service_agent
+                                        WHERE visit_plan.id = visitplan_summary.visitplan_id
+                                        and visit_plan.agent_id = service_agent.id
+                                        and visit_plan.agent_id = '$user_id'
+                                        and visit_plan.deleted_at is null");
+            $id = array();
+             foreach($servicedatas as $servicedata)
+             {
+              $id[]=$servicedata->id;
+             }
+
+            $model = new $this->modelName();
+            $registerData = $model->whereIn('id',$id)                    
+                    ->get();
+        }
         $data['data'] = $registerData;
         $data['baseName'] = $this->baseName;
         $data['basePath'] = $this->basePath;

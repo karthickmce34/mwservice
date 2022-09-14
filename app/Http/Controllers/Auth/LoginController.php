@@ -30,6 +30,7 @@ class LoginController extends Controller
     
     public $modelName       = 'App\Models\UserModel';
     public $modelengineer   = 'App\Models\ServiceEngineerModel';
+    public $modelagent   = 'App\Models\ServiceAgentModel';
     public $modelattendance = 'App\Models\AttendanceModel';
 
     use AuthenticatesUsers;
@@ -80,8 +81,25 @@ class LoginController extends Controller
             }
             else
             {
-                //print_r($logindata);
-                return redirect()->guest(url('login'))->with('error','Incorrect Username and Password!');
+                $modelAgent = new $this->modelagent();
+                $modelAgentData = $modelAgent->where('emailid',$user)
+                                ->where('mobileno',$pass)->first();
+                //print_r($modelAgentData);die;
+                if($modelAgentData)
+                {
+                    Session::put('name', $modelAgentData->name);
+                    Session::put('user_id', $modelAgentData->id);
+                    Session::put('token', $token );
+                    Session::put('user_type', 6 );
+                    //echo $String;
+                    return redirect()->to('home')->with('Success','Welcome!');
+                    //print_r($inputs);die;
+                }
+                else
+                {
+                    return redirect()->guest(url('login'))->with('error','Incorrect Username and Password!');
+                }
+                    
             }
         }
         else

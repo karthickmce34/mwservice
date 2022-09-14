@@ -630,7 +630,7 @@
                                                                                             <label for="sld" class="control-label col-sm-4">SLD<span class="c-red">*</span></label>
                                                                                             <div class="col-sm-8">
                                                                                                 <div class="fg-line">
-                                                                                                    <input type='file' class="form-control input-sm sld required" required name="sld" >
+                                                                                                    <input type='file' class="form-control input-sm sld required" required name="sld" accept="image/*">
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
@@ -640,7 +640,7 @@
                                                                                             <label for="panel-front" class="control-label col-sm-4">Panel Front<span class="c-red">*</span></label>
                                                                                             <div class="col-sm-8">
                                                                                                 <div class="fg-line">
-                                                                                                    <input type='file' class="form-control input-sm panelfront required" required name="panelfront" >
+                                                                                                    <input type='file' class="form-control input-sm panelfront required" required name="panelfront" accept="image/*">
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
@@ -648,7 +648,7 @@
                                                                                             <label for="panelleft" class="control-label col-sm-4">Panel Left<span class="c-red">*</span></label>
                                                                                             <div class="col-sm-8">
                                                                                                 <div class="fg-line">
-                                                                                                    <input type='file' class="form-control input-sm panelleft required" required name="panelleft" >
+                                                                                                    <input type='file' class="form-control input-sm panelleft required" required name="panelleft" accept="image/*">
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
@@ -656,7 +656,7 @@
                                                                                             <label for="panelright" class="control-label col-sm-4">Panel Right<span class="c-red">*</span></label>
                                                                                             <div class="col-sm-8">
                                                                                                 <div class="fg-line">
-                                                                                                    <input type='file' class="form-control input-sm panelright required" required name="panelright" >
+                                                                                                    <input type='file' class="form-control input-sm panelright required" required name="panelright" accept="image/*">
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
@@ -664,7 +664,7 @@
                                                                                             <label for="panelinside" class="control-label col-sm-4">Panel Inside<span class="c-red">*</span></label>
                                                                                             <div class="col-sm-8">
                                                                                                 <div class="fg-line">
-                                                                                                    <input type='file' class="form-control input-sm panelinside required" required name="panelinside" >
+                                                                                                    <input type='file' class="form-control input-sm panelinside required" required name="panelinside" accept="image/*">
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
@@ -687,6 +687,7 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
+                                                                @if($record->is_agent == 0)
                                                                 <div class="form-row col-sm-12 m-t-20">
                                                                     <div class="card">
                                                                         <div class="card-body">
@@ -770,7 +771,7 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>    
-                                                                                    
+                                                                @endif                    
                                                                 <div class="form-row">
                                                                     <div class="col-sm-3">
                                                                         <button type="submit" id="submit1" class="submit1 btn bgm-cyan"><i>Submit</i></button>
