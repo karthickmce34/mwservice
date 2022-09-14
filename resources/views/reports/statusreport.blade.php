@@ -109,9 +109,9 @@
                 
             </div>
         </div>
-        <div class="card col-sm-6 pc-current">
+        <div class="card col-sm-6 pc-underwarrenty">
             <div class="card-header">
-                <h2>Pending Vs Completed (Warrenty/Out Of Warrenty)<small> For Current Month</small></h2>
+                <h2>Pending Vs Completed (Warrenty/Out Of Warrenty)<small> For Current Month Under Warrenty</small></h2>
             
                 <ul class="actions">
                    
@@ -122,7 +122,7 @@
 
                         <ul class="dropdown-menu dropdown-menu-right">
                             <li>
-                                <a href="#" onclick="return false;"  data-target='previous' class="pcwow_dropdown">Previous Month</a>
+                                <a href="#" onclick="return false;"  data-target='outofwarrenty' class="pcwow_dropdown">Out of Warrenty</a>
                             </li>
                             
                         </ul>
@@ -130,7 +130,32 @@
                 </ul>
             </div>
             
-            <div id="pcwow_chart">
+            <div id="pcuw_chart">
+                
+            </div>
+        </div>
+        <div class="card col-sm-6 pc-outofwarrenty">
+            <div class="card-header">
+                <h2>Pending Vs Completed (Warrenty/Out Of Warrenty)<small> For Current Month Out Of Warrenty</small></h2>
+            
+                <ul class="actions">
+                   
+                    <li class="dropdown">
+                        <a href="" data-toggle="dropdown">
+                            <i class="zmdi zmdi-widgets"></i>
+                        </a>
+
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            <li>
+                                <a href="#" onclick="return false;"  data-target='underwarrenty' class="pcwow_dropdown">Under Warrenty</a>
+                            </li>
+                            
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            
+            <div id="pcow_chart">
                 
             </div>
         </div>
@@ -730,11 +755,11 @@
                     });
                 
             //var jobstatus_col = 
-            var pcwow_current = c3.generate({
+            var pcuw_current = c3.generate({
                         data: {
                             // iris data from R
                             columns: <?php 
-                                        echo json_encode($jobwarrenty_status);
+                                        echo json_encode($jobuwarrentydata);
                                         
                                         ?>,
                             type : 'bar',
@@ -743,8 +768,24 @@
                             onmouseover: function (d, i) { console.log("onmouseover", d, i); },
                             onmouseout: function (d, i) { console.log("onmouseout", d, i); }*/
                         },
-                        bindto:"#pcwow_chart",
-                    });   
+                        bindto:"#pcuw_chart",
+                    });  
+            
+            var pcow_current = c3.generate({
+                        data: {
+                            // iris data from R
+                            columns: <?php 
+                                        echo json_encode($jobowarrentydata);
+                                        
+                                        ?>,
+                            type : 'bar',
+                            //onclick: function (d, i) { scopeofwork(d, i , 'previous'); },
+                            /*onclick: function (d, i) { console.log("onclick", d, i); },
+                            onmouseover: function (d, i) { console.log("onmouseover", d, i); },
+                            onmouseout: function (d, i) { console.log("onmouseout", d, i); }*/
+                        },
+                        bindto:"#pcow_chart",
+                    });  
             
             var expenses_engwc_overall = c3.generate({
                 data: {
@@ -1156,6 +1197,21 @@
                }
             });
             
+            $('.pc-outofwarrenty').hide();
+            $(".pcwow_dropdown").on('click',function()
+            {
+               var targetdata = $(this).data('target');
+               if(targetdata == 'outofwarrenty')
+               {
+                   $('.pc-outofwarrenty').show();
+                   $('.pc-underwarrenty').hide();
+               }
+               else
+               {
+                   $('.pc-underwarrenty').show();
+                   $('.pc-outofwarrenty').hide();
+               }
+            });
             /***************************/
             
           /*  var jobwarrenty_status = <?php //echo json_encode($jobwarrenty_status); ?>;

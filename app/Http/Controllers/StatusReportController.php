@@ -251,12 +251,42 @@ class StatusReportController extends Controller
 
                                     where complaint_register.id = service_spares_register.complaint_register_id
                                     and complaint_register.complaint_type = 0
-                                    and complaint_register.complaint_date >= '2022-09-01'
+                                    and complaint_register.complaint_date >= '2022-05-01'
                                     and complaint_register.complaint_date <= '2022-09-30'
                                     and warrenty =0)A
                                     where A.pendingorderstatus != 'No Data'
                                     group by A.pendingorderstatus
                                     order by A.pendingorderstatus");
+        
+        $job_status_owarrenty = DB::select("select count(A.pendingorderstatus) as cnt,A.pendingorderstatus,'Under Warrenty' as warrenty from
+                                            (select 
+                                                CASE
+                                                when service_spares_register.order_status = 0 then 'Process Pending'
+                                                when service_spares_register.order_status = 1 then 'Process Pending'
+                                                when service_spares_register.order_status = 2 then 'Process Pending'
+                                                when service_spares_register.order_status = 3 then 'Process Pending'
+                                                when service_spares_register.order_status = 4 then 'Process Pending'
+                                                when service_spares_register.order_status = 5 then 'Process Pending' 
+                                                when service_spares_register.order_status = 8 then 'Job Pending'
+                                                when service_spares_register.order_status = 10 then 'Job Pending' 
+                                         	when service_spares_register.order_status = 12 then 'Job Pending'
+                                                when service_spares_register.order_status = 11 then 'Completed'
+                                                else 'No Data' end as pendingorderstatus
+                                                
+
+                                    from 
+                                        complaint_register,
+                                        service_spares_register
+
+                                    where complaint_register.id = service_spares_register.complaint_register_id
+                                    and complaint_register.complaint_type = 0
+                                    and complaint_register.complaint_date >= '2022-05-01'
+                                    and complaint_register.complaint_date <= '2022-09-30'
+                                    and warrenty =1)A
+                                    where A.pendingorderstatus != 'No Data'
+                                    group by A.pendingorderstatus
+                                    order by A.pendingorderstatus");
+        
         $previous_expenses_engwise = DB::select("select service_engineer.name,sum(visit_expenses.loading_expenses)  + sum(visit_expenses.boarding_expenses) + sum(visit_expenses.travel_expenses) + sum(visit_expenses.local_expenses) as expenses
                                                 from visitplan_summary,visit_expenses, service_engineer
                                                 where visit_expenses.visitplan_summary_id = visitplan_summary.id
@@ -325,49 +355,24 @@ class StatusReportController extends Controller
            $previousscopedata[]=array($previousscope->scope_of_work ,$previousscope->cnt);
            //$processdata['processcnt'][] = $process->cnt;
        }
-       $jobuwarrentydata2=array();
        $jobuwarrentydata = array();
        if($job_status_uwarrenty)
        {
            foreach($job_status_uwarrenty as $jobuwarrenty)
             {
-                if($jobuwarrenty->pendingorderstatus == 'Process Pending')
-                {
-                    $jobuwarrentydata[]=$jobuwarrenty->cnt;
-                    //if($jobuwarrenty->cnt )
-                }
-                else
-                {
-                    if($jobuwarrenty->pendingorderstatus == 'Job Pending')
-                     {
-                         $jobuwarrentydata[]=$jobuwarrenty->cnt;
-                     }
-                     else
-                     {
-                        if($jobuwarrenty->pendingorderstatus == 'Completed')
-                         {
-                            //print_r($jobuwarrenty);
-                             $jobuwarrentydata[$jobuwarrenty->pendingorderstatus][]=array($jobuwarrenty->warrenty ,$jobuwarrenty->cnt);
-                         } 
-                         else
-                         {
-
-                         }
-                     }
-
-                }
-                //print_r("**********");
-                //print_r($jobuwarrentydata);
-
-                 $jobuwarrentydata2[]=array($jobuwarrenty->warrenty ,array('Count',$jobuwarrenty->cnt));    
-                //$processdata['processcnt'][] = $process->cnt;
+                $jobuwarrentydata[]=array($jobuwarrenty->pendingorderstatus ,$jobuwarrenty->cnt);    
             }
        }
-       else
+       
+       $jobowarrentydata = array();
+       if($job_status_owarrenty)
        {
-           $jobuwarrentydata= array('No Data',0);
+           foreach($job_status_owarrenty as $jobowarrenty)
+            {
+                $jobowarrentydata[]=array($jobowarrenty->pendingorderstatus ,$jobowarrenty->cnt);    
+            }
        }
-            
+       
        $overall_exp_engwise = array();
        $previous_exp_engwise = array();
        $current_exp_engwise = array();
@@ -443,8 +448,8 @@ class StatusReportController extends Controller
         $data['scopeofwork'] = $scopedata;
         $data['previousscopeofwork'] = $previousscopedata;
         
-        $data['jobwarrenty_status']=$jobuwarrentydata;
-        $data['jobwarrentydata2']=$jobwarrentydata2;
+        $data['jobuwarrentydata']=$jobuwarrentydata;
+        $data['jobowarrentydata']=$jobowarrentydata;//$jobwarrentydata2;
         
         $data['jobprev_exp_engwise'] = $previous_exp_engwise;
         $data['jobcur_exp_engwise'] = $current_exp_engwise;
