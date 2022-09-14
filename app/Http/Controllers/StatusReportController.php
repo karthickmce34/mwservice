@@ -251,7 +251,7 @@ class StatusReportController extends Controller
 
                                     where complaint_register.id = service_spares_register.complaint_register_id
                                     and complaint_register.complaint_type = 0
-                                    and complaint_register.complaint_date >= '2022-05-01'
+                                    and complaint_register.complaint_date >= '2022-09-01'
                                     and complaint_register.complaint_date <= '2022-09-30'
                                     and warrenty =0)A
                                     where A.pendingorderstatus != 'No Data'
@@ -280,7 +280,7 @@ class StatusReportController extends Controller
 
                                     where complaint_register.id = service_spares_register.complaint_register_id
                                     and complaint_register.complaint_type = 0
-                                    and complaint_register.complaint_date >= '2022-05-01'
+                                    and complaint_register.complaint_date >= '2022-09-01'
                                     and complaint_register.complaint_date <= '2022-09-30'
                                     and warrenty =1)A
                                     where A.pendingorderstatus != 'No Data'
