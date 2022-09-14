@@ -1077,6 +1077,53 @@
                         });  
             }
             
+            function exwc_compltedreport(d, i , type)
+            {
+                var engineername = d.id;
+                //console.log(d);return false;
+                var dataConfig = {
+                        engineername: engineername,type:type
+                        };
+                        
+                var controller = 'statusreport/';
+
+                $.ajax({
+                            method: "POST",
+                            url: _site_url + controller + "engineer_exp_report",
+                            data: dataConfig,
+
+                        }).done( function( data, textStatus, jqXHR ) {
+                            console.log( " ajax done " );
+                           // alert(data);
+                            $(".detname").html(" For "+engineername);
+                            if(data.status ==1)
+                            {
+                                
+                                $("#modalreport").find(".modal-body div").remove();
+                                $("#modalreport").find(".modal-body").append("<div class='statrep' ></div>");
+                                
+                                $("#modalreport").find(".modal-body .statrep").append("<table class='table'><thead><th>Seqno</th><th>Complaint Date</th><th>Customer Name</th><th>SO No</th><th>Engineer Name</th><th>Work</th><th>Attend From</th><th>Attend To</th><th>Expenses</th></thead><tbody></tbody></table>");
+                                var len = data.servicedata.length;
+                                var totexpenses = 0;
+                                for (var i=0;i<len;i++)
+                                {
+                                    $("#modalreport").find(".statrep tbody").append("<tr><td class='f-10'>"+data.servicedata[i].seqno+"</td><td class='f-10'>"+data.servicedata[i].complaint_date+"</td><td class='f-10'>"+data.servicedata[i].customer_name+"</td><td class='f-10'>"+data.servicedata[i].salesorder_no+"</td><td class='f-10'>"+data.servicedata[i].serviceengineer+"</td><td class='f-10'>"+data.servicedata[i].scope_of_work+"</td><td class='f-10'>"+data.servicedata[i].date_of_attend+"</td><td class='f-10'>"+data.servicedata[i].date_of_complete+"</td><td class='f-10'>"+data.servicedata[i].expenses+"</td></tr>");
+                                    totexpenses = parseInt(totexpenses)+parseInt(data.servicedata[i].expenses);
+                                }
+                                $("#modalreport").find(".statrep tbody").append("<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>Total</td><td>"+parseInt(totexpenses)+"</td></tr>");
+                                //$("#modalreport").find(".statrep .table").dataTable();
+                                $("#modalreport").find("#servicestatus").modal();
+                                    
+                            }
+
+                        }).fail( function( jqXHR, textStatus, errorThrown ) {
+                            console.log( " ajax fail " );
+                            //console.log( jqXHR, textStatus, errorThrown );
+                        }).always ( function( data_jqXHR, textStatus, jqXHR_errorThrown ) {
+                            console.log( " ajax always " );
+                            //console.log( data_jqXHR, textStatus, jqXHR_errorThrown );
+                        });  
+            }
             
             $('.pc-previous').hide();
             $(".pc_dropdown").on('click',function()

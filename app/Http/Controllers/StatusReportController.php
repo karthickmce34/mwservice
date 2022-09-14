@@ -976,4 +976,61 @@ class StatusReportController extends Controller
         return response()->json($this->data);
     }
     
+    public function engineer_exp_report()
+    {
+        $inputs = request()->all();
+        
+        $engineername = $inputs['engineername'];
+        $type = $inputs['type'];
+        
+        
+        if($type == 'current')
+        {
+            $date = " and visitplan_summary.date_of_complete >= '2022-09-01'
+                                and visitplan_summary.date_of_complete <= '2022-09-30'";
+        }
+        else
+        {
+            if($type == 'previous')
+            {
+                $date = " and visitplan_summary.date_of_complete >= '2022-08-01'
+                                and visitplan_summary.date_of_complete <= '2022-08-31'";
+            }
+            else
+            {
+                $date = " and visitplan_summary.date_of_complete <= '2022-09-30'";
+            }
+
+        }
+        $servicedata = DB::select("select complaint_register.seqno,complaint_register.customer_name,
+                                    complaint_register.complaint_date,
+                                    case when complaint_register.salesorder_no is null then '' else complaint_register.salesorder_no end as salesorder_no,
+                                    visitplan_summary.date_of_attend,
+                                    visitplan_summary.date_of_complete,
+                                    service_engineer.name as serviceengineer,
+                                    replace(service_spares_register.scope_of_work,'\"','') as scope_of_work,
+                                    visit_expenses.loading_expenses + visit_expenses.boarding_expenses + visit_expenses.travel_expenses +
+                                    visit_expenses.local_expenses as expenses
+                                    from visitplan_summary,visit_expenses,visit_plan,complaint_register,service_spares_register,visitplan_engineer,service_engineer 
+                                    where visitplan_summary.visitplan_id = visit_plan.id
+                                    and visit_expenses.visitplan_summary_id = visitplan_summary.id
+                                    and visit_plan.complaint_register_id = complaint_register.id
+                                    and visit_plan.id = visitplan_engineer.visitplan_id
+                                    and service_engineer.id = visit_expenses.engineer_id
+                                    and service_spares_register.complaint_register_id = complaint_register.id
+                                    and visit_plan.status=1
+                                    and visit_plan.deleted_at is null
+                                    and service_engineer.name like '$engineername'
+                                    $date
+                                    and visitplan_summary.deleted_at is null
+                                    order by  complaint_register.complaint_date,complaint_register.seqno  ");
+        
+            
+        $this->data['status']=1;
+        
+        $this->data['servicedata']=$servicedata;
+       // print_r($inputs);die;
+        //$this->data['servicedata']=$servicedata;
+        return response()->json($this->data);
+    }
 }
