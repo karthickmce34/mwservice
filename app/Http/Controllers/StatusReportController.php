@@ -928,13 +928,13 @@ class StatusReportController extends Controller
         
         if($type == 'current')
         {
-            $date = " and complaint_register.complaint_date >= '2022-08-01'
-                                    and complaint_register.complaint_date <= '2022-07-30'";
+            $date = " and complaint_register.complaint_date >= '2022-09-01'
+                                    and complaint_register.complaint_date <= '2022-09-30'";
         }
         else
         {
-            $date = " and complaint_register.complaint_date >= '2022-09-01'
-                                        and complaint_register.complaint_date <= '2022-09-30'";
+            $date = " and complaint_register.complaint_date >= '2022-08-01'
+                                        and complaint_register.complaint_date <= '2022-08-31'";
 
         }
             
