@@ -168,3 +168,6 @@ Route::get('project/index', 'ProjectController@getIndex');
 Route::post('project/updateapprove', 'ProjectController@postUpdateapprove');
 Route::post('project/insertsummary', 'ProjectController@postInsertsummary');
 
+Route::resource('engineerreport', 'EngineerReportController');
+Route::post('engineerreport/engineerdata', 'EngineerReportController@engineerdata');
+Route::post('engineerreport/sowdata', 'EngineerReportController@sowdata');
