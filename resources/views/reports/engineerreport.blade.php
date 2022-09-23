@@ -20,7 +20,7 @@
 @stop
 @section('content')
     @parent
-    <div class="card">
+    <div class="card" style="height:600px;">
         <div class="card-header card-padding text-center">
             <h3>Engineer Report</h3>
         </div>
@@ -33,7 +33,7 @@
                                 <div class="fg-line">
                                     <p class="c-black f-500 m-b-20">Engineer Name</p>
                                     <div class="input-group form-group">
-                                        <select class="selectpicker" placeholder="Engineer Name" aria-describedby="basic-addon1" id="engineer_id" name="engineer_id">
+                                        <select class="selectpicker" placeholder="Engineer Name" data-live-search="true" data-size="5" aria-describedby="basic-addon1" id="engineer_id" name="engineer_id">
                                             <option value=''></option>
                                             @foreach($engineers as $engineer)
                                             <option value='{{$engineer->id}}'>{{$engineer->name}}</option>
@@ -89,48 +89,48 @@
                 </div>
             </div>
         </div>
-    </div>   
-    <div class="card engdetails">
-        <div class="card-header">
-            <h3>Engineer Name : <span class="engname"></span></h3>
-        </div>
-        <div class="card-body card-padding ">
-            <div class="row">
-                <div class="col-sm-4">
-                    <div class="card crd-exp">
-                        <div class="card-body card-padding bgm-cyan c-white">
-                            <h4 class="c-white  text-center"><b>Expenses :</b> <span class="eng_exp"></span></h4>
-                        </div>
-                    </div>
-                </div>
-            
-                <div class="col-sm-4">
-                    <div class="card crd-pendjob">
-                        <div class="card-body card-padding bgm-pink c-white">
-                             <h4 class="c-white text-center"><b>Pending Jobs :</b> <span class="eng_pendjob"></span></h4>
-                        </div>
-                    </div>
-                </div>
-            
-                <div class="col-sm-4">
-                    <div class="card crd-jobcomp">
-                        <div class="card-body card-padding bgm-teal c-white">
-                             <h4 class="c-white  text-center"><b>Job Completed : </b> <span class="eng_jobcomp"></span></h4>
-                        </div>
-                    </div>
-                </div>
+       
+        <div class="card engdetails">
+            <div class="card-header">
+                <h3>Engineer Name : <span class="engname"></span></h3>
             </div>
-            <div class="row sow">
-                <div class="col-sm-12">
-                    <div class="card">
-                        <div class="card-header"> <h3> Scope of Work </h3></div>
-                        <div class="card-body"><div class="sowbody"></div></div>
+            <div class="card-body card-padding ">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="card crd-exp">
+                            <div class="card-body card-padding bgm-cyan c-white">
+                                <h4 class="c-white  text-center"><b>Expenses :</b> <span class="eng_exp"></span></h4>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <div class="card crd-pendjob">
+                            <div class="card-body card-padding bgm-pink c-white">
+                                 <h4 class="c-white text-center"><b>Pending Jobs :</b> <span class="eng_pendjob"></span></h4>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <div class="card crd-jobcomp">
+                            <div class="card-body card-padding bgm-teal c-white">
+                                 <h4 class="c-white  text-center"><b>Job Completed : </b> <span class="eng_jobcomp"></span></h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row sow">
+                    <div class="col-sm-12">
+                        <div class="card">
+                            <div class="card-header"> <h3> Scope of Work </h3></div>
+                            <div class="card-body"><div class="sowbody"></div></div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    
     <div class="newrow">
         <div id="row1" class=" table-responsive">
             <table id="servicedetail" class="display table table-striped table-vmiddle f-10">
