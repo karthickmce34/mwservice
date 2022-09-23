@@ -143,6 +143,7 @@
                         <th data-column-id="site_location">Site Location</th>  
                         <th data-column-id="salesno">SO no.</th>
                         <th data-column-id="warrenty">Warrenty</th>
+                        <th data-column-id="sow">Scope Of Work</th>
                         <th data-column-id="totalexp">Total Exp</th>
                     </tr>
                 </thead>
@@ -279,7 +280,7 @@
                        for(var i =0;i<len;i++)
                        {
                            var s=i+1;
-                           var tr = "<tr><td>"+s+"</td><td>"+data.expdetails[i].complaint_date+"</td><td>"+data.expdetails[i].seqno+"</td><td>"+data.expdetails[i].customer_name+"</td><td>"+data.expdetails[i].site_location+"</td><td>"+data.expdetails[i].salesorder_no+"</td><td>"+data.expdetails[i].warrenty+"</td><td>"+data.expdetails[i].expenses+"</td></tr>";
+                           var tr = "<tr><td>"+s+"</td><td>"+data.expdetails[i].complaint_date+"</td><td>"+data.expdetails[i].seqno+"</td><td>"+data.expdetails[i].customer_name+"</td><td>"+data.expdetails[i].site_location+"</td><td>"+data.expdetails[i].salesorder_no+"</td><td>"+data.expdetails[i].warrenty+"</td><td>"+data.expdetails[i].scope_of_work+"</td><td>"+data.expdetails[i].expenses+"</td></tr>";
                            $(".servicestatus").find(".modaldetailstatus tbody").append(tr);
                        }
                        $(".newrow").hide();

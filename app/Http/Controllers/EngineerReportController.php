@@ -87,7 +87,10 @@ class EngineerReportController extends Controller
                                                 and visitplan_engineer.engineer_id = '$engineer_id'
                                                 and visitplan_summary.deleted_at is null");
         
-        $exp_details = DB::select("select complaint_register.seqno as seqno,complaint_register.complaint_date,complaint_register.customer_name,complaint_register.site_location,complaint_register.salesorder_no,case when complaint_register.warrenty = 0 then 'Under Warrenty' else 'Out Of Warrenty' end as warrenty,
+        $exp_details = DB::select("select complaint_register.seqno as seqno,complaint_register.complaint_date,
+                                            complaint_register.customer_name,complaint_register.site_location,complaint_register.salesorder_no,
+                                            replace(service_spares_register.scope_of_work,'\"','') as scope_of_work,
+                                            case when complaint_register.warrenty = 0 then 'Under Warrenty' else 'Out Of Warrenty' end as warrenty,
                                             sum(visit_expenses.loading_expenses)  + sum(visit_expenses.boarding_expenses) + sum(visit_expenses.travel_expenses) + sum(visit_expenses.local_expenses) as expenses
                                                 from visitplan_summary,visit_expenses, service_engineer,visit_plan,service_spares_register,complaint_register
                                                 where visit_expenses.visitplan_summary_id = visitplan_summary.id
