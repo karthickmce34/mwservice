@@ -102,7 +102,7 @@ class EngineerReportController extends Controller
                                                 and visitplan_summary.date_of_complete <= '$todate'                                    
                                                 and visitplan_summary.deleted_at is null
                                                 and service_engineer.id= '$engineer_id'
-                                                group by complaint_register.seqno,complaint_register.complaint_date,complaint_register.customer_name,complaint_register.salesorder_no,complaint_register.warrenty,complaint_register.site_location
+                                                group by complaint_register.seqno,complaint_register.complaint_date,complaint_register.customer_name,complaint_register.salesorder_no,complaint_register.warrenty,service_spares_register.scope_of_work,complaint_register.site_location
                                                 order by complaint_register.complaint_date");
         
         $pending_details = DB::select("SELECT complaint_register.seqno as seqno,complaint_register.complaint_date,complaint_register.customer_name,complaint_register.site_location,complaint_register.salesorder_no,
