@@ -51,6 +51,7 @@ class StatusReportController extends Controller
                                         service_spares_register
 
                                     where complaint_register.id = service_spares_register.complaint_register_id
+                                    and service_spares_register.deleted_at is null
                                     and complaint_register.complaint_type = 0)A
                                     where A.orderstatus != 'No Data'
                                     group by A.orderstatus");
@@ -73,6 +74,7 @@ class StatusReportController extends Controller
                                         service_spares_register
 
                                     where complaint_register.id = service_spares_register.complaint_register_id
+                                    and service_spares_register.deleted_at is null
                                     and complaint_register.complaint_type = 0)A
                                     where A.orderstatus != 'No Data'");
         
@@ -88,6 +90,7 @@ class StatusReportController extends Controller
                                         service_spares_register
 
                                     where complaint_register.id = service_spares_register.complaint_register_id
+                                    and service_spares_register.deleted_at is null
                                     and complaint_register.complaint_type = 0)A
                                     where A.orderstatus != 'No Data'
                                     group by A.orderstatus");
@@ -113,6 +116,7 @@ class StatusReportController extends Controller
                                         service_spares_register
 
                                     where complaint_register.id = service_spares_register.complaint_register_id
+                                    and service_spares_register.deleted_at is null
                                     and complaint_register.complaint_type = 0
                                     and complaint_register.complaint_date >= '$currentmonthstart'
                                     and complaint_register.complaint_date <= '$currentmonthend')A
@@ -139,6 +143,7 @@ class StatusReportController extends Controller
                                         service_spares_register
 
                                     where complaint_register.id = service_spares_register.complaint_register_id
+                                    and service_spares_register.deleted_at is null
                                     and complaint_register.complaint_type = 0
                                     and complaint_register.complaint_date >= '$previousmonthstart'
                                     and complaint_register.complaint_date <= '$previousmonthend')A
@@ -183,7 +188,7 @@ class StatusReportController extends Controller
                                     select 0 as expenses,sum(service_spares_register.advance_amt) + sum(service_spares_register.payment_received) as recieved
 
                                     from service_spares_register
-                                     where service_spares_register.paid_date <= '$currentmonthend')a");
+                                     where service_spares_register.deleted_at is null and service_spares_register.paid_date <= '$currentmonthend')a");
         
         $current_received_expenses = DB::select("select sum(a.expenses) as expenses,sum(a.recieved) as recieved from 
                                     (select sum(visitplan_summary.loading_expenses) + 
@@ -198,7 +203,8 @@ class StatusReportController extends Controller
                                     select 0 as expenses,sum(service_spares_register.advance_amt) + sum(service_spares_register.payment_received) as recieved
 
                                     from service_spares_register
-                                     where service_spares_register.paid_date >= '$currentmonthstart'
+                                     where service_spares_register.deleted_at is null
+                                     and service_spares_register.paid_date >= '$currentmonthstart'
                                      and service_spares_register.paid_date <= '$currentmonthend')a");
         
         $previous_received_expenses = DB::select("select sum(a.expenses) as expenses,sum(a.recieved) as recieved from 
@@ -214,12 +220,14 @@ class StatusReportController extends Controller
                                     select 0 as expenses,sum(service_spares_register.advance_amt) + sum(service_spares_register.payment_received) as recieved
 
                                     from service_spares_register
-                                     where service_spares_register.paid_date >= '$previousmonthstart'
+                                     where service_spares_register.deleted_at is null
+                                     and service_spares_register.paid_date >= '$previousmonthstart'
                                      and service_spares_register.paid_date <= '$previousmonthend')a");
         
         $scopeofwork = DB::select("SELECT count(scope_of_work) as cnt,replace(scope_of_work,'\"','') as scope_of_work 
                                     FROM complaint_register,service_spares_register 
                                     where complaint_register.id = service_spares_register.complaint_register_id
+                                    and service_spares_register.deleted_at is null
                                     and complaint_register.complaint_type = 0
                                     and complaint_register.complaint_date >= '$currentmonthstart'
                                     and complaint_register.complaint_date <= '$currentmonthend'
@@ -228,6 +236,7 @@ class StatusReportController extends Controller
         $previousscopeofwork = DB::select("SELECT count(scope_of_work) as cnt,replace(scope_of_work,'\"','') as scope_of_work 
                                     FROM complaint_register,service_spares_register 
                                     where complaint_register.id = service_spares_register.complaint_register_id
+                                    and service_spares_register.deleted_at is null
                                     and complaint_register.complaint_type = 0
                                     and complaint_register.complaint_date >= '$previousmonthstart'
                                     and complaint_register.complaint_date <= '$previousmonthend'
@@ -255,6 +264,7 @@ class StatusReportController extends Controller
                                         service_spares_register
 
                                     where complaint_register.id = service_spares_register.complaint_register_id
+                                    and service_spares_register.deleted_at is null
                                     and complaint_register.complaint_type = 0
                                     and complaint_register.complaint_date >= '$currentmonthstart'
                                     and complaint_register.complaint_date <= '$currentmonthend'
@@ -284,6 +294,7 @@ class StatusReportController extends Controller
                                         service_spares_register
 
                                     where complaint_register.id = service_spares_register.complaint_register_id
+                                    and service_spares_register.deleted_at is null
                                     and complaint_register.complaint_type = 0
                                     and complaint_register.complaint_date >= '$currentmonthstart'
                                     and complaint_register.complaint_date <= '$currentmonthend'
@@ -544,6 +555,7 @@ class StatusReportController extends Controller
                                         left join visitplan_summary on visitplan_summary.visitplan_id = visit_plan.id
 
                                     where complaint_register.id = service_spares_register.complaint_register_id
+                                    and service_spares_register.deleted_at is null
                                     and complaint_register.complaint_type = 0
                                     $statuspara".' '." $orderpara 
                                      )a 
@@ -570,6 +582,7 @@ class StatusReportController extends Controller
                                         left join visitplan_summary on visitplan_summary.visitplan_id = visit_plan.id
 
                                     where complaint_register.id = service_spares_register.complaint_register_id
+                                    and service_spares_register.deleted_at is null
                                     and complaint_register.complaint_type = 0
                                     $statuspara_job".' '." $orderpara 
                                      )a 
@@ -604,6 +617,7 @@ class StatusReportController extends Controller
                                         left join visitplan_summary on visitplan_summary.visitplan_id = visit_plan.id
 
                                     where complaint_register.id = service_spares_register.complaint_register_id
+                                    and service_spares_register.deleted_at is null
                                     and complaint_register.complaint_type = 0
                                     $statuspara_job".' '." $orderpara
                                      )a 
@@ -638,6 +652,7 @@ class StatusReportController extends Controller
                                         left join visitplan_summary on visitplan_summary.visitplan_id = visit_plan.id
 
                                     where complaint_register.id = service_spares_register.complaint_register_id
+                                    and service_spares_register.deleted_at is null
                                     and complaint_register.complaint_type = 0
                                     $statuspara_job".' '." $orderpara
                                      )a 
@@ -683,6 +698,7 @@ class StatusReportController extends Controller
                                         left join visitplan_summary on visitplan_summary.visitplan_id = visit_plan.id
 
                                     where complaint_register.id = service_spares_register.complaint_register_id
+                                    and service_spares_register.deleted_at is null
                                     and complaint_register.complaint_type = 0
                                     and service_spares_register.order_status = $ordervalue order by complaint_register.seqno");
         $this->data['status']=1;
@@ -746,6 +762,7 @@ class StatusReportController extends Controller
                                         left join visitplan_summary on visitplan_summary.visitplan_id = visit_plan.id
 
                                     where complaint_register.id = service_spares_register.complaint_register_id
+                                    and service_spares_register.deleted_at is null
                                     and complaint_register.complaint_type = 0
                                     and service_spares_register.order_status in (".$ordvalue.") ".$date." order by complaint_register.seqno");
         $this->data['status']=1;
@@ -802,6 +819,7 @@ class StatusReportController extends Controller
                                     where visitplan_summary.visitplan_id = visit_plan.id
                                     and visit_plan.complaint_register_id = complaint_register.id
                                     and service_spares_register.complaint_register_id = complaint_register.id
+                                    and service_spares_register.deleted_at is null
                                     and visit_plan.id = visitplan_engineer.visitplan_id
                                     and service_engineer.id = visitplan_engineer.engineer_id
                                     and visit_plan.status=1
@@ -874,6 +892,7 @@ class StatusReportController extends Controller
                                                left join service_engineer on service_engineer.id = visitplan_engineer.engineer_id
 
                                         where service_spares_register.complaint_register_id = complaint_register.id
+                                        and service_spares_register.deleted_at is null
                                         and coalesce(service_spares_register.advance_amt,0) + coalesce(service_spares_register.payment_received,0) > 0 
                                         $date 
                                         group by complaint_register.complaint_date,
@@ -921,6 +940,7 @@ class StatusReportController extends Controller
                                         and visit_plan.id = visitplan_engineer.visitplan_id
                                         and service_engineer.id = visit_expenses.engineer_id
                                         and service_spares_register.complaint_register_id = complaint_register.id
+                                        and service_spares_register.deleted_at is null
                                         and visit_plan.status=1
                                         and visit_plan.deleted_at is null
                                         $date
@@ -994,6 +1014,7 @@ class StatusReportController extends Controller
                                                             left join visitplan_summary on visitplan_summary.visitplan_id = visit_plan.id
 
                                                         where complaint_register.id = service_spares_register.complaint_register_id
+                                                        and service_spares_register.deleted_at is null
                                                         and complaint_register.complaint_type = 0 ".$date ."
                                                         and scope_of_work like  '%$ordervalue%' 
                                                         group by complaint_register.seqno,
@@ -1060,6 +1081,7 @@ class StatusReportController extends Controller
                                     and visit_plan.id = visitplan_engineer.visitplan_id
                                     and service_engineer.id = visit_expenses.engineer_id
                                     and service_spares_register.complaint_register_id = complaint_register.id
+                                    and service_spares_register.deleted_at is null
                                     and visit_plan.status=1
                                     and visit_plan.deleted_at is null
                                     and service_engineer.name like '$engineername'
