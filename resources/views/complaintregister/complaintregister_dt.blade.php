@@ -328,7 +328,7 @@
                                                                             <label for="department" class="control-label col-sm-5">Department</label>
                                                                             <div class="col-sm-7">
                                                                                 <div class="fg-line">
-                                                                                    <select class="selectpicker form-control input-sm" placeholder="Department" name="department" id="department">    
+                                                                                    <select class="selectpicker form-control input-sm" placeholder="Department" multiple name="department" id="department">    
                                                                                         <option value=""></option>
                                                                                         <option value="VCB">VCB</option>
                                                                                         <option value="CT/PT/Spout">CT/PT/Spout</option>

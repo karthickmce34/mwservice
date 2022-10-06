@@ -950,6 +950,7 @@
                                                 <div class="col-sm-8">
                                                     <div class="fg-line">
                                                         <input class="form-control input-sm" placeholder="Panel Description" name="panel_descrption" required type="text" id="panel_descrption" autocomplete="off">                                        
+                                                        <input class="form-control input-sm" placeholder="invoiceno" name="invoiceno"  type="hidden" id="invoiceno" autocomplete="off">                                        
                                                     </div>
                                                 </div>
                                             </div>
@@ -2747,6 +2748,7 @@
                                             var name = $(this).data("prdname");
                                             $("#panel_descrption").val(name);
                                             $("#date_supply").val(dateinv);
+                                            $("#invoiceno").val(docno);
                                             $("#modalselect5").find("#blankSales").modal('hide');
                                         });
                                     }

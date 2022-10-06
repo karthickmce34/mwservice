@@ -415,6 +415,12 @@
                                                                 <div class="col-sm-6 f-14"><?=nl2br($record->compreg->fault_current)?></div>
                                                             </div>
                                                             @endif
+                                                            @if($record->department != "")
+                                                            <div class="row" style="    padding: 8px 0 8px 0px;">       
+                                                                <div class="col-sm-6 f-12"><i class="zmdi "></i><b>Department</b></div>
+                                                                <div class="col-sm-6 f-14"><?=nl2br($record->department)?></div>
+                                                            </div>
+                                                            @endif
                                                             @if($record->compreg->vcb_interlock != "")
                                                             <div class="row" style="   padding: 8px 0 8px 0px;">       
                                                                 <div class="col-sm-6 f-12"><i class="zmdi "></i><b>VCB Interlock Condition</b></div>

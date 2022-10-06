@@ -465,6 +465,8 @@
                         });
                         var scope_of_work = $("#modal3").find("#scope_of_work").val();
                         var probefailue = $("#modal3").find("#failure_cause").val();
+                        
+                        var department = $("#modal3").find("#department").val();
 
                         var form_data = $("#modal3").find('form').serializeArray();
 
@@ -495,7 +497,8 @@
                                         "&id="+id+
                                         "&chkval="+chkval+
                                         "&scopeofwork="+scope_of_work+
-                                        "&failure_cause="+probefailue;
+                                        "&failure_cause="+probefailue+
+                                        "&department="+department;
 
                             var controller = 'complaintregister/';
                         //console.log(scope_of_work);

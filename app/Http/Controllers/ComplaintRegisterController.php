@@ -317,6 +317,8 @@ class ComplaintRegisterController extends Controller {
        
         //for($)
              
+        //print_r($inputs);die;
+        
         $modelData = $model->find($inputs['id']);
         $modelData->complaint_status = $inputs['comp_status'];
         $modelData->remark = $inputs['remark'];
@@ -370,6 +372,7 @@ class ComplaintRegisterController extends Controller {
                 $regData['scope_of_work'] = $inputs['scope_of_work'];
                 $regData['scope_of_work_o'] = $inputs['scopeofwork'];
                 $regData['failure_cause'] = $inputs['failure_cause'];
+                $regData['department'] = $inputs['department'];
                 $regData['status'] = 1;
                 $stored = $modelRegister->addRecord($regData);
 
@@ -498,6 +501,7 @@ class ComplaintRegisterController extends Controller {
         $record->delete();
         return redirect()->route($this->baseName . '.show', $docid);
     }
+    
     public function imageUploadFile($docid, $fileObj, $basePath, $baseURL) {
         $response = array();
         $response['uploaded'] = false;
