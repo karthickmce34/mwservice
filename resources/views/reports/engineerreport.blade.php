@@ -20,7 +20,7 @@
 @stop
 @section('content')
     @parent
-    <div class="card" style="height:600px;">
+    <div class="card" style="height:900px;">
         <div class="card-header card-padding text-center">
             <h3>Engineer Report</h3>
         </div>

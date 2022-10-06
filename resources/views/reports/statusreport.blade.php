@@ -44,7 +44,7 @@
     <div class="card">
         <div class="card col-sm-12 text-center f-18">Total Pending : <b>{{$pendingorder}}</b></div>
         <div class="card col-sm-6">
-            <h5>Process Pending <span class="f-16 zmdi zmdi-widgets pull-right"></span></h5>
+            <h5>Process Pending <span class="pr_total pull-right f-16">Total  : {{$processpencnt}}</span></h5>
             
             <div id="chart1">
                 
@@ -54,7 +54,7 @@
             </div>
         </div>
         <div class="card col-sm-6">
-            <h5>Job Pending <span class="f-16 zmdi zmdi-widgets pull-right"></span></h5>
+            <h5>Job Pending <span class="jb_total pull-right f-16">Total  : {{$jobpencnt}}</span></h5>
             <div id="chart2">
                 
             </div>

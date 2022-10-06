@@ -318,6 +318,8 @@ class StatusReportController extends Controller
         
        $jobdata=array();
        $processdata = array();
+       $processpencnt =0;
+       $jobpencnt =0;
        $jobprocessdata = array();
        $scopedata = array();
        $jobwarrentydata2 = array();
@@ -328,11 +330,13 @@ class StatusReportController extends Controller
        foreach($process_status as $process)
        {
            $processdata[]=array($process->orderstatus ,$process->cnt);
+           $processpencnt = $processpencnt + $process->cnt;
            //$processdata['processcnt'][] = $process->cnt;
        }
        foreach($job_pending as $job)
        {
            $jobdata[]=array($job->orderstatus ,$job->cnt);
+           $jobpencnt = $jobpencnt + $job->cnt;
            //$processdata['processcnt'][] = $process->cnt;
        }
        $job_curcnt = 0;
@@ -438,6 +442,8 @@ class StatusReportController extends Controller
         $data['overall_expenses']=$overall_expensedata;
         $data['current_expenses']=$current_expensedata;
         $data['previous_expenses']=$previous_expensedata;
+        $data['processpencnt']=$processpencnt;
+        $data['jobpencnt']=$jobpencnt;
         
         $data['job_precnt']=$job_precnt;
         $data['job_curcnt']=$job_curcnt;
@@ -466,6 +472,11 @@ class StatusReportController extends Controller
     
     public function statusdata()
     {
+        $previousmonthstart= date("Y-m-d", strtotime("first day of previous month"));
+        $previousmonthend =  date("Y-m-d", strtotime("last day of previous month"));
+        $currentmonthstart = date('Y-m-01');
+        $currentmonthend = date('Y-m-t');
+        
         $inputs = request()->all();
         $ordertype = $inputs['ordertype'];
         $orderstatus = $inputs['orderstatus'];
@@ -648,6 +659,11 @@ class StatusReportController extends Controller
     
     public function statusdetails()
     {
+        $previousmonthstart= date("Y-m-d", strtotime("first day of previous month"));
+        $previousmonthend =  date("Y-m-d", strtotime("last day of previous month"));
+        $currentmonthstart = date('Y-m-01');
+        $currentmonthend = date('Y-m-t');
+        
         $inputs = request()->all();
         
         $ordervalue = StatusReportController::$ORDER_TYPE_VALUES[$inputs['orderstatus']];
@@ -678,6 +694,11 @@ class StatusReportController extends Controller
     
     public function jb_compltedreport()
     {
+        $previousmonthstart= date("Y-m-d", strtotime("first day of previous month"));
+        $previousmonthend =  date("Y-m-d", strtotime("last day of previous month"));
+        $currentmonthstart = date('Y-m-01');
+        $currentmonthend = date('Y-m-t');
+        
         $inputs = request()->all();
         
         $ordervalue = $inputs['orderstatus'];
@@ -736,6 +757,11 @@ class StatusReportController extends Controller
     
     public function ex_compltedreport()
     {
+        $previousmonthstart= date("Y-m-d", strtotime("first day of previous month"));
+        $previousmonthend =  date("Y-m-d", strtotime("last day of previous month"));
+        $currentmonthstart = date('Y-m-01');
+        $currentmonthend = date('Y-m-t');
+        
         $inputs = request()->all();
         
         $ordervalue = $inputs['orderstatus'];
@@ -807,7 +833,10 @@ class StatusReportController extends Controller
         $ordervalue = $inputs['orderstatus'];
         $type = $inputs['type'];
         
-        
+        $previousmonthstart= date("Y-m-d", strtotime("first day of previous month"));
+        $previousmonthend =  date("Y-m-d", strtotime("last day of previous month"));
+        $currentmonthstart = date('Y-m-01');
+        $currentmonthend = date('Y-m-t');
         
         
         
@@ -927,7 +956,10 @@ class StatusReportController extends Controller
         $ordervalue = $inputs['orderstatus'];
         $type = $inputs['type'];
         
-        
+        $previousmonthstart= date("Y-m-d", strtotime("first day of previous month"));
+        $previousmonthend =  date("Y-m-d", strtotime("last day of previous month"));
+        $currentmonthstart = date('Y-m-01');
+        $currentmonthend = date('Y-m-t');
         
         
         
@@ -983,6 +1015,11 @@ class StatusReportController extends Controller
     
     public function engineer_exp_report()
     {
+        $previousmonthstart= date("Y-m-d", strtotime("first day of previous month"));
+        $previousmonthend =  date("Y-m-d", strtotime("last day of previous month"));
+        $currentmonthstart = date('Y-m-01');
+        $currentmonthend = date('Y-m-t');
+        
         $inputs = request()->all();
         
         $engineername = $inputs['engineername'];
