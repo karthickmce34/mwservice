@@ -117,7 +117,7 @@ class OperationReportController extends Controller
                                                 order by complaint_register.complaint_date
                                                 ");
         
-        $pending_warrenty_cnt = DB::select("SELECT count(complaint_register.seqno) as pendingjobs,
+        $pending_warrenty_cnt = DB::select("SELECT count(complaint_register.seqno) as pendingjobs,complaint_register.warrenty as wrnty,
                                         case when complaint_register.warrenty = 0 then 'Within Warrenty' else 'Out Of Warrenty' end as warrenty
                                             FROM complaint_register,
                                                 service_spares_register,visit_plan,visitplan_engineer,service_engineer
@@ -135,7 +135,7 @@ class OperationReportController extends Controller
                                             and service_spares_register.scope_of_work  like '%Fault Rectification%'
                                             group by complaint_register.warrenty");
         
-        $jobcomp_warrenty_cnt = DB::select("select count(service_spares_register.id) as engjobcnt,
+        $jobcomp_warrenty_cnt = DB::select("select count(service_spares_register.id) as engjobcnt,complaint_register.warrenty as wrnty,
                                         case when complaint_register.warrenty = 0 then 'Within Warrenty' else 'Out Of Warrenty' end as warrenty
                                             
                                                 from visitplan_summary,service_engineer,service_spares_register,visit_plan,visitplan_engineer,complaint_register
@@ -204,4 +204,6 @@ class OperationReportController extends Controller
         
         return response()->json($this->data);
     }
+    
+    
 }

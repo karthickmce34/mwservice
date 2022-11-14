@@ -308,15 +308,17 @@
                      $(".crd-pendjob_wrnty").find("div").remove();
                     for(var t=0;t<penwrtylen;t++)
                     {
-                       var pendwrty= "<div class='col-sm-4'><div class='card '><div class='card-body card-padding bgm-pink c-white'><h4 class='c-white text-center'><b>"+data.pending_warrenty_cnt[t].warrenty+" :</b> <span class='wty_pendjob'>"+data.pending_warrenty_cnt[t].pendingjobs+"</span></h4></div></div></div>";
+                       var pendwrty= "<div class='col-sm-6'><div class='card pendwrntydata' data-warrenty='"+data.pending_warrenty_cnt[t].wrnty+"'><div class='card-body card-padding bgm-pink c-white'><h4 class='c-white text-center'><b>"+data.pending_warrenty_cnt[t].warrenty+" :</b> <span class='wty_pendjob'>"+data.pending_warrenty_cnt[t].pendingjobs+"</span></h4></div></div></div>";
                        $(".crd-pendjob_wrnty").append(pendwrty);
                     }
+                    
+                    
                     
                     var cmpwrtylen = data.jobcomp_warrenty_cnt.length;
                      $(".crd-compjob_wrnty").find("div").remove();
                     for(var s=0;s<cmpwrtylen;s++)
                     {
-                       var cmpwrty= "<div class='col-sm-4'><div class='card '><div class='card-body card-padding bgm-green c-white'><h4 class='c-white text-center'><b>"+data.jobcomp_warrenty_cnt[s].warrenty+" :</b> <span class='wty_cmpjob'>"+data.jobcomp_warrenty_cnt[s].engjobcnt+"</span></h4></div></div></div>";
+                       var cmpwrty= "<div class='col-sm-6'><div class='card compwrntydata' data-warrenty='"+data.jobcomp_warrenty_cnt[s].wrnty+"'><div class='card-body card-padding bgm-green c-white'><h4 class='c-white text-center'><b>"+data.jobcomp_warrenty_cnt[s].warrenty+" :</b> <span class='wty_cmpjob'>"+data.jobcomp_warrenty_cnt[s].engjobcnt+"</span></h4></div></div></div>";
                        $(".crd-compjob_wrnty").append(cmpwrty);
                     }
                         
