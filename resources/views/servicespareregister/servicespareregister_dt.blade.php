@@ -6,7 +6,7 @@
                                             &nbsp;<!--em class="m-r-25 m-l-25">TYPE : {{$record->COMPLAINT_TYPE_VALUES[$record->complaint_type]}}</em-->
                                             &nbsp;<em class="m-l-25 m-r-25">MODE : {{$record->COMPLAINT_MODE_VALUES[$record->compreg->mode_of_complaint]}}</em>
                                             &nbsp;<em class="m-l-25">Registered Date : <?= date('d-m-Y', strtotime($record->compreg->complaint_date)) ?></em>
-                                            &nbsp;<em class="m-l-25">Status : @if($record->order_status == 0) Enquiry Received @else @if($record->order_status == 1) Offer Sent @else @if($record->order_status == 2) PO Received  @else @if($record->order_status == 3) PI Sent @else @if($record->order_status == 4) Advance Received @else @if($record->order_status == 5) Payment Received @else @if($record->order_status == 6) DI Sent @else @if($record->order_status == 7) Partially Dispatched @else @if($record->order_status == 8) @if($record->complaint_type == 0) Visit Completed @else Dispatched @endif @else @if($record->order_status == 10) Deputed @else @if($record->order_status == 11) Job completed @else @if($record->order_status == 12) Visit Rescheduled @else Cancelled @endif @endif @endif @endif @endif @endif @endif @endif @endif @endif @endif @endif</em>
+                                            &nbsp;<em class="m-l-25">Status : @if($record->order_status == 0) Enquiry Received @else @if($record->order_status == 1) Offer Sent @else @if($record->order_status == 2) PO Received  @else @if($record->order_status == 3) PI Sent @else @if($record->order_status == 4) Advance Received @else @if($record->order_status == 5) Payment Received @else @if($record->order_status == 6) DI Sent @else @if($record->order_status == 7) Partially Dispatched @else @if($record->order_status == 8) @if($record->complaint_type == 0) Visit Completed @else Dispatched @endif @else @if($record->order_status == 10) Deputed @else @if($record->order_status == 11) Job completed @else @if($record->order_status == 12) Visit Rescheduled @else @if($record->order_status == 13) Material To Be Send @else Cancelled @endif @endif @endif @endif @endif @endif @endif @endif @endif @endif @endif @endif @endif</em>
                                         </div>
                                         <div class="text-center">
                                         </div> 
@@ -215,7 +215,7 @@
 
                                             </div>
                                             @endif
-                                            @if($record->order_status > 4 && $record->order_status != 9)
+                                            @if($record->order_status > 4 && $record->order_status != 9 && $record->order_status != 11)
                                                  @if($record->site_depute == 0)
                                                     <button type="button" data-id="{{$record->id}}" data-compid="{{$record->compreg->id}}"  data-mode="{{$record->compreg->mode_of_complaint}}"  class="btn btn-primary bgm-lightblue waves-effect depute pull-right" title="Site Deputation"><i class="zmdi zmdi-account"> </i></button>                                    
                                                  @endif
@@ -223,6 +223,22 @@
                                             @if($record->order_status == 8)
                                                 <button type="button" data-id="{{$record->id}}" data-compid="{{$record->compreg->id}}"  data-mode="{{$record->compreg->mode_of_complaint}}"  class="btn btn-primary bgm-lightblue waves-effect depute pull-right" title="Site Deputation"><i class="zmdi zmdi-account"> </i></button>                                    
                                                 <button type="button" data-id="{{$record->id}}"  class="btn btn-primary bgm-cyan waves-effect orderstatus">Job Completed</button>                                    
+                                            @endif
+                                            @if($record->order_status == 13)
+                                                <div class="dropdown pull-right">
+                                                <button type="button" data-id="{{$record->id}}"  class="btn btn-primary bgm-cyan waves-effect orderstatus pull-right">S</button>                                    
+                                                    <a href="#" class="dropdown-toggle btn bgm-orange waves-effect" data-toggle="dropdown" aria-expanded="false" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Print"><i class="zmdi zmdi-print"> </i></a>
+                                                    
+                                                    <ul class="dropdown-menu dm-icon bgm-blue" role="menu">
+                                                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#" data-id="{{$record->id}}" data-compid="{{$record->compreg->id}}"  data-mode="{{$record->compreg->mode_of_complaint}}" data-offer="{{$record->final_offer_id}}" class="offeremail "><i class="zmdi zmdi-email"> </i> Offer </a></li>
+                                                        <li class="divider"></li>
+                                                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#" data-id="{{$record->id}}" data-compid="{{$record->compreg->id}}"  data-mode="{{$record->compreg->mode_of_complaint}}" class="invperformaemail "><i class="zmdi zmdi-email"> </i> Performa Invoice</a></li>
+                                                        <li class="divider"></li>
+                                                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#" data-id="{{$record->id}}" data-compid="{{$record->compreg->id}}"  data-mode="{{$record->compreg->mode_of_complaint}}" class="dcprint"><i class="zmdi zmdi-print"> </i> DC    </a></li>
+                                                    </ul>
+                                                    
+                                                </div>
+                                                
                                             @endif
                                         @endif
                                     </div>
@@ -415,10 +431,11 @@
                                                                 <div class="col-sm-6 f-14"><?=nl2br($record->compreg->fault_current)?></div>
                                                             </div>
                                                             @endif
-                                                            @if($record->department != "")
+                                                            @if($record->department != "" || $record->department != null || $record->department != "null")
                                                             <div class="row" style="    padding: 8px 0 8px 0px;">       
                                                                 <div class="col-sm-6 f-12"><i class="zmdi "></i><b>Department</b></div>
-                                                                <div class="col-sm-6 f-14"><?=nl2br($record->department)?></div>
+                                                                @php $department = json_decode($record->department); @endphp
+                                                                <div class="col-sm-6 f-14"><?=nl2br($department)?></div>
                                                             </div>
                                                             @endif
                                                             @if($record->compreg->vcb_interlock != "")
@@ -482,10 +499,12 @@
                                                                 <div class="col-sm-4 f-12"><i class="zmdi "></i><b>Warranty</b></div>
                                                                 <div class="col-sm-8 f-14"><?php if($record->compreg->warrenty == 0){echo'With Warranty';}else{echo' Without Warranty';} ?></div>
                                                             </div>
+                                                            @if($record->order_status == 9)
                                                             <div class="row" style="    padding: 8px 0 8px 0px;">       
                                                                 <div class="col-sm-4 f-12"><i class="zmdi "></i><b>Cancel Remarks</b></div>
                                                                 <div class="col-sm-8 f-14">{!! nl2br(e($record->cancel_remark)) !!}</div>
                                                             </div>
+                                                            @endif
                                                         </div>
 
 
@@ -682,6 +701,29 @@
                                                                         <div class="form-row">
                                                                             <div class="col-sm-12">
                                                                                 <button type="button" data-id="{{$record->id}}" data-orderstatus="11" class="btn btn-primary bgm-cyan waves-effect upstatus">Job Completed</button>                                    
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                @endif
+                                                                @if($record->order_status == 13) 
+                                                                    <div class="form-group">
+                                                                        <input type="hidden" name="_token" id="_token" value="{{csrf_token()}}"/>
+                                                                        <div class="form-row">
+
+                                                                            <div class="col-sm-offset-4 col-sm-6 ordercalender">
+                                                                                <div class="form-group">
+                                                                                    <span class="control-label"><i class="zmdi zmdi-calender"></i></span>
+                                                                                    <div class="fg-line">
+                                                                                        <?php $retdate = date('Y-m-d');  ?>
+                                                                                        <input type='text' class="form-control datepicker" name="completed_date" value="{{$retdate}}">
+
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div> 
+                                                                        <div class="form-row">
+                                                                            <div class="col-sm-12">
+                                                                                <button type="button" data-id="{{$record->id}}" data-orderstatus="11" class="btn btn-primary bgm-cyan waves-effect upstatus">Material Sent</button>                                    
                                                                             </div>
                                                                         </div>
                                                                     </div>

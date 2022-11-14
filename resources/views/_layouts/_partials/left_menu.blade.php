@@ -68,6 +68,9 @@
                     <li >
                         <a class="@yield('page_engineerreport_li_cls')" href="{{ route('engineerreport.index') }}"><i class="zmdi zmdi-assignment-o"></i>&nbsp;&nbsp; Engineer Report </a>
                     </li>
+                    <li >
+                        <a class="@yield('page_operationreport_li_cls')" href="{{ route('operationreport.index') }}"><i class="zmdi zmdi-assignment-o"></i>&nbsp;&nbsp; Operation Report </a>
+                    </li>
                 </ul>
             </li>
             @else 

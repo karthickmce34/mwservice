@@ -59,7 +59,7 @@
                                                     
                                             @else
                                                 @if(isset($record->order_status))
-                                                    @if($record->order_status != 8 && $record->order_status != 9)
+                                                    @if($record->order_status != 8 && $record->order_status != 9 && $record->order_status != 11)
                                                         <a href="{{url($basePath)}}/{{$record->id}}/edit" target="_self" class="bgm-orange"><i class="zmdi zmdi-edit"></i></a>
                                                     @endif
                                                 @else

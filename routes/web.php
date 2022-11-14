@@ -105,6 +105,7 @@ Route::post('servicespareregister/offeradd', 'ServiceSpareRegisterController@off
 Route::post('servicespareregister/updatedefault', 'ServiceSpareRegisterController@postUpdatedefault');
 Route::post('servicespareregister/updateterms', 'ServiceSpareRegisterController@postUpdateterms');
 Route::post('servicespareregister/updateexpense', 'ServiceSpareRegisterController@postUpdateexpense');
+Route::post('servicespareregister/dcprint', 'ServiceSpareRegisterController@postDcPrint');
 
 
 Route::resource('visitplan', 'VisitplanController');
@@ -157,6 +158,7 @@ Route::post('statusreport/ex_compltedreport', 'StatusReportController@ex_complte
 Route::post('statusreport/received_exp_report', 'StatusReportController@received_exp_report');
 Route::post('statusreport/scopeofwork_report', 'StatusReportController@scopeofwork_report');
 Route::post('statusreport/engineer_exp_report', 'StatusReportController@engineer_exp_report');
+Route::post('statusreport/amcstatusdetails', 'StatusReportController@amcstatusdetails');
 
 
 Route::resource('ticket', 'TicketController');
@@ -171,3 +173,7 @@ Route::post('project/insertsummary', 'ProjectController@postInsertsummary');
 Route::resource('engineerreport', 'EngineerReportController');
 Route::post('engineerreport/engineerdata', 'EngineerReportController@engineerdata');
 Route::post('engineerreport/sowdata', 'EngineerReportController@sowdata');
+
+Route::resource('operationreport', 'OperationReportController');
+Route::post('operationreport/operationdata', 'OperationReportController@operationdata');
+

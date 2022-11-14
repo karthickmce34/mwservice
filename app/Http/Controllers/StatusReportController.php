@@ -52,7 +52,8 @@ class StatusReportController extends Controller
 
                                     where complaint_register.id = service_spares_register.complaint_register_id
                                     and service_spares_register.deleted_at is null
-                                    and complaint_register.complaint_type = 0)A
+                                    and complaint_register.complaint_type = 0
+                                    and service_spares_register.scope_of_work not like '%AMC%')A
                                     where A.orderstatus != 'No Data'
                                     group by A.orderstatus");
         
@@ -75,7 +76,8 @@ class StatusReportController extends Controller
 
                                     where complaint_register.id = service_spares_register.complaint_register_id
                                     and service_spares_register.deleted_at is null
-                                    and complaint_register.complaint_type = 0)A
+                                    and complaint_register.complaint_type = 0
+                                    and service_spares_register.scope_of_work not like '%AMC%')A
                                     where A.orderstatus != 'No Data'");
         
         $job_pending = DB::select("select count(A.orderstatus) as cnt,A.orderstatus from
@@ -91,9 +93,76 @@ class StatusReportController extends Controller
 
                                     where complaint_register.id = service_spares_register.complaint_register_id
                                     and service_spares_register.deleted_at is null
-                                    and complaint_register.complaint_type = 0)A
+                                    and complaint_register.complaint_type = 0
+                                    and service_spares_register.scope_of_work not like '%AMC%')A
                                     where A.orderstatus != 'No Data'
                                     group by A.orderstatus");
+        /*** AMC Related Query****/
+        
+        $amc_process_status = DB::select("select count(A.orderstatus) as cnt,A.orderstatus from
+                                            (select 
+                                                CASE
+                                                when service_spares_register.order_status = 0 then 'Enquiry Received'
+                                                when service_spares_register.order_status = 1 then 'OfferSent'
+                                                when service_spares_register.order_status = 2 then 'Po Received'
+                                                when service_spares_register.order_status = 3 then 'PI Sent'
+                                                when service_spares_register.order_status = 4 then 'Advance Received'
+                                                when service_spares_register.order_status = 5 then 'Payment Received' else 'No Data' end as orderstatus
+                                                
+
+                                    from 
+                                        complaint_register,
+                                        service_spares_register
+
+                                    where complaint_register.id = service_spares_register.complaint_register_id
+                                    and service_spares_register.deleted_at is null
+                                    and complaint_register.complaint_type = 0
+                                    and service_spares_register.scope_of_work  like '%AMC%')A
+                                    where A.orderstatus != 'No Data'
+                                    group by A.orderstatus");
+        
+        $amc_total_pending = DB::select("select count(A.orderstatus) as totalstatus from
+                                            (select 
+                                                CASE
+                                                when service_spares_register.order_status = 0 then 'Enquiry Received'
+                                                when service_spares_register.order_status = 1 then 'OfferSent'
+                                                when service_spares_register.order_status = 2 then 'Po Received'
+                                                when service_spares_register.order_status = 3 then 'PI Sent'
+                                                when service_spares_register.order_status = 4 then 'Advance Received'
+                                                when service_spares_register.order_status = 5 then 'Payment Received' 
+                                                when service_spares_register.order_status = 8 then 'Visit Completed'
+                                                when service_spares_register.order_status = 10 then 'Deputed' 
+                                         	when service_spares_register.order_status = 12 then 'Visit Resscheduled' else 'No Data' end as orderstatus
+                                                
+                                    from 
+                                        complaint_register,
+                                        service_spares_register
+
+                                    where complaint_register.id = service_spares_register.complaint_register_id
+                                    and service_spares_register.deleted_at is null
+                                    and complaint_register.complaint_type = 0
+                                    and service_spares_register.scope_of_work  like '%AMC%')A
+                                    where A.orderstatus != 'No Data'");
+        
+        $amc_job_pending = DB::select("select count(A.orderstatus) as cnt,A.orderstatus from
+                                    (select 
+                                                CASE
+                                                when service_spares_register.order_status = 8 then 'Visit Completed'
+                                                when service_spares_register.order_status = 10 then 'Deputed' 
+                                         		when service_spares_register.order_status = 12 then 'Visit Resscheduled' else 'No Data' end as orderstatus
+                                                
+                                    from 
+                                        complaint_register,
+                                        service_spares_register
+
+                                    where complaint_register.id = service_spares_register.complaint_register_id
+                                    and service_spares_register.deleted_at is null
+                                    and complaint_register.complaint_type = 0
+                                    and service_spares_register.scope_of_work like '%AMC%')A
+                                    where A.orderstatus != 'No Data'
+                                    group by A.orderstatus");
+        
+        /** AMC QUery**/
         
         $job_process_status = DB::select("select count(A.pendingorderstatus) as cnt,A.pendingorderstatus from
                                             (select 
@@ -329,8 +398,12 @@ class StatusReportController extends Controller
         
        $jobdata=array();
        $processdata = array();
+       $amcjobdata=array();
+       $amcprocessdata = array();
        $processpencnt =0;
        $jobpencnt =0;
+       $amcprocesspencnt =0;
+       $amcjobpencnt =0;
        $jobprocessdata = array();
        $scopedata = array();
        $jobwarrentydata2 = array();
@@ -348,6 +421,18 @@ class StatusReportController extends Controller
        {
            $jobdata[]=array($job->orderstatus ,$job->cnt);
            $jobpencnt = $jobpencnt + $job->cnt;
+           //$processdata['processcnt'][] = $process->cnt;
+       }
+       foreach($amc_process_status as $amcprocess)
+       {
+           $amcprocessdata[]=array($amcprocess->orderstatus ,$amcprocess->cnt);
+           $amcprocesspencnt = $amcprocesspencnt + $amcprocess->cnt;
+           //$processdata['processcnt'][] = $process->cnt;
+       }
+       foreach($amc_job_pending as $amcjob)
+       {
+           $amcjobdata[]=array($amcjob->orderstatus ,$amcjob->cnt);
+           $amcjobpencnt = $amcjobpencnt + $amcjob->cnt;
            //$processdata['processcnt'][] = $process->cnt;
        }
        $job_curcnt = 0;
@@ -446,8 +531,10 @@ class StatusReportController extends Controller
        
         //print_r($scopedata);die;
         $data['process_status']=$processdata;
+        $data['amcprocess_status']=$amcprocessdata;
         $data['pendingorder'] = $total_pending[0]->totalstatus;
         $data['job_status']=$jobdata;
+        $data['amcjob_status']=$amcjobdata;
         $data['jobprocess_status']=$jobprocessdata;
         $data['previousjobprocess_status']=$previousjobprocessdata;
         $data['overall_expenses']=$overall_expensedata;
@@ -455,6 +542,8 @@ class StatusReportController extends Controller
         $data['previous_expenses']=$previous_expensedata;
         $data['processpencnt']=$processpencnt;
         $data['jobpencnt']=$jobpencnt;
+        $data['amcprocesspencnt']=$amcprocesspencnt;
+        $data['amcjobpencnt']=$amcjobpencnt;
         
         $data['job_precnt']=$job_precnt;
         $data['job_curcnt']=$job_curcnt;
@@ -700,6 +789,44 @@ class StatusReportController extends Controller
                                     where complaint_register.id = service_spares_register.complaint_register_id
                                     and service_spares_register.deleted_at is null
                                     and complaint_register.complaint_type = 0
+                                    and service_spares_register.scope_of_work not like '%AMC%'
+                                    and service_spares_register.order_status = $ordervalue order by complaint_register.seqno");
+        $this->data['status']=1;
+        $this->data['servicedata']=$servicedata;
+       // print_r($inputs);die;
+        //$this->data['servicedata']=$servicedata;
+        return response()->json($this->data);
+    }
+    
+    public function amcstatusdetails()
+    {
+        $previousmonthstart= date("Y-m-d", strtotime("first day of previous month"));
+        $previousmonthend =  date("Y-m-d", strtotime("last day of previous month"));
+        $currentmonthstart = date('Y-m-01');
+        $currentmonthend = date('Y-m-t');
+        
+        $inputs = request()->all();
+        
+        $ordervalue = StatusReportController::$ORDER_TYPE_VALUES[$inputs['orderstatus']];
+        
+        $servicedata = DB::select("select distinct complaint_register.seqno,complaint_register.customer_name,
+                                    complaint_register.complaint_date,
+                                    complaint_register.mobileno,
+                                    case when complaint_register.salesorder_no is null then '' else complaint_register.salesorder_no end as salesorder_no,complaint_register.warrenty,
+                                    replace(service_spares_register.scope_of_work,'\"','') as scope_of_work
+                                    from 
+                                        complaint_register,
+                                        service_spares_register
+                                        left join visit_plan on visit_plan.servicespare_id = service_spares_register.id and visit_plan.deleted_at is null
+                                        left join visitplan_engineer on  visit_plan.id = visitplan_engineer.visitplan_id and visitplan_engineer.deleted_at is null
+                                        left join service_engineer on service_engineer.id = visitplan_engineer.engineer_id
+                                        left join service_agent on service_agent.id = visit_plan.agent_id
+                                        left join visitplan_summary on visitplan_summary.visitplan_id = visit_plan.id
+
+                                    where complaint_register.id = service_spares_register.complaint_register_id
+                                    and service_spares_register.deleted_at is null
+                                    and complaint_register.complaint_type = 0
+                                    and service_spares_register.scope_of_work like '%AMC%'
                                     and service_spares_register.order_status = $ordervalue order by complaint_register.seqno");
         $this->data['status']=1;
         $this->data['servicedata']=$servicedata;

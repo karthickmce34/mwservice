@@ -317,14 +317,14 @@ class ComplaintRegisterController extends Controller {
        
         //for($)
              
-        //print_r($inputs);die;
+        $depart = str_replace(']','',str_replace('[','',json_encode($inputs['department'])));
         
         $modelData = $model->find($inputs['id']);
         $modelData->complaint_status = $inputs['comp_status'];
         $modelData->remark = $inputs['remark'];
         
-        
         $compstatus = '';
+        
         if ($inputs['comp_status'] == 1)
         {
             $compstatus=0;
@@ -349,7 +349,8 @@ class ComplaintRegisterController extends Controller {
             $this->data['message'] = "Not Success";
             return response()->json($this->data);
         } else {
-            if ($inputs['comp_status'] == 0) {
+            if ($inputs['comp_status'] == 0) 
+            {
                 $this->data['status'] = 1;
                 $modelData->document_status = 2;
                 $modelData->save();
@@ -359,136 +360,176 @@ class ComplaintRegisterController extends Controller {
                 $apirequest = new SmsHelper();
                 //$smspush = $apirequest->smsToCustomer($mobile, $smsmessage);
                 return response()->json($this->data);
-            } else {
-                $modelRegister = new $this->modelRegName();
-
-                $inputs['scope_of_work'] = json_encode($inputs['chkval']);//json_encode($request->input('scope_of_work'));//implode(',', (array) $request->input('scope_of_work'));
-                $cnt = count($inputs['product']);
+            } 
+            else 
+            {
                 
-                $regData = array();
-                $regData['complaint_register_id'] = $modelData->id;
-                $regData['complaint_type'] = $compstatus;
-                $regData['created_by_id'] = session()->get('user_id');
-                $regData['scope_of_work'] = $inputs['scope_of_work'];
-                $regData['scope_of_work_o'] = $inputs['scopeofwork'];
-                $regData['failure_cause'] = $inputs['failure_cause'];
-                $regData['department'] = $inputs['department'];
-                $regData['status'] = 1;
-                $stored = $modelRegister->addRecord($regData);
+                if ($inputs['comp_status'] == 1 || $inputs['comp_status'] == 4) 
+                {
+                    $modelRegister = new $this->modelRegName();
 
-                if ($stored && is_array($stored)) {
-                    $this->data['status'] = 0;
-                    $this->data['message'] = "Not Success";
-                    return response()->json($this->data);
-                } else {
-                    $SegmentModel = new $this->modelSegment();
-                    $segmentData = $SegmentModel->where('segment_id',$compstatus)->first();
-                    
-                    $offer['service_spares_register_id']=$modelRegister->id;
-                    $offer['offer_date']=date('Y-m-d');
-                    $offer['revision_no']='R0';
-                    $offer['offervalidity']=0;
-                    $offer['freight']=0;
-                    $offer['deliveryperiod']=0;
-                    $offer['paymentterms']=0;
-                    $offer['dayscredit']=0;
-                    $offer['terms']=$inputs['terms'];
-                    $offer['created_by_id'] = session()->get('user_id');
-                    $offer['status'] = 1;
-                    $offerModel = new $this->modelOfferdetails();
-                    $storedoffer = $offerModel->addRecord($offer);
-                    
-                    if ($storedoffer && is_array($storedoffer)) 
-                    {
+                    $inputs['scope_of_work'] = json_encode($inputs['chkval']);//json_encode($request->input('scope_of_work'));//implode(',', (array) $request->input('scope_of_work'));
+                    $cnt = count($inputs['product']);
+
+                    $regData = array();
+                    $regData['complaint_register_id'] = $modelData->id;
+                    $regData['complaint_type'] = $compstatus;
+                    $regData['created_by_id'] = session()->get('user_id');
+                    $regData['scope_of_work'] = $inputs['scope_of_work'];
+                    $regData['scope_of_work_o'] = $inputs['scopeofwork'];
+                    $regData['failure_cause'] = $inputs['failure_cause'];
+                    $regData['department'] = $depart;
+                    $regData['status'] = 1;
+                    $stored = $modelRegister->addRecord($regData);
+
+                    if ($stored && is_array($stored)) {
                         $this->data['status'] = 0;
-                        $this->data['message'] = "Not Successfully added";
+                        $this->data['message'] = "Not Success";
                         return response()->json($this->data);
-                    } 
-                    else
-                    {
-                        $modelRegister->final_offer_id =  $offerModel->id;
-                        $modelRegister->save();
-                        
-                        if($cnt > 0)
-                        {
-                            $totalamt = 0;
-                            for($i=1;$i<=$cnt;$i++)
-                            {
-                                if($inputs['product_id'][$i] = "" && $inputs['product'][$i] = "" && $inputs['qty'][$i] == "")
-                                {
+                    } else {
+                        $SegmentModel = new $this->modelSegment();
+                        $segmentData = $SegmentModel->where('segment_id',$compstatus)->first();
 
-                                }
-                                else
+                        $offer['service_spares_register_id']=$modelRegister->id;
+                        $offer['offer_date']=date('Y-m-d');
+                        $offer['revision_no']='R0';
+                        $offer['offervalidity']=0;
+                        $offer['freight']=0;
+                        $offer['deliveryperiod']=0;
+                        $offer['paymentterms']=0;
+                        $offer['dayscredit']=0;
+                        $offer['terms']=$inputs['terms'];
+                        $offer['created_by_id'] = session()->get('user_id');
+                        $offer['status'] = 1;
+                        $offerModel = new $this->modelOfferdetails();
+                        $storedoffer = $offerModel->addRecord($offer);
+
+                        if ($storedoffer && is_array($storedoffer)) 
+                        {
+                            $this->data['status'] = 0;
+                            $this->data['message'] = "Not Successfully added";
+                            return response()->json($this->data);
+                        } 
+                        else
+                        {
+                            $modelRegister->final_offer_id =  $offerModel->id;
+                            $modelRegister->save();
+
+                            if($cnt > 0)
+                            {
+                                $totalamt = 0;
+                                for($i=1;$i<=$cnt;$i++)
                                 {
-                                    $prd['product_id']=$inputs['product_id'][$i];
-                                    $prd['prd_description']=$inputs['product'][$i];
-                                    $prd['quantity']=$inputs['qty'][$i];
-                                    $prd['isreturn']=0;
-                                    $prd['unit_price']=$inputs['amount'][$i];
-                                    $prd['net_amt']=$inputs['qty'][$i]*$inputs['amount'][$i];
-                                    $prd['total_price']=$inputs['total'][$i];
-                                    $prd['tax_id']=$inputs['tax_id'][$i];
-                                    $prd['tax_amt']=$inputs['tax_amt'][$i];
-                                    $prd['created_by_id'] = session()->get('user_id');
-                                    $prd['service_spares_register_id'] = $modelRegister->id;
-                                    $prd['offer_details_id'] = $offerModel->id;
-                                    $prd['invoicable'] = 0;
-                                    $prd['isserviceproduct'] = 1;
-                                    $prd['status'] = 1;
-                                    
-                                    $totalamt=$totalamt+$inputs['total'][$i];
-                                            
-                                    $modelprd = new $this->modelSSPrdName();
-                                    $storedprd = $modelprd->addRecord($prd);
-                                    if ($storedprd && is_array($storedprd)) {
-                                        $this->data['status'] = 0;
-                                        $this->data['message'] = "Not Success";
-                                        return response()->json($this->data);
-                                    } 
+                                    if($inputs['product_id'][$i] = "" && $inputs['product'][$i] = "" && $inputs['qty'][$i] == "")
+                                    {
+
+                                    }
                                     else
                                     {
-                                        $modelRegister->total_gross_amt=$totalamt;
-                                        $modelRegister->save();
-                                        
-                                        $modelTax = new $this->modelTax();
-                                        $taxdata = $modelTax->find($inputs['tax_id'][$i]);
-                                        foreach($taxdata->taxgroup as $taxgroup)
+                                        $prd['product_id']=$inputs['product_id'][$i];
+                                        $prd['prd_description']=$inputs['product'][$i];
+                                        $prd['quantity']=$inputs['qty'][$i];
+                                        $prd['isreturn']=0;
+                                        $prd['unit_price']=$inputs['amount'][$i];
+                                        $prd['net_amt']=$inputs['qty'][$i]*$inputs['amount'][$i];
+                                        $prd['total_price']=$inputs['total'][$i];
+                                        $prd['tax_id']=$inputs['tax_id'][$i];
+                                        $prd['tax_amt']=$inputs['tax_amt'][$i];
+                                        $prd['created_by_id'] = session()->get('user_id');
+                                        $prd['service_spares_register_id'] = $modelRegister->id;
+                                        $prd['offer_details_id'] = $offerModel->id;
+                                        $prd['invoicable'] = 0;
+                                        $prd['isserviceproduct'] = 1;
+                                        $prd['status'] = 1;
+
+                                        $totalamt=$totalamt+$inputs['total'][$i];
+
+                                        $modelprd = new $this->modelSSPrdName();
+                                        $storedprd = $modelprd->addRecord($prd);
+                                        if ($storedprd && is_array($storedprd)) {
+                                            $this->data['status'] = 0;
+                                            $this->data['message'] = "Not Success";
+                                            return response()->json($this->data);
+                                        } 
+                                        else
                                         {
-                                            $taxamt = (($inputs['qty'][$i]*$inputs['amount'][$i])*($taxgroup->taxrate->rate/100));
-                                            $prdtx['service_spares_product_id']=$modelprd->id;
-                                            $prdtx['tax_id']=$inputs['tax_id'][$i];
-                                            $prdtx['tax_group_id']=$taxgroup->id;
-                                            $prdtx['tax_rate_id']=$taxgroup->taxrate->id;
-                                            $prdtx['taxable_amount']=$inputs['total'][$i];
-                                            $prdtx['tax_amt']=$taxamt;
-                                            $prdtx['created_by_id'] = session()->get('user_id');
-                                            $prdtx['status'] = 1;
-                                            $modelsptax = new $this->modelSSPrdTax();
-                                            $storedprdtax = $modelsptax->addRecord($prdtx);
+                                            $modelRegister->total_gross_amt=$totalamt;
+                                            $modelRegister->save();
+
+                                            $modelTax = new $this->modelTax();
+                                            $taxdata = $modelTax->find($inputs['tax_id'][$i]);
+                                            foreach($taxdata->taxgroup as $taxgroup)
+                                            {
+                                                $taxamt = (($inputs['qty'][$i]*$inputs['amount'][$i])*($taxgroup->taxrate->rate/100));
+                                                $prdtx['service_spares_product_id']=$modelprd->id;
+                                                $prdtx['tax_id']=$inputs['tax_id'][$i];
+                                                $prdtx['tax_group_id']=$taxgroup->id;
+                                                $prdtx['tax_rate_id']=$taxgroup->taxrate->id;
+                                                $prdtx['taxable_amount']=$inputs['total'][$i];
+                                                $prdtx['tax_amt']=$taxamt;
+                                                $prdtx['created_by_id'] = session()->get('user_id');
+                                                $prdtx['status'] = 1;
+                                                $modelsptax = new $this->modelSSPrdTax();
+                                                $storedprdtax = $modelsptax->addRecord($prdtx);
+                                            }
                                         }
                                     }
+
                                 }
+                                if ($stored && is_array($stored)) {
+                                    $this->data['status'] = 0;
+                                    $this->data['message'] = "Not Success";
+                                    return response()->json($this->data);
+                                } 
 
                             }
-                            if ($stored && is_array($stored)) {
-                                $this->data['status'] = 0;
-                                $this->data['message'] = "Not Success";
-                                return response()->json($this->data);
-                            } 
-
                         }
+
+
+                        $this->data['status'] = 1;
+                        $modelData->document_status = 1;
+                        $modelData->save();
+                        $this->data['message'] = $message;
+                        $this->data['cusid'] = $modelRegister->id;
+                        return response()->json($this->data);
+
+
                     }
-                        
-                    
-                    $this->data['status'] = 1;
-                    $modelData->document_status = 1;
-                    $modelData->save();
-                    $this->data['message'] = $message;
-                    $this->data['cusid'] = $modelRegister->id;
-                    return response()->json($this->data);
-                        
-                        
+
                 }
+                else
+                {
+                    $modelRegister = new $this->modelRegName();
+                    $inputs['scope_of_work'] = '"Rectified And Return"';
+                     
+                    $regData = array();
+                    $regData['complaint_register_id'] = $modelData->id;
+                    $regData['complaint_type'] = 0;
+                    $regData['created_by_id'] = session()->get('user_id');
+                    $regData['scope_of_work'] = $inputs['scope_of_work'];
+                    $regData['scope_of_work_o'] = "";
+                    $regData['failure_cause'] = "";
+                    $regData['department'] = $depart;
+                    $regData['order_status'] = 13;                    	
+                    $regData['status'] = 1;
+                    $stored = $modelRegister->addRecord($regData);
+
+                    if ($stored && is_array($stored)) {
+                        $this->data['status'] = 0;
+                        $this->data['message'] = "Not Success";
+                        return response()->json($this->data);
+                    } else {
+                        
+                        $this->data['status'] = 1;
+                        $modelData->document_status = 1;
+                        $modelData->save();
+                        $this->data['message'] = $message;
+                        $this->data['cusid'] = $modelRegister->id;
+                        return response()->json($this->data);
+                    }
+                     
+                }
+                    
             }
         }
     }

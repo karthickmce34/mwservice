@@ -2386,6 +2386,7 @@
                 $("#offermodal form").append(offer);
                 $("#offermodal #offerform").modal('toggle');
                 var offercnt = $(this).data('cnt'); 
+                
                 $("#offermodal #offerform").find("small").html("Revision No: R"+offercnt);
                 $("#offermodal #offerform").find("#revision_no").val("R"+offercnt);
                 terms();
@@ -2543,37 +2544,101 @@
                     var visitid = $(this).data('visitid');
                     
                     swal({   
-                                title: "Verified!",   
-                                text: "Expense Verified",   
-                                type: "success",   
-                                allowOutsideClick: false,
-                                showCancelButton: true,   
-                                confirmButtonText: "Ok",
-                                closeOnConfirm: "Cancel",
-                            },function(){ 
-                                var controller = 'servicespareregister/';
+                            title: "Verified!",   
+                            text: "Expense Verified",   
+                            type: "success",   
+                            allowOutsideClick: false,
+                            showCancelButton: true,   
+                            confirmButtonText: "Ok",
+                            closeOnConfirm: "Cancel",
+                        },function(){ 
+                            var controller = 'servicespareregister/';
 
-                                $.ajax({
-                                method: "POST",
-                                url: _site_url + controller + "updateexpense",
-                                data: {visitid:visitid,},
+                            $.ajax({
+                            method: "POST",
+                            url: _site_url + controller + "updateexpense",
+                            data: {visitid:visitid,},
 
-                                }).done( function( data, textStatus, jqXHR ) {
-                                console.log( " ajax done " );
-                                window.location.reload();
+                            }).done( function( data, textStatus, jqXHR ) {
+                            console.log( " ajax done " );
+                            window.location.reload();
 
-                                }).fail( function( jqXHR, textStatus, errorThrown ) {
-                                    console.log( " ajax fail " );
-                                    console.log( jqXHR, textStatus, errorThrown );
-                                }).always ( function( data_jqXHR, textStatus, jqXHR_errorThrown ) {
-                                    console.log( " ajax always " );
-                                    console.log( data_jqXHR, textStatus, jqXHR_errorThrown );
-                                });
+                            }).fail( function( jqXHR, textStatus, errorThrown ) {
+                                console.log( " ajax fail " );
+                                console.log( jqXHR, textStatus, errorThrown );
+                            }).always ( function( data_jqXHR, textStatus, jqXHR_errorThrown ) {
+                                console.log( " ajax always " );
+                                console.log( data_jqXHR, textStatus, jqXHR_errorThrown );
                             });
+                        });
 
                     
                                 
-                });   
+                }); 
+               
+            $(".dcprint").click(function()
+            {
+                var id = $(this).data("id");
+                $(".dcmodal1").find(".dcform").remove();
+                var dcform = $(".dc_data").find(".dcform").clone();
+                
+                $(".dcmodal1").find("#service_id").val(id);
+                $(".dcmodal1").append(dcform);
+                $(".dcmodal1").find(".dcform").modal();
+                $(".dcmodal1").find("#inv_date").datepicker({dateFormat: 'yy-mm-dd'});
+                
+                $(".dcmodal1").find(".dcdataprint").on('click',function()
+                {
+                    //var id = $(this).data('id');
+                    var inv_no = $(".dcmodal1").find("#invno").val();
+                    var inv_date = $(".dcmodal1").find("#inv_date").val();
+                    var po_ref = $(".dcmodal1").find("#po_ref").val();
+                    var packing = $(".dcmodal1").find("#packing").val();
+                    var dispatch = $(".dcmodal1").find("#dispatch").val();
+                    var dcremark = $(".dcmodal1").find("#dcremark").val();
+                    
+                    var controller = 'servicespareregister/';
+                    //$(".loader").show();
+                    $.ajax({
+                    method: "POST",
+                    url: _site_url + controller + "dcprint",
+                    data: {id:id,inv_no:inv_no,inv_date:inv_date,po_ref:po_ref,packing:packing,dispatch:dispatch,dcremark:dcremark},
+
+                    }).done( function( data, textStatus, jqXHR ) {
+                    console.log( " ajax done " );
+                    if(data.status == 1)
+                    {
+                        $(".loader").hide();
+                        $("#modalprint").find("button#printoffernew").show();
+                        setTimeout(function() {
+                            var win = window.open(data.filepath, '_blank');
+                            //$('.container').find("#elabelloader #loader").css("display","none");
+                            //$('.container').find("#elabelprint").css("display","block");
+
+                            if (win) {
+                                //Browser has allowed it to be opened
+                                win.focus();
+                            } else {
+                                //Browser has blocked it
+                                alert('Please allow popups for this website');
+                            }
+                        }, 8000);
+                    }    
+                    else
+                    {
+
+                    }
+
+                    }).fail( function( jqXHR, textStatus, errorThrown ) {
+                        console.log( " ajax fail " );
+                        console.log( jqXHR, textStatus, errorThrown );
+                    }).always ( function( data_jqXHR, textStatus, jqXHR_errorThrown ) {
+                        console.log( " ajax always " );
+                        $(".loader").hide();
+                        console.log( data_jqXHR, textStatus, jqXHR_errorThrown );
+                    });
+                });
+            });
             
     });
 </script>

@@ -60,6 +60,24 @@
             </div>
         </div>
     </div>
+    <div class="card">
+        <div class="card col-sm-6">
+            <h5>AMC Process Pending <span class="pr_total pull-right f-16">Total  : {{$amcprocesspencnt}}</span></h5>
+            
+            <div id="amcchart1">
+                
+            </div>
+            <div id="amctable1" class='hide'>
+                
+            </div>
+        </div>
+        <div class="card col-sm-6">
+            <h5>AMC Job Pending <span class="jb_total pull-right f-16">Total  : {{$amcjobpencnt}}</span></h5>
+            <div id="amcchart2">
+                
+            </div>
+        </div>
+    </div>
     <div class="card col-sm-12">
         <div class="card col-sm-6 pc-previous">
             <div class="card-header">
@@ -160,6 +178,7 @@
             </div>
         </div>
     </div>
+    
     <div class="card col-sm-12">
         <div class="card col-sm-6 ex-overall">
             <div class="card-header">
@@ -566,6 +585,70 @@
                                 },
                         bindto:"#chart2",
                     });
+            var amcchart1 = c3.generate({
+                        data: {
+                            columns: <?php echo json_encode($amcprocess_status); ?>,
+                            type : 'donut',
+                            onclick: function (d, i) { amcstatusreport(d, i); },
+                           // onmouseover: function (d, i) { console.log("onmouseover", d, i); },
+                            //onmouseout: function (d, i) { console.log("onmouseout", d, i); }
+                        },
+                        donut: {
+                            title: "AMC Process Pending",
+                            label: {
+                              format: function(value, ratio, id) {
+                                return value;
+                              }
+                            },
+                            
+                        },
+                        tooltip: {
+                                format: {
+                                    title: function (d) { return d; },
+                                    value: function (value, ratio, id) {
+                                        //var format = id === 'data1' ? d3.format(',') : d3.format('$');
+                                        //return format(value);
+                                        return value;
+                                        
+                                        },
+                                    }
+                                },
+                        bindto:"#amcchart1",
+                    });
+                
+            var amcchart2 = c3.generate({
+                        data: {
+                            columns: <?php echo json_encode($amcjob_status); ?>,
+                            type : 'donut',
+                            onclick: function (d, i) { amcstatusreport(d, i , ''); },
+                           // onmouseover: function (d, i) { console.log("onmouseover", d, i); },
+                           // onmouseout: function (d, i) { console.log("onmouseout", d, i); }
+                        },
+                        donut: {
+                            title: "AMC Job Pending",
+                            label: {
+                              format: function(value, ratio, id) {
+                                return value;
+                              }
+                            },
+                            
+                        
+                        },
+                        tooltip: {
+                                format: {
+                                    title: function (d) { return d; },
+                                    value: function (value, ratio, id) {
+                                        //var format = id === 'data1' ? d3.format(',') : d3.format('$');
+                                        //return format(value);
+                                        return value;
+                                        
+                                        },
+                        //            value: d3.format(',') // apply this format to both y and y2
+                                    }
+                                },
+                        bindto:"#amcchart2",
+                    });
+                
             var chart3 = c3.generate({
                         data: {
                             // iris data from R
@@ -841,6 +924,54 @@
                 $.ajax({
                             method: "POST",
                             url: _site_url + controller + "statusdetails",
+                            data: dataConfig,
+
+                        }).done( function( data, textStatus, jqXHR ) {
+                            console.log( " ajax done " );
+                           // alert(data);
+                            $(".detname").html(" For "+orderstatus);
+                            if(data.status ==1)
+                            {
+                                
+                                $("#modalreport").find(".modal-body div").remove();
+                                $("#modalreport").find(".modal-body").append("<div class='statrep'></div>");
+                                $("#modalreport").find(".modal-body .statrep").append("<table id='data-table-command' class='table table-striped'><thead><th class='f-10 text-center'>Seqno</th><th class='f-10 text-center'>Complaint Date</th><th class='f-10 text-center'>Customer Name</th><th class='f-10 text-center'>Mobileno</th><th class='f-10 text-center'>So No</th><th class='f-10 text-center'>Scope</th></thead><tbody></tbody></table>");
+                                var len = data.servicedata.length;
+                                for (var i=0;i<len;i++)
+                                {
+                                    $("#modalreport").find(".statrep tbody").append("<tr><td class='f-10 text-center'>"+data.servicedata[i].seqno+"</td><td class='f-10 text-center'>"+data.servicedata[i].complaint_date+"</td><td class='f-10 text-center'>"+data.servicedata[i].customer_name+"</td><td class='f-10 text-center'>"+data.servicedata[i].mobileno+"</td><td  class='f-10 text-center'>"+data.servicedata[i].salesorder_no+"</td><td  class='f-10 text-center'>"+data.servicedata[i].scope_of_work+"</td></tr>");
+                                }
+                                $("#modalreport").find(".statrep table").dataTable({autoWidth:true});
+                                $("#modalreport").find("#servicestatus").modal();
+                            }
+
+                        }).fail( function( jqXHR, textStatus, errorThrown ) {
+                            console.log( " ajax fail " );
+                            //console.log( jqXHR, textStatus, errorThrown );
+                        }).always ( function( data_jqXHR, textStatus, jqXHR_errorThrown ) {
+                            console.log( " ajax always " );
+                            //console.log( data_jqXHR, textStatus, jqXHR_errorThrown );
+                        });
+
+
+                //alert(d.id);
+            }
+            
+            function amcstatusreport(d, i)
+            {
+                console.log("onclick", d, i);
+
+                var orderstatus = d.id;
+
+                var dataConfig = {
+                        orderstatus: orderstatus
+                        };
+
+                var controller = 'statusreport/';
+
+                $.ajax({
+                            method: "POST",
+                            url: _site_url + controller + "amcstatusdetails",
                             data: dataConfig,
 
                         }).done( function( data, textStatus, jqXHR ) {

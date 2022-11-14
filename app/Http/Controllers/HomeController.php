@@ -390,23 +390,109 @@ class HomeController extends Controller
         
         if($user_type == 0 || $user_type == 2)
         {
-            $qry = $model->Where('customer_name','like','%' . $wrd . '%')
-                    ->leftjoin('service_spares_register', 'service_spares_register.complaint_register_id', '=', 'complaint_register.id')
-                    ->orWhere('complaint_register.id','=',$wrd)
-                    ->orWhere('complaint_register.seqno','like','%' . $wrd . '%')
-                    ->where('complaint_register.complaint_type',0)
-                    ->select('complaint_register.id','complaint_register.customer_name','complaint_register.seqno','complaint_register.document_status','complaint_register.complaint_date','complaint_register.complaint_nature')
-                    ->get();
+            //print_r($user_type);die;
+            /*$qry = DB::select("SELECT distinct complaint_register.id, upper(complaint_register.customer_name) as customer_name,
+                                complaint_register.seqno,
+                                CASE
+                                    when service_spares_register.order_status = 0 then 'Enquiry Received'
+                                    when service_spares_register.order_status = 1 then 'OfferSent'
+                                    when service_spares_register.order_status = 2 then 'Po Received'
+                                    when service_spares_register.order_status = 3 then 'PI Sent'
+                                    when service_spares_register.order_status = 4 then 'Advance Received'
+                                    when service_spares_register.order_status = 5 then 'Payment Received' 
+                                    when service_spares_register.order_status = 8 then 'Visit Completed'
+                                    when service_spares_register.order_status = 10 then 'Deputed' 
+                                    when service_spares_register.order_status = 9 then 'Cancelled'
+                                    when service_spares_register.order_status = 11 then 'Job Completed'
+                                    when service_spares_register.order_status = 12 then 'Visit Resscheduled' else 'No Data' end as orderstatus,
+                                complaint_register.complaint_date,
+                                service_spares_register.order_status,
+                                complaint_register.document_status,
+                                complaint_register.complaint_nature
+                                FROM complaint_register
+                                                left join service_spares_register on service_spares_register.complaint_register_id = complaint_register.id
+                                                                                    and service_spares_register.status = 1
+                                WHERE  complaint_register.complaint_type = 0
+                                and lower(customer_name) like '%$wrd%' or complaint_register.id = '$wrd' or complaint_register.seqno like '%$wrd%'
+                                order by service_spares_register.order_status");*/
+            $qry = DB::select("SELECT distinct complaint_register.id, upper(complaint_register.customer_name) as customer_name,
+                                complaint_register.seqno,complaint_register.document_status,
+                                CASE
+                                    when service_spares_register.order_status = 0 then 'Enquiry Received'
+                                    when service_spares_register.order_status = 1 then 'OfferSent'
+                                    when service_spares_register.order_status = 2 then 'Po Received'
+                                    when service_spares_register.order_status = 3 then 'PI Sent'
+                                    when service_spares_register.order_status = 4 then 'Advance Received'
+                                    when service_spares_register.order_status = 5 then 'Payment Received' 
+                                    when service_spares_register.order_status = 8 then 'Visit Completed'
+                                    when service_spares_register.order_status = 10 then 'Deputed' 
+                                    when service_spares_register.order_status = 11 then 'Job Completed'
+                                    when service_spares_register.order_status = 9 then 'Cancelled'
+                                    when service_spares_register.order_status = 12 then 'Visit Rescheduled' 
+                                    when service_spares_register.order_status = 13 then 'Material To Be Send' else 'No Data' end as orderstatus,
+                                CASE
+                                    when service_spares_register.order_status = 0 then '1'
+                                    when service_spares_register.order_status = 1 then '1'
+                                    when service_spares_register.order_status = 2 then '1'
+                                    when service_spares_register.order_status = 3 then '1'
+                                    when service_spares_register.order_status = 4 then '1'
+                                    when service_spares_register.order_status = 5 then '1' 
+                                    when service_spares_register.order_status = 8 then '3'
+                                    when service_spares_register.order_status = 10 then '2' 
+                                    when service_spares_register.order_status = 11 then '4'
+                                    when service_spares_register.order_status = 9 then '6'
+                                    when service_spares_register.order_status = 12 then '5' 
+                                    when service_spares_register.order_status = 13 then '1' else 'No Data' end as ordstatus,
+                                  
+                                complaint_register.complaint_date,
+                                service_spares_register.order_status,
+                                complaint_register.complaint_nature
+                                FROM service_spares_register,complaint_register
+                                WHERE service_spares_register.complaint_register_id = complaint_register.id
+                                and complaint_register.complaint_type = 0
+                                and service_spares_register.status = 1
+                                and (lower(customer_name) like '%$wrd%' or complaint_register.id = '$wrd' or complaint_register.seqno like '%$wrd%')
+                                order by ordstatus,service_spares_register.order_status");
         }
         else
         {
-            $qry = $model->Where('customer_name','like','%' . $wrd . '%')
-                    ->join('service_spares_register', 'service_spares_register.complaint_register_id', '=', 'complaint_register.id')
-                    ->orWhere('service_spares_register.id','=',$wrd)
-                    ->orWhere('complaint_register.seqno','like','%' . $wrd . '%')
-                    ->where('complaint_register.complaint_type',0)
-                    ->select('service_spares_register.id','complaint_register.customer_name','complaint_register.seqno','complaint_register.document_status','complaint_register.complaint_date','complaint_register.complaint_nature')
-                    ->get();
+           $qry = DB::select("SELECT distinct complaint_register.id, upper(complaint_register.customer_name) as customer_name,
+                                complaint_register.seqno,complaint_register.document_status,
+                                CASE
+                                    when service_spares_register.order_status = 0 then 'Enquiry Received'
+                                    when service_spares_register.order_status = 1 then 'OfferSent'
+                                    when service_spares_register.order_status = 2 then 'Po Received'
+                                    when service_spares_register.order_status = 3 then 'PI Sent'
+                                    when service_spares_register.order_status = 4 then 'Advance Received'
+                                    when service_spares_register.order_status = 5 then 'Payment Received' 
+                                    when service_spares_register.order_status = 8 then 'Visit Completed'
+                                    when service_spares_register.order_status = 10 then 'Deputed' 
+                                    when service_spares_register.order_status = 11 then 'Job Completed'
+                                    when service_spares_register.order_status = 9 then 'Cancelled'
+                                    when service_spares_register.order_status = 12 then 'Visit Resscheduled' 
+                                    when service_spares_register.order_status = 13 then 'Material To Be Send'  else 'No Data' end as orderstatus,
+                                CASE
+                                    when service_spares_register.order_status = 0 then '1'
+                                    when service_spares_register.order_status = 1 then '1'
+                                    when service_spares_register.order_status = 2 then '1'
+                                    when service_spares_register.order_status = 3 then '1'
+                                    when service_spares_register.order_status = 4 then '1'
+                                    when service_spares_register.order_status = 5 then '1' 
+                                    when service_spares_register.order_status = 8 then '3'
+                                    when service_spares_register.order_status = 10 then '2' 
+                                    when service_spares_register.order_status = 11 then '4'
+                                    when service_spares_register.order_status = 9 then '6'
+                                    when service_spares_register.order_status = 12 then '5'  
+                                    when service_spares_register.order_status = 13 then '1' else 'No Data' end as ordstatus,
+                                complaint_register.complaint_date,
+                                service_spares_register.order_status,
+                                complaint_register.complaint_nature
+                                FROM service_spares_register,complaint_register
+                                WHERE service_spares_register.complaint_register_id = complaint_register.id
+                                and complaint_register.complaint_type = 0
+                                and service_spares_register.status = 1
+                                and (lower(customer_name) like '%$wrd%' or complaint_register.id = '$wrd' or complaint_register.seqno like '%$wrd%')
+                                order by ordstatus,service_spares_register.order_status");
         }
         return response()->json($qry);
               

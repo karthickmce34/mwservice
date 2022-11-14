@@ -772,16 +772,17 @@
                                             <label for="customer_name" class="control-label col-sm-4 required">Customer</label>
                                             <div class="col-sm-8">
                                                 <div class="fg-line">
+                                                    <input type="hidden" name="bp_id" id="bp_id" value="">
                                                     <input class="form-control input-sm" placeholder="Customer" required name="customer_name" type="text" id="customer_name" autocomplete="off" >                                        
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="form-group col-sm-6">
-                                            <label for="salesorder_no" class="control-label col-sm-4">Sales Order No</label>
+                                            <label for="salesorder_no" class="control-label col-sm-4 required" >Sales Order No</label>
                                             <div class="col-sm-8 col-xs-8">
                                                 <div class="input-group">
                                                     <div class="fg-line">
-                                                        <input class="form-control input-sm salno1" placeholder="Order No" name="salesorder_no" type="text" id="salesorder_no">                                        
+                                                        <input class="form-control input-sm salno1" placeholder="Order No" required name="salesorder_no" type="text" id="salesorder_no">                                        
                                                     </div>
                                                     <span class="input-group-addon last salno"><i class="btn btn-xs zmdi zmdi-search"></i></span>
                                                 </div>
@@ -919,7 +920,7 @@
                                                     <div class="fg-line">
                                                         <select class="form-control input-sm" placeholder="Warranty" aria-describedby="basic-addon1" required   id="warranty" name="warrenty">
                                                             <option value="">=== Select Warranty ===</option>
-                                                            <option value="0">With Warranty</option>
+                                                            <option value="0">WithIn Warranty</option>
                                                             <option value="1">Out of Warranty</option>
                                                         </select>   
                                                     </div>
@@ -950,6 +951,7 @@
                                                 <div class="col-sm-8">
                                                     <div class="fg-line">
                                                         <input class="form-control input-sm" placeholder="Panel Description" name="panel_descrption" required type="text" id="panel_descrption" autocomplete="off">                                        
+                                                        <input class="form-control input-sm" placeholder="invoiceid" name="invoiceid"  type="hidden" id="invoiceid" autocomplete="off">                                        
                                                         <input class="form-control input-sm" placeholder="invoiceno" name="invoiceno"  type="hidden" id="invoiceno" autocomplete="off">                                        
                                                     </div>
                                                 </div>
@@ -2592,27 +2594,32 @@
                                         
                                         $("#top-search-wrap").find("#cdet"+i).append(cusdet);
                                         $("#top-search-wrap").find("#cdet"+i+" h2").html(data[i].customer_name);
-                                        var status = data[i].document_status;
+                                        var status = data[i].ordstatus;
+                                        
                                         var newUrl = _site_url+register+data[i].id;
-                                        if(status == 4)
+                                        if(status == 2)
                                         {
                                             var clr = 'bgm-bluegray';
                                         }else if (status == 1)
                                         {
                                             var clr = 'bgm-orange';
-                                        }else if (status == 2)
+                                        }else if (status == 4)
                                         {
                                             var clr = 'bgm-green';
-                                        }else if (status == 0)
+                                        }else if (status == 6)
                                         {
                                             var clr = 'bgm-red';
+                                        }else if (status == 3)
+                                        {
+                                            var clr = 'bgm-teal';
                                         }
+                                        
                                         
                                         if(user_type == 2)
                                         {
                                             var divdata = "<div class='pmb-block'><div class='pmbb-body p-l-30'>\n\
                                             <div class='pmbb-view'><dl class='dl-horizontal'><dt>Reg No</dt><dd>"+data[i].seqno+"</dd><dt>Reg Date</dt><dd>"+data[i].complaint_date+"</dd>\n\
-                                            <dt>Compalint Nature</dt><dd>"+data[i].complaint_nature+"</dd><dt>Compalint Status</dt><dd>"+data[i].complaint_nature+"</dd></dl></div></div></div>";
+                                            <dt>Compalint Nature</dt><dd>"+data[i].complaint_nature+"</dd><dt>Compalint Status</dt><dd>"+data[i].orderstatus+"</dd></dl></div></div></div>";
                                         }
                                         else
                                         {
@@ -2721,6 +2728,7 @@
                                     if(data.salesdetails.length > 0)
                                     {
                                         $("#customer_name").val(data.salesdetails[0].bpname);
+                                        $("#bp_id").val(data.salesdetails[0].bp_id);
                                         $("#address1").val(data.salesdetails[0].address1);
                                         $("#address2").val(data.salesdetails[0].address2);
                                         $("#city").val(data.salesdetails[0].city);
@@ -2738,17 +2746,19 @@
                                         $("#modalselect5").append($(".blanksoline div").clone());
                                         for(var k=0;k<data.orderdetails.length;k++)
                                         {
-                                            $("#modalselect5").find("#blankSales tbody").append("<tr><td><input class='frm_salidradio' type='radio' name='salesid' data-docno='"+data.orderdetails[k].documentno+"' data-docdate='"+data.orderdetails[k].dateinvoiced+"' data-prdname='"+data.orderdetails[k].name+"'></td><td>"+data.orderdetails[k].documentno+"</td><td>"+data.orderdetails[k].dateinvoiced+"</td><td>"+data.orderdetails[k].name+"</td></tr>");
+                                            $("#modalselect5").find("#blankSales tbody").append("<tr><td><input class='frm_salidradio' type='radio' name='salesid' data-docno='"+data.orderdetails[k].documentno+"' data-invid='"+data.orderdetails[k].invid+"' data-docdate='"+data.orderdetails[k].dateinvoiced+"' data-prdname='"+data.orderdetails[k].name+"'></td><td>"+data.orderdetails[k].documentno+"</td><td>"+data.orderdetails[k].dateinvoiced+"</td><td>"+data.orderdetails[k].name+"</td></tr>");
                                         }
                                         $("#modalselect5").find("#blankSales").modal();
                                         $("#modalselect5").find(".frm_salidradio").click(function()
                                         {
                                             var docno = $(this).data("docno");
+                                            var invid = $(this).data("invid");
                                             var dateinv = $(this).data("docdate");
                                             var name = $(this).data("prdname");
                                             $("#panel_descrption").val(name);
                                             $("#date_supply").val(dateinv);
                                             $("#invoiceno").val(docno);
+                                            $("#invoiceid").val(invid);
                                             $("#modalselect5").find("#blankSales").modal('hide');
                                         });
                                     }

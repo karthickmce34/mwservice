@@ -23,15 +23,95 @@
 	<import value="net.sf.jasperreports.engine.*" />
 	<import value="net.sf.jasperreports.engine.data.*" />
 
-	<parameter name="BASE_DESIGN" isForPrompting="false" class="java.lang.String"/>
-	<parameter name="SUBREPORT_DIR" isForPrompting="false" class="java.lang.String">
-		<defaultValueExpression ><![CDATA[$P{BASE_DESIGN}+"/com/ssm/sales/management/erpReports/"]]></defaultValueExpression>
-	</parameter>
 	<parameter name="DOCUMENT_ID" isForPrompting="true" class="java.lang.String"/>
-	<queryString><![CDATA[SELECT 'THIS' as field1 from dual]]></queryString>
+	<parameter name="inv_no" isForPrompting="true" class="java.lang.String">
+		<defaultValueExpression ><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="inv_date" isForPrompting="true" class="java.lang.String">
+		<defaultValueExpression ><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="po_reference_no" isForPrompting="true" class="java.lang.String">
+		<defaultValueExpression ><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="no_of_packing" isForPrompting="true" class="java.lang.String">
+		<defaultValueExpression ><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="dispatch_to" isForPrompting="true" class="java.lang.String">
+		<defaultValueExpression ><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="remark" isForPrompting="true" class="java.lang.String">
+		<defaultValueExpression ><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<queryString><![CDATA[SELECT complaint_register.customer_name as bpname,
+complaint_register.address1 as billing_address, 
+complaint_register.address2 as delivery_address,
+complaint_register.mobileno as mobileno,
+complaint_register.gstin as gstin,
+complaint_register.emailid as emailid,
+service_spares_register.id,
+complaint_register.contact_person as contactperson,
+now() as offerdate,
+complaint_register.seqno as sno,
+case when service_spares_product.description is null then service_spares_product.prd_description else service_spares_product.description end as prd_description,
+service_spares_product.unit_price,
+service_spares_product.quantity,
+service_spares_product.net_amt as lineamt,
+service_spares_product.tax_amt,
+service_spares_product.total_price,
+service_charge.hsn,
+service_spares_register.complaint_type,
+case when offer_details.terms is null then segment.terms else offer_details.terms end as terms,
+case when service_spares_register.complaint_type = 0 then "service@megawin.co.in" else "spares@megawin.co.in" end as email1,
+case when product.code = "" || product.code is null then service_charge.code else product.code end as prdcode
 
-	<field name="FIELD1" class="java.lang.String"/>
+from service_spares_register,
+complaint_register,
+segment,
+offer_details,
+service_spares_product
+   left join service_charge on service_charge.id = service_spares_product.product_id and isserviceproduct = 1	
+   left join product on product.id = service_spares_product.product_id and isserviceproduct = 0
 
+where complaint_register.id = service_spares_register.complaint_register_id
+and service_spares_register.id = service_spares_product.service_spares_register_id
+and offer_details.service_spares_register_id = service_spares_register.id
+and service_spares_product.offer_details_id = offer_details.id
+and segment.segment_id = complaint_register.complaint_type
+and service_spares_product.deleted_at is null
+and service_spares_register.id = $P{DOCUMENT_ID}
+and service_spares_product.invoicable=0]]></queryString>
+
+	<field name="bpname" class="java.lang.String"/>
+	<field name="billing_address" class="java.lang.String"/>
+	<field name="delivery_address" class="java.lang.String"/>
+	<field name="mobileno" class="java.lang.String"/>
+	<field name="gstin" class="java.lang.String"/>
+	<field name="emailid" class="java.lang.String"/>
+	<field name="id" class="java.lang.Integer"/>
+	<field name="contactperson" class="java.lang.String"/>
+	<field name="offerdate" class="java.sql.Timestamp"/>
+	<field name="sno" class="java.lang.String"/>
+	<field name="prd_description" class="java.lang.String"/>
+	<field name="unit_price" class="java.lang.String"/>
+	<field name="quantity" class="java.lang.String"/>
+	<field name="lineamt" class="java.math.BigDecimal"/>
+	<field name="tax_amt" class="java.math.BigDecimal"/>
+	<field name="total_price" class="java.lang.String"/>
+	<field name="hsn" class="java.lang.String"/>
+	<field name="complaint_type" class="java.lang.Integer"/>
+	<field name="terms" class="java.lang.String"/>
+	<field name="email1" class="java.lang.String"/>
+	<field name="prdcode" class="java.lang.String"/>
+
+	<variable name="inv_no_date" class="java.lang.String" resetType="Report" calculation="Nothing">
+		<variableExpression><![CDATA[$P{inv_no}+" "+$P{inv_date}]]></variableExpression>
+	</variable>
+	<variable name="snumber" class="java.lang.Integer" resetType="Report" calculation="Nothing">
+		<variableExpression><![CDATA[$V{COLUMN_COUNT}]]></variableExpression>
+	</variable>
+	<variable name="total" class="java.math.BigDecimal" resetType="Report" calculation="Sum">
+		<variableExpression><![CDATA[new BigDecimal($F{total_price})]]></variableExpression>
+	</variable>
 		<background>
 			<band height="0"  isSplitAllowed="true" >
 			</band>
@@ -41,20 +121,7 @@
 			</band>
 		</title>
 		<pageHeader>
-			<band height="201"  isSplitAllowed="true" >
-				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="73"
-						y="35"
-						width="188"
-						height="14"
-						key="textField"/>
-					<box></box>
-					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font fontName="SansSerif" pdfFontName="Helvetica" size="9" isBold="false"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[]]></textFieldExpression>
-				</textField>
+			<band height="223"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
 						x="1"
@@ -71,20 +138,20 @@
 				<staticText>
 					<reportElement
 						x="4"
-						y="11"
+						y="6"
 						width="525"
-						height="17"
+						height="21"
 						key="staticText-10"/>
 					<box></box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Mukti Narrow" pdfFontName="Helvetica-Bold" size="11" isBold="true" isUnderline="true"/>
+						<font fontName="SansSerif" pdfFontName="Helvetica-Bold" size="11" isBold="true" isUnderline="true"/>
 					</textElement>
 				<text><![CDATA[INTER OFFICE CORRESPONDENSE]]></text>
 				</staticText>
 				<line direction="TopDown">
 					<reportElement
 						x="1"
-						y="4"
+						y="1"
 						width="534"
 						height="0"
 						key="line-1"/>
@@ -93,38 +160,25 @@
 				<line direction="TopDown">
 					<reportElement
 						x="534"
-						y="5"
+						y="0"
 						width="0"
-						height="196"
+						height="223"
 						key="line-3"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 				<line direction="TopDown">
 					<reportElement
 						x="1"
-						y="4"
+						y="0"
 						width="0"
-						height="197"
+						height="223"
 						key="line-4"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="328"
-						y="35"
-						width="202"
-						height="14"
-						key="textField"/>
-					<box></box>
-					<textElement verticalAlignment="Middle">
-						<font fontName="SansSerif" pdfFontName="Helvetica" size="9" isBold="false"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[]]></textFieldExpression>
-				</textField>
 				<line direction="TopDown">
 					<reportElement
 						x="1"
-						y="176"
+						y="198"
 						width="534"
 						height="0"
 						key="line-7"/>
@@ -133,7 +187,7 @@
 				<staticText>
 					<reportElement
 						x="4"
-						y="180"
+						y="202"
 						width="43"
 						height="18"
 						key="staticText-26"/>
@@ -146,7 +200,7 @@
 				<staticText>
 					<reportElement
 						x="51"
-						y="180"
+						y="202"
 						width="216"
 						height="18"
 						key="staticText-27"/>
@@ -159,7 +213,7 @@
 				<staticText>
 					<reportElement
 						x="350"
-						y="180"
+						y="202"
 						width="67"
 						height="18"
 						key="staticText-28"/>
@@ -172,7 +226,7 @@
 				<staticText>
 					<reportElement
 						x="271"
-						y="180"
+						y="202"
 						width="74"
 						height="18"
 						key="staticText-29"/>
@@ -185,7 +239,7 @@
 				<line direction="TopDown">
 					<reportElement
 						x="48"
-						y="177"
+						y="199"
 						width="0"
 						height="24"
 						key="line-9"/>
@@ -196,14 +250,14 @@
 						x="268"
 						y="52"
 						width="0"
-						height="34"
+						height="40"
 						key="line-10"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 				<line direction="TopDown">
 					<reportElement
 						x="421"
-						y="177"
+						y="199"
 						width="0"
 						height="24"
 						key="line-11"/>
@@ -212,7 +266,7 @@
 				<line direction="TopDown">
 					<reportElement
 						x="1"
-						y="32"
+						y="28"
 						width="534"
 						height="0"
 						key="line-35"/>
@@ -221,9 +275,9 @@
 				<staticText>
 					<reportElement
 						x="282"
-						y="35"
+						y="33"
 						width="39"
-						height="14"
+						height="18"
 						key="staticText-72"/>
 					<box></box>
 					<textElement verticalAlignment="Middle">
@@ -234,7 +288,7 @@
 				<line direction="TopDown">
 					<reportElement
 						x="269"
-						y="177"
+						y="199"
 						width="1"
 						height="23"
 						key="line-17"/>
@@ -243,9 +297,9 @@
 				<staticText>
 					<reportElement
 						x="5"
-						y="35"
+						y="33"
 						width="59"
-						height="14"
+						height="18"
 						key="staticText-76"/>
 					<box></box>
 					<textElement verticalAlignment="Middle">
@@ -265,9 +319,9 @@
 				<staticText>
 					<reportElement
 						x="5"
-						y="55"
+						y="51"
 						width="59"
-						height="14"
+						height="20"
 						key="staticText-77"/>
 					<box></box>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
@@ -280,7 +334,7 @@
 						x="5"
 						y="71"
 						width="59"
-						height="14"
+						height="20"
 						key="staticText-78"/>
 					<box></box>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
@@ -293,7 +347,7 @@
 						x="282"
 						y="55"
 						width="41"
-						height="14"
+						height="20"
 						key="staticText-79"/>
 					<box></box>
 					<textElement verticalAlignment="Middle">
@@ -304,9 +358,9 @@
 				<staticText>
 					<reportElement
 						x="65"
-						y="35"
+						y="33"
 						width="7"
-						height="14"
+						height="18"
 						key="staticText-80"/>
 					<box></box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -317,9 +371,9 @@
 				<staticText>
 					<reportElement
 						x="65"
-						y="55"
+						y="51"
 						width="7"
-						height="14"
+						height="20"
 						key="staticText-81"/>
 					<box></box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -332,7 +386,7 @@
 						x="65"
 						y="71"
 						width="7"
-						height="14"
+						height="20"
 						key="staticText-82"/>
 					<box></box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -345,7 +399,7 @@
 						x="323"
 						y="55"
 						width="7"
-						height="14"
+						height="20"
 						key="staticText-83"/>
 					<box></box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -356,9 +410,9 @@
 				<staticText>
 					<reportElement
 						x="322"
-						y="35"
+						y="33"
 						width="7"
-						height="14"
+						height="18"
 						key="staticText-84"/>
 					<box></box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -369,9 +423,9 @@
 				<staticText>
 					<reportElement
 						x="6"
-						y="101"
+						y="95"
 						width="59"
-						height="14"
+						height="18"
 						key="staticText-86"/>
 					<box></box>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
@@ -382,9 +436,9 @@
 				<staticText>
 					<reportElement
 						x="65"
-						y="101"
+						y="95"
 						width="7"
-						height="14"
+						height="18"
 						key="staticText-87"/>
 					<box></box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -395,9 +449,9 @@
 				<staticText>
 					<reportElement
 						x="65"
-						y="116"
+						y="139"
 						width="7"
-						height="14"
+						height="18"
 						key="staticText-88"/>
 					<box></box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -408,9 +462,9 @@
 				<staticText>
 					<reportElement
 						x="6"
-						y="116"
+						y="139"
 						width="59"
-						height="14"
+						height="18"
 						key="staticText-89"/>
 					<box></box>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
@@ -421,7 +475,7 @@
 				<line direction="TopDown">
 					<reportElement
 						x="1"
-						y="86"
+						y="92"
 						width="534"
 						height="0"
 						key="line-38"/>
@@ -429,10 +483,10 @@
 				</line>
 				<staticText>
 					<reportElement
-						x="139"
-						y="157"
+						x="150"
+						y="179"
 						width="7"
-						height="14"
+						height="18"
 						key="staticText-90"/>
 					<box></box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -442,23 +496,23 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="139"
-						y="142"
+						x="150"
+						y="159"
 						width="7"
-						height="14"
+						height="18"
 						key="staticText-91"/>
 					<box></box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="SansSerif" pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+						<font fontName="SansSerif" pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
 				<text><![CDATA[: ]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
 						x="6"
-						y="142"
-						width="132"
-						height="14"
+						y="159"
+						width="144"
+						height="18"
 						key="staticText-92"/>
 					<box></box>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
@@ -469,9 +523,9 @@
 				<staticText>
 					<reportElement
 						x="6"
-						y="157"
-						width="132"
-						height="14"
+						y="179"
+						width="144"
+						height="18"
 						key="staticText-93"/>
 					<box></box>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
@@ -481,34 +535,34 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="282"
-						y="142"
+						x="313"
+						y="139"
 						width="42"
-						height="14"
+						height="18"
 						key="staticText-94"/>
 					<box></box>
 					<textElement verticalAlignment="Middle">
-						<font fontName="SansSerif" pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+						<font fontName="SansSerif" pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
 				<text><![CDATA[GST No.]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="323"
-						y="142"
+						x="354"
+						y="139"
 						width="7"
-						height="14"
+						height="18"
 						key="staticText-95"/>
 					<box></box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="SansSerif" pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+						<font fontName="SansSerif" pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
 				<text><![CDATA[: ]]></text>
 				</staticText>
 				<line direction="TopDown">
 					<reportElement
 						x="346"
-						y="175"
+						y="197"
 						width="0"
 						height="25"
 						key="line-39"/>
@@ -517,7 +571,7 @@
 				<staticText>
 					<reportElement
 						x="425"
-						y="180"
+						y="202"
 						width="104"
 						height="18"
 						key="staticText-96"/>
@@ -530,12 +584,168 @@
 				<line direction="TopDown">
 					<reportElement
 						x="1"
-						y="199"
+						y="221"
 						width="534"
 						height="0"
 						key="line-50"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="70"
+						y="95"
+						width="450"
+						height="18"
+						key="textField"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="SansSerif" size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{bpname}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="77"
+						y="51"
+						width="153"
+						height="20"
+						key="textField"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="SansSerif"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{sno}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="73"
+						y="33"
+						width="137"
+						height="18"
+						key="staticText-101"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="SansSerif" pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Service Department]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="332"
+						y="33"
+						width="137"
+						height="18"
+						key="staticText-102"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="SansSerif" pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Accounts Department]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="70"
+						y="139"
+						width="200"
+						height="18"
+						key="textField"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="SansSerif" size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{sno}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="330"
+						y="55"
+						width="141"
+						height="20"
+						key="textField"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="SansSerif"/>
+					</textElement>
+				<textFieldExpression   class="java.util.Date"><![CDATA[$F{offerdate}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="361"
+						y="139"
+						width="170"
+						height="18"
+						key="textField"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="SansSerif" size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{gstin}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Report" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="157"
+						y="159"
+						width="253"
+						height="18"
+						key="textField"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="SansSerif"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$V{inv_no_date}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="157"
+						y="179"
+						width="253"
+						height="18"
+						key="textField"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="SansSerif"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{po_reference_no}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="6"
+						y="115"
+						width="59"
+						height="18"
+						key="staticText-104"/>
+					<box></box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="SansSerif" pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Address]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="65"
+						y="115"
+						width="7"
+						height="18"
+						key="staticText-105"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="SansSerif" pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+					</textElement>
+				<text><![CDATA[: ]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="70"
+						y="115"
+						width="450"
+						height="18"
+						key="textField-1"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="SansSerif" size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{billing_address}]]></textFieldExpression>
+				</textField>
 			</band>
 		</pageHeader>
 		<columnHeader>
@@ -598,6 +808,80 @@
 						key="line-45"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="19"
+						width="535"
+						height="0"
+						key="line-26"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="50"
+						y="0"
+						width="220"
+						height="20"
+						key="textField"/>
+					<box rightPadding="5"></box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="SansSerif" size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{prd_description}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="271"
+						y="0"
+						width="74"
+						height="20"
+						key="textField"/>
+					<box rightPadding="5"></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{quantity}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="350"
+						y="0"
+						width="67"
+						height="20"
+						key="textField"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[new BigDecimal($F{total_price})]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="4"
+						y="0"
+						width="43"
+						height="20"
+						key="textField"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Integer"><![CDATA[$V{snumber}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="425"
+						y="0"
+						width="104"
+						height="20"
+						key="staticText-103"/>
+					<box></box>
+					<textElement>
+						<font fontName="SansSerif"/>
+					</textElement>
+				<text><![CDATA[]]></text>
+				</staticText>
 			</band>
 		</detail>
 		<columnFooter>
@@ -610,25 +894,16 @@
 		</pageFooter>
 		<summary>
 			<band height="197"  isSplitAllowed="true" >
-				<line direction="TopDown">
-					<reportElement
-						x="0"
-						y="3"
-						width="535"
-						height="0"
-						key="line-26"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
 				<staticText>
 					<reportElement
 						x="4"
 						y="8"
 						width="79"
-						height="11"
+						height="18"
 						key="staticText-56"/>
 					<box></box>
 					<textElement textAlignment="Left">
-						<font fontName="Mukti Narrow" size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 				<text><![CDATA[Total No. of Packing]]></text>
 				</staticText>
@@ -636,27 +911,14 @@
 					<reportElement
 						x="4"
 						y="28"
-						width="90"
-						height="12"
+						width="79"
+						height="20"
 						key="staticText-57"/>
 					<box></box>
 					<textElement textAlignment="Left">
-						<font fontName="Mukti Narrow" size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 				<text><![CDATA[Dispatch To]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="227"
-						y="28"
-						width="301"
-						height="33"
-						key="staticText-58"/>
-					<box></box>
-					<textElement textAlignment="Left">
-						<font fontName="Mukti Narrow" size="8"/>
-					</textElement>
-				<text><![CDATA[Carried by service engineer]]></text>
 				</staticText>
 				<line direction="TopDown">
 					<reportElement
@@ -679,7 +941,7 @@
 				<line direction="TopDown">
 					<reportElement
 						x="0"
-						y="63"
+						y="52"
 						width="535"
 						height="0"
 						key="line-32"/>
@@ -687,21 +949,21 @@
 				</line>
 				<staticText>
 					<reportElement
-						x="228"
-						y="8"
-						width="36"
-						height="12"
+						x="270"
+						y="3"
+						width="74"
+						height="18"
 						key="staticText-97"/>
 					<box></box>
-					<textElement textAlignment="Center">
-						<font fontName="Mukti Narrow" size="8"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="10"/>
 					</textElement>
 				<text><![CDATA[Total]]></text>
 				</staticText>
 				<line direction="TopDown">
 					<reportElement
 						x="0"
-						y="79"
+						y="83"
 						width="535"
 						height="0"
 						key="line-46"/>
@@ -710,7 +972,7 @@
 				<line direction="TopDown">
 					<reportElement
 						x="0"
-						y="94"
+						y="98"
 						width="535"
 						height="0"
 						key="line-47"/>
@@ -719,16 +981,16 @@
 				<line direction="TopDown">
 					<reportElement
 						x="266"
-						y="63"
+						y="52"
 						width="1"
-						height="31"
+						height="47"
 						key="line-48"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 				<staticText>
 					<reportElement
 						x="5"
-						y="81"
+						y="85"
 						width="256"
 						height="14"
 						key="staticText-98"/>
@@ -741,7 +1003,7 @@
 				<staticText>
 					<reportElement
 						x="273"
-						y="80"
+						y="84"
 						width="256"
 						height="14"
 						key="staticText-99"/>
@@ -763,16 +1025,68 @@
 				<staticText>
 					<reportElement
 						x="4"
-						y="140"
+						y="138"
 						width="90"
-						height="12"
+						height="20"
 						key="staticText-100"/>
 					<box></box>
 					<textElement textAlignment="Left">
-						<font fontName="Mukti Narrow" size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 				<text><![CDATA[Remarks]]></text>
 				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="83"
+						y="8"
+						width="100"
+						height="18"
+						key="textField"/>
+					<box></box>
+					<textElement>
+						<font fontName="SansSerif"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{no_of_packing}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="83"
+						y="28"
+						width="377"
+						height="20"
+						key="textField"/>
+					<box></box>
+					<textElement>
+						<font fontName="SansSerif"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{dispatch_to}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="97"
+						y="138"
+						width="393"
+						height="20"
+						key="textField"/>
+					<box></box>
+					<textElement>
+						<font fontName="SansSerif"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{remark}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="350"
+						y="3"
+						width="67"
+						height="20"
+						key="textField"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{total}]]></textFieldExpression>
+				</textField>
 			</band>
 		</summary>
 </jasperReport>

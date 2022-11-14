@@ -111,8 +111,23 @@ class ServiceSpareRegisterController extends Controller
         $deliveryperiod   = Config::get('constant.DELIVERYPERIOD');
         $paymentterms = Config::get('constant.PAYMENTTERM');
         $SegmentModel = new $this->modelSegment();
+        
         $segmentData = $SegmentModel->where('segment_id',$record->complaint_type)->first();
-        if($offerdata)
+        //print_r($paymentterms);die;
+        if(is_null($offerdata))
+        {
+            $offerdata=array();
+            if(is_null($segmentData))
+            {
+                $terms = "";
+            }
+            else
+            {
+                $terms = $segmentData->terms;
+            }
+                
+        }
+        else
         {
             if($offerdata->terms == "" || $offerdata->terms == null)
             {
@@ -125,12 +140,7 @@ class ServiceSpareRegisterController extends Controller
                 $terms = $offerdata->terms;
             }
         }
-        else
-        {
-            $offerdata=array();
-            
-            $terms = $segmentData->terms;
-        }
+        
         
         $this->data['modelAgents'] = $recagent;
         $this->data['modelEngLists'] = $engineerlists;
@@ -1629,13 +1639,23 @@ class ServiceSpareRegisterController extends Controller
         $status = 1;
         $message = "success";
         $inputs = request()->all();
-        //print_r($inputs);die;
+        
         $offerModel = new $this->modelOfferdetails();
         $modelData = $offerModel->find($inputs['offer_id']);
         $offer['service_spares_register_id']=$inputs['spares_register_id'];
         $offer['offer_date']=date('Y-m-d');
         $offer['revision_no']=$inputs['revision_no'];
-        $offer['offervalidity']=$modelData->offervalidity;
+        if($modelData)
+        {
+            $offer['offervalidity']=$modelData->offervalidity;
+            $offer['terms']=$modelData->terms;
+        }
+        else
+        {
+            $offer['offervalidity']=$inputs['offervalidity'];
+            $offer['terms']=$inputs['terms'];
+        }
+            
         if(isset($inputs['freight']))
         $offer['freight']=$inputs['freight'];
         if(isset($inputs['deliveryperiod']))
@@ -1644,11 +1664,11 @@ class ServiceSpareRegisterController extends Controller
         $offer['paymentterms']=$inputs['paymentterms'];
         if(isset($inputs['dayscredit']))
         $offer['dayscredit']=$inputs['dayscredit'];
-        $offer['terms']=$modelData->terms;
+        
         $offer['created_by_id'] = session()->get('user_id');
         $offer['status'] = 1;
         
-        
+        //print_r($offer);die;
         $storedoffer = $offerModel->addRecord($offer);
         
         if ($storedoffer && is_array($storedoffer)) {
@@ -1660,68 +1680,71 @@ class ServiceSpareRegisterController extends Controller
         {
             $modelssprd = new $this->modelSSPrdName();
             //$SSproducts = $modelssprd->where('offer_details_id',$inputs['last_offer_id'])->get();
-            
-            if(count($inputs['product_id']) > 0)
+            if(isset($inputs['product_id']))
             {
-                $len = count($inputs['product_id']);
-                for($SS=1;$SS<=$len;$SS++)
+                if(count($inputs['product_id']) > 0)
                 {
-                    $prd=array();
-                    $prd['product_id']=$inputs['product_id'][$SS];
-                    $prd['prd_description']=$inputs['product'][$SS];
-                    $prd['description']=$inputs['description'][$SS];
-                    $prd['quantity']=$inputs['qty'][$SS];
-                    $prd['isreturn']=$inputs['isreturn'][$SS];
-                    $prd['unit_price']=$inputs['unit_price'][$SS];
-                    $prd['discount']=0;
-                    $prd['tax_id']=$inputs['tax_id'][$SS];
-                    $prd['net_amt']=$inputs['qty'][$SS]*$inputs['unit_price'][$SS];
-                    $prd['tax_amt']=$inputs['tax_amt'][$SS];
-                    $prd['total_price']=$inputs['total'][$SS];
-                    $prd['created_by_id'] = session()->get('user_id');
-                    $prd['service_spares_register_id'] = $inputs['spares_register_id'];
-                    $prd['offer_details_id'] = $offerModel->id;
-                    $prd['invoicable'] = $inputs['invoicable'][$SS];
-                    $prd['isserviceproduct'] = $inputs['isserviceproduct'][$SS];
-                    $prd['status'] = 1;
-                    $modelprd = new $this->modelSSPrdName();
-                    $storedprd = $modelprd->addRecord($prd);
-                    if ($storedprd && is_array($storedprd)) {
-                        $this->data['status'] = 0;
-                        $this->data['message'] = "Not Successfully added";
-                        return response()->json($this->data);
-                    } 
-                    else
+                    $len = count($inputs['product_id']);
+                    for($SS=1;$SS<=$len;$SS++)
                     {
-                        if($inputs['tax_id'][$SS] == "" || $inputs['tax_id'][$SS] == null)
-                        {
-                            
-                        }
+                        $prd=array();
+                        $prd['product_id']=$inputs['product_id'][$SS];
+                        $prd['prd_description']=$inputs['product'][$SS];
+                        $prd['description']=$inputs['description'][$SS];
+                        $prd['quantity']=$inputs['qty'][$SS];
+                        $prd['isreturn']=$inputs['isreturn'][$SS];
+                        $prd['unit_price']=$inputs['unit_price'][$SS];
+                        $prd['discount']=0;
+                        $prd['tax_id']=$inputs['tax_id'][$SS];
+                        $prd['net_amt']=$inputs['qty'][$SS]*$inputs['unit_price'][$SS];
+                        $prd['tax_amt']=$inputs['tax_amt'][$SS];
+                        $prd['total_price']=$inputs['total'][$SS];
+                        $prd['created_by_id'] = session()->get('user_id');
+                        $prd['service_spares_register_id'] = $inputs['spares_register_id'];
+                        $prd['offer_details_id'] = $offerModel->id;
+                        $prd['invoicable'] = $inputs['invoicable'][$SS];
+                        $prd['isserviceproduct'] = $inputs['isserviceproduct'][$SS];
+                        $prd['status'] = 1;
+                        $modelprd = new $this->modelSSPrdName();
+                        $storedprd = $modelprd->addRecord($prd);
+                        if ($storedprd && is_array($storedprd)) {
+                            $this->data['status'] = 0;
+                            $this->data['message'] = "Not Successfully added";
+                            return response()->json($this->data);
+                        } 
                         else
                         {
-                            $modelTax = new $this->modelTax();
-                            $taxdata = $modelTax->find($inputs['tax_id'][$SS]);
-
-                            foreach($taxdata->taxgroup as $taxgroup)
+                            if($inputs['tax_id'][$SS] == "" || $inputs['tax_id'][$SS] == null)
                             {
-                                $netamt = $inputs['qty'][$SS]*$inputs['unit_price'][$SS];
-                                $taxamt = (($netamt)*($taxgroup->taxrate->rate/100));
-                                $prdtx['service_spares_product_id']=$modelprd->id;
-                                $prdtx['tax_id']=$inputs['tax_id'][$SS];
-                                $prdtx['tax_group_id']=$taxgroup->id;
-                                $prdtx['tax_rate_id']=$taxgroup->taxrate->id;
-                                $prdtx['taxable_amount']=$netamt;
-                                $prdtx['tax_amt']=$taxamt;
-                                $prdtx['created_by_id'] = session()->get('user_id');
-                                $prdtx['status'] = 1;
-                                $modelsptax = new $this->modelSSPrdTax();
-                                $storedprdtax = $modelsptax->addRecord($prdtx);
+
                             }
-                        }
-                            
-                    }  
+                            else
+                            {
+                                $modelTax = new $this->modelTax();
+                                $taxdata = $modelTax->find($inputs['tax_id'][$SS]);
+
+                                foreach($taxdata->taxgroup as $taxgroup)
+                                {
+                                    $netamt = $inputs['qty'][$SS]*$inputs['unit_price'][$SS];
+                                    $taxamt = (($netamt)*($taxgroup->taxrate->rate/100));
+                                    $prdtx['service_spares_product_id']=$modelprd->id;
+                                    $prdtx['tax_id']=$inputs['tax_id'][$SS];
+                                    $prdtx['tax_group_id']=$taxgroup->id;
+                                    $prdtx['tax_rate_id']=$taxgroup->taxrate->id;
+                                    $prdtx['taxable_amount']=$netamt;
+                                    $prdtx['tax_amt']=$taxamt;
+                                    $prdtx['created_by_id'] = session()->get('user_id');
+                                    $prdtx['status'] = 1;
+                                    $modelsptax = new $this->modelSSPrdTax();
+                                    $storedprdtax = $modelsptax->addRecord($prdtx);
+                                }
+                            }
+
+                        }  
+                    }
                 }
             }
+                
             
             $modelName = new $this->modelName();
             $modelData = $modelName->find($inputs['spares_register_id']);
@@ -1794,4 +1817,86 @@ class ServiceSpareRegisterController extends Controller
         return response()->json($this->data);
         
     }
+    
+    public function postDcPrint()
+    {
+        $inputs = request()->all();
+        $id = $inputs['id'];
+        $inv_no = $inputs['inv_no'];
+        $inv_date = $inputs['inv_date'];
+        $po_ref = $inputs['po_ref'];
+        $packing = $inputs['packing'];
+        $dispatch = $inputs['dispatch'];
+        $dcremark = $inputs['dcremark'];
+        
+        
+        $filename = "DC_".$id;
+        $jaspername = "DCFormat";
+        
+        //$region_email = "";
+        //$reportfile = $this->generatereport($id,$filename,$jaspername);
+        
+        $UPLOAD_PATH_REPORT_URL   = Config::get('constant.UPLOAD_PATH_REPORT_URL');
+        $UPLOAD_PATH_RESULT_URL   = Config::get('constant.UPLOAD_PATH_RESULT_URL');
+        //$clienttype = $inputs['client_type'];
+        $reporttype = 'pdf';
+        $filetype = 'pdf';
+
+        $fileexport = array();
+        $cckey = array();
+        $model = new $this->modelName();
+        $modelData = $model->find($id);
+        $connection =     array(
+                'driver' => 'mysql',
+                'username' => env('DB_USERNAME','root'),
+                'host' => env('DB_HOST','localhost'),
+                'password' => env('DB_PASSWORD',''),
+                'database' => env('DB_DATABASE','service_new_sep22'),
+                'port' => env('DB_PORT','3306')
+              );
+        
+        //print_r($connection);die;
+        
+                $parameter = array(
+                    'DOCUMENT_ID'=>$id,
+                    'inv_no' => $inv_no,
+                    'inv_date' => $inv_date,
+                    'po_reference_no' => $po_ref,
+                    'no_of_packing' => $packing,
+                    'dispatch_to' => $dispatch,
+                    'remark' => $dcremark,
+                    
+                );
+        //$UPLOAD_PATH_REPORT_URL   = Config::get('constant.UPLOAD_PATH_REPORT_URL');
+       // echo "<pre>";print_r($inputs);die;
+        
+        ////**********download in  server starts *******************/////
+        $jasper = new JasperPHP;
+        
+        $jasper1= $jasper->process(
+            public_path($UPLOAD_PATH_REPORT_URL).'/'.$jaspername.'.jasper',
+            public_path($UPLOAD_PATH_RESULT_URL).'/'.$filename,
+            array($filetype),
+            $parameter,
+            $connection
+        )->execute();
+        ////**********download in  server ends *******************/////
+        $filepath = url($UPLOAD_PATH_RESULT_URL).'/'.$filename.'.'.$filetype;
+        $filename = public_path($UPLOAD_PATH_RESULT_URL).'/'.$filename.'.'.$filetype;
+        //print_r($jasper1);die;
+        //$filename= $filename;
+        $file_headers = $this->UR_exists($filepath);
+        if ($file_headers == 0) 
+        {
+            $status=1;
+        }
+        
+        $this->data['status'] = 1;
+        $this->data['filepath'] = $filepath;
+        $this->data['filetype'] = $filetype;
+        //$headers = header("Content-Type: application/pdf");
+        //echo "<pre>";print_r($filepath);print_r($file_headers);die;
+        return response()->json($this->data);
+    }
+    
 }

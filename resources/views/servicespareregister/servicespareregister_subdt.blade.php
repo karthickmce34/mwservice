@@ -1,7 +1,7 @@
         <div class="card">
             <div class="card-header ch-alt ">
                 <h4>Offer Details</h4>
-                @if($record->order_status != 9 && $record->order_status < 4 || $record->order_status == 4)
+                @if($record->order_status != 9 && $record->order_status < 4 || $record->order_status == 4 || $record->order_status == 13)
                 <div class="pull-right">
                     <button class="btn btn-success  waves-effect waves-float offeradd"><i class="zmdi zmdi-plus"> Offer</i></button>                                    
                 </div>
@@ -58,7 +58,7 @@
                                         </div>
                                         <div id="collapseTerms-{{$offerdata->revision_no}}" class="collapse" role="tabpanel" aria-labelledby="headingTerms">
                                             <div class="panel-body p-10">
-                                                @if($record->order_status != 8 && $record->order_status != 9)
+                                                @if($record->order_status != 8 && $record->order_status != 9 && $record->order_status != 13 && $record->order_status != 11)
                                                 <div class="p-5 pull-right mm-55-0">
                                                     <button class="btn btn-warning btn-icon waves-effect waves-circle waves-float editterms" data-offerid='{{$offerdata->id}}'><i class="zmdi zmdi-edit"></i></button>                                    
                                                 </div>
@@ -225,7 +225,9 @@
                                                             @if(($offerdata))
                                                                 <div class="row">
                                                                     <div class="p-5 pull-right mm-55-0">
+                                                                        @if($record->order_status != 8 && $record->order_status != 9 && $record->order_status != 11)
                                                                         <button class="btn btn-warning btn-icon waves-effect waves-circle waves-float editterms" data-offerid='{{$offerdata->id}}'><i class="zmdi zmdi-edit"></i></button>                                    
+                                                                        @endif
                                                                     </div>
                                                                     <div class="col-sm-10">
                                                                         <div class="card" style="overflow: auto;">
@@ -274,7 +276,7 @@
                                         </div>
                                         <div id="collapseService-{{$offerdata->revision_no}}" class="collapse" role="tabpanel" aria-labelledby="headingService">
                                             <div class="panel-body p-10">
-                                                @if($record->order_status != 8 && $record->order_status != 9 || $record->order_status < 4)
+                                                @if($record->order_status != 8 && $record->order_status != 9 && $record->order_status != 11 || $record->order_status < 4 )
                                                 <div class="p-5 pull-right mm-55-0">
                                                     <button type="button" class="btn bgm-lime btn-icon waves-effect waves-circle waves-float serviceadd" data-offerid='{{$offerdata->id}}'><i class="zmdi zmdi-plus"></i></button>                                    
                                                 </div>
@@ -314,7 +316,7 @@
                                                                                     <div class="col-sm-2 text-center">{{$sercharge->tax->tax_name}}</div>
                                                                                     <div class="col-sm-2 text-center">{{$sercharge->total_price}}</div>
                                                                                     <div class="col-sm-2 text-center">
-                                                                                        @if($record->order_status != 8 && $record->order_status != 9)
+                                                                                        @if($record->order_status != 8 && $record->order_status != 9 && $record->order_status != 11)
                                                                                         <button type="button" data-id={{$sercharge->id}} class="btn bgm-orange waves-effect waves-float editservicecharge"><i class="zmdi zmdi-edit"></i></button>
 
                                                                                         <a href="{{url('servicespareregister/deleteprd', $sercharge->id)}}" target="_self">
@@ -814,7 +816,7 @@
                     </div>
                 </div>
 
-                @if($record->order_status == 8)
+                @if($record->order_status == 8 || $record->order_status == 11 || $record->order_status == 12)
                 <div class="panel-group" data-collapse-color="amber" role="tablist" aria-multiselectable="true">
                     <div class="panel panel-collapse">
                         <div class="panel-heading color-block bgm-cyan" role="tab" id="headingDescription">
@@ -870,7 +872,7 @@
                                                                 </div>
                                                                 <div class="row" style="    padding: 8px 0 8px 0px;">       
                                                                     <div class="col-sm-4"><i class="zmdi "></i><b>Service Report</b></div>
-                                                                    <div class="col-sm-8"><a style="width: inherit;" href="{{url('/')}}/{{$visitplansum->file_path}}/{{$visitplansum->file_name}}" tabindex="_self">{{$record->file_name}}</a></div>
+                                                                    <div class="col-sm-8"><a style="width: inherit;" href="{{url('/')}}/{{$visitplansum->file_path}}/{{$visitplansum->file_name}}" tabindex="_self">{{$visitplansum->file_name}}</a></div>
                                                                 </div>
                                                                 <div class="row" style="    padding: 8px 0 8px 0px;">       
                                                                     <div class="col-sm-4"><i class="zmdi "></i><b>SLD</b></div>
@@ -1344,6 +1346,7 @@
                         <?php $currentdate =date('Y-m-d'); ?>
                         <!--if(!empty($offerdata))-->
                         @if(session()->get('user_type') == 2  || session()->get('user_type') == 0)
+                            
                             <div class="modal-body">
                                
                                 <div class="form-row m-t-25">
@@ -1428,6 +1431,114 @@
                                                     </div>
 
                                             @endforeach
+                                        @else
+                                        <div class="row m-l-10" role="form">
+                                            <div class="form-group col-sm-6">
+                                                <label for="offervalidity" class="control-label col-sm-4 required">Offer Validity</label>
+                                                <div class="col-sm-8">
+                                                    <div class="fg-line">
+                                                        <select class="form-control input-sm" placeholder="Validity" aria-describedby="basic-addon1" data-validation="required" required="required" id="offervalidity" name="offervalidity">
+                                                            @foreach($offervalidity as $offerval=>$offername)
+                                                                @if(!empty($offerdata))
+                                                                    @if($offerval == $offerdata->offervalidity)
+                                                                        <option value="{{$offerval}}" selected>{{$offername}}</option>
+                                                                    @else 
+                                                                        <option value="{{$offerval}}">{{$offername}}</option>
+                                                                    @endif
+                                                                @else 
+                                                                        <option value="{{$offerval}}">{{$offername}}</option>
+                                                                @endif
+                                                            @endforeach
+                                                        </select>  
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-sm-6">
+                                                <label for="freight" class="control-label col-sm-4 required">Freight</label>
+                                                <div class="col-sm-8">
+                                                    <div class="fg-line">
+
+                                                        <select class="form-control input-sm" placeholder="Validity" aria-describedby="basic-addon1" data-validation="required" required="required" id="freight" name="freight">
+                                                            @foreach($freight as $freightval=>$freightname)
+                                                                @if(!empty($offerdata))
+                                                                    @if($freightval == $offerdata->freight)
+                                                                        <option value="{{$freightval}}" selected>{{$freightname}}</option>
+                                                                    @else 
+                                                                        <option value="{{$freightval}}">{{$freightname}}</option>
+                                                                    @endif
+                                                                @else 
+                                                                        <option value="{{$freightval}}">{{$freightname}}</option>
+                                                                @endif
+                                                            @endforeach
+                                                        </select>                                                                                    
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group col-sm-6">
+                                                <label for="deliveryperiod" class="control-label col-sm-4 required">Delivery period</label>
+                                                <div class="col-sm-8">
+                                                    <div class="fg-line">
+                                                        <select class="form-control input-sm" placeholder="Validity" aria-describedby="basic-addon1" data-validation="required" required="required" id="deliveryperiod" name="deliveryperiod">
+                                                            @foreach($deliveryperiod as $deliveryperiodval=>$deliveryperiodname)
+                                                                @if(!empty($offerdata))
+                                                                    @if($deliveryperiodval == $offerdata->deliveryperiod)
+                                                                        <option value="{{$deliveryperiodval}}" selected>{{$deliveryperiodname}}</option>
+                                                                    @else 
+                                                                        <option value="{{$deliveryperiodval}}">{{$deliveryperiodname}}</option>
+                                                                    @endif
+                                                                @else
+                                                                        <option value="{{$deliveryperiodval}}">{{$deliveryperiodname}}</option>
+                                                                @endif
+                                                            @endforeach
+                                                        </select>                                                                                    
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-sm-8">
+                                                <label for="paymentterms" class="control-label col-sm-3 required">Payment terms</label>
+                                                <div class="col-sm-9">
+                                                    <div class="fg-line">
+                                                        <select class="form-control input-sm f-10" placeholder="Validity" aria-describedby="basic-addon1" data-validation="required" required="required" id="paymentterms" name="paymentterms">
+                                                            @foreach($paymentterms as $paymenttermsval=>$paymenttermsname)
+                                                                @if(!empty($offerdata))
+                                                                    @if($paymenttermsval == $offerdata->paymentterms)
+                                                                        <option value="{{$paymenttermsval}}" selected>{{$paymenttermsname}}</option>
+                                                                    @else 
+                                                                        <option value="{{$paymenttermsval}}">{{$paymenttermsname}}</option>
+                                                                    @endif
+                                                                @else 
+                                                                        <option value="{{$paymenttermsval}}">{{$paymenttermsname}}</option>
+                                                                @endif
+                                                            @endforeach
+                                                        </select>                                                                                    
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="creditdays">
+                                                <div class="form-group col-sm-4">
+                                                    <label for="dayscredit" class="control-label col-sm-4">No of Days Credit</label>
+                                                    <div class="col-sm-8">
+                                                        <div class="fg-line">
+                                                            <input class="form-control input-sm" placeholder="No of Days Credit" name="dayscredit" type="text" id="dayscredit">                                        
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group col-sm-12">
+                                                <label for="terms" class="control-label col-sm-1">Terms</label>
+                                                <div class="col-sm-11">
+                                                    <div class="fg-line">
+                                                        <textarea class="form-control input-sm" cols="20" rows="13" placeholder="Terms" name="terms" id="terms"  >{{$terms}}</textarea>                                        
+                                                    </div>
+                                                    <div class="termsdiv hide">{{$terms}}</div>
+                                                </div>
+                                            </div>    
+                                        </div>
+                                        
                                         @endif
                                     </div>
                                 </div>
@@ -1684,5 +1795,197 @@
                 </div>
             </div>
         </div>
+        @else
+        <div class="offersecond" >
+            <div class="modal fade offerform" id="offerform" role="dialog">
+                <div class="modal-dialog  modal-lg" style="width:98%">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4>Offer Form</h4>
+                            <small></small>
+                        </div>
+                        <?php $currentdate =date('Y-m-d'); ?>
+                        <div class="modal-body">
+                            <div class="row m-l-10" role="form">
+                                <div class="form-group col-sm-6">
+                                    <label for="offervalidity" class="control-label col-sm-4 required">Offer Validity</label>
+                                    <div class="col-sm-8">
+                                        <div class="fg-line">
+                                            <input type="hidden" name="spares_register_id" value="{{$record->id}}">
+                                            <input type="hidden" name="revision_no" id="revision_no" value="">
+                                            <select class="form-control input-sm" placeholder="Validity" aria-describedby="basic-addon1" data-validation="required" required="required" id="offervalidity" name="offervalidity">
+                                                @foreach($offervalidity as $offerval=>$offername)
+                                                    <option value="{{$offerval}}">{{$offername}}</option>
+                                                @endforeach
+                                            </select>                                                                                    
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-sm-6">
+                                    <label for="freight" class="control-label col-sm-4 required">Freight</label>
+                                    <div class="col-sm-8">
+                                        <div class="fg-line">
+                                            <select class="form-control input-sm" placeholder="Validity" aria-describedby="basic-addon1" data-validation="required" required="required" id="freight" name="freight">
+                                                @foreach($freight as $freightval=>$freightname)
+                                                    <option value="{{$freightval}}">{{$freightname}}</option>
+                                                @endforeach
+                                            </select>                                                                                    
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-sm-6">
+                                    <label for="deliveryperiod" class="control-label col-sm-4 required">Delivery period</label>
+                                    <div class="col-sm-8">
+                                        <div class="fg-line">
+                                            <select class="form-control input-sm" placeholder="Validity" aria-describedby="basic-addon1" data-validation="required" required="required" id="deliveryperiod" name="deliveryperiod">
+                                                @foreach($deliveryperiod as $deliveryperiodval=>$deliveryperiodname)
+                                                    <option value="{{$deliveryperiodval}}">{{$deliveryperiodname}}</option>
+                                                @endforeach
+                                            </select>                                                                                    
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-sm-8">
+                                    <label for="paymentterms" class="control-label col-sm-3 required">Payment terms</label>
+                                    <div class="col-sm-9">
+                                        <div class="fg-line">
+                                            <select class="form-control input-sm f-10" placeholder="Validity" aria-describedby="basic-addon1" data-validation="required" required="required" id="paymentterms" name="paymentterms">
+                                                @foreach($paymentterms as $paymenttermsval=>$paymenttermsname)
+                                                    <option value="{{$paymenttermsval}}">{{$paymenttermsname}}</option>
+                                                @endforeach
+                                            </select>                                                                                    
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="creditdays hide">
+                                    <div class="form-group col-sm-4">
+                                        <label for="dayscredit" class="control-label col-sm-4">No of Days Credit</label>
+                                        <div class="col-sm-8">
+                                            <div class="fg-line">
+                                                <input class="form-control input-sm" placeholder="No of Days Credit" name="dayscredit" type="text" id="dayscredit">                                        
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-sm-12">
+                                    <label for="terms" class="control-label col-sm-1">Terms</label>
+                                    <div class="col-sm-11">
+                                        <div class="fg-line">
+                                            <textarea class="form-control input-sm" cols="20" rows="13" placeholder="Terms" name="terms" id="terms"  >{{$terms}}</textarea>                                        
+                                        </div>
+                                        <div class="termsdiv hide">{{$terms}}</div>
+                                    </div>
+                                </div>
+
+                            </div>    
+                            <div class="form-row m-t-25">
+                                <div class="col-sm-3 m-t-25">
+                                    <button type="button" id="addoffer" class="addoffer btn bgm-cyan"><i>ADD</i></button>
+                                </div>
+                            </div>                 
+                        </div>
+                        <div class="modal-footer m-t-25">
+                            <button data-dismiss="modal" class="btn bgm-cyan btn-icon waves-effect waves-circle waves-float pull-right"><i class="zmdi zmdi-close"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         @endif
+        
+        <div class="dc_data" >
+            <div class="modal fade dcform" id="dcform" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4>DC Print</h4>
+                            <small></small>
+                        </div>
+                        <?php $currentdate =date('Y-m-d'); ?>
+                        <div class="modal-body">
+                            <div class="row m-l-10" role="form">
+                                <div class="form-group ">
+                                    <div class="col-sm-12">
+                                        <label for="invno" class="control-label col-sm-4">Invoice No</label>
+                                        <div class="col-sm-8">
+                                            <div class="fg-line">
+                                                <input  name="service_id" type="hidden" id="service_id">                                        
+                                                <input class="form-control input-sm" placeholder="Invoice No" name="invno" type="text" id="invno">                                        
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group ">
+                                    <div class="col-sm-12">
+                                        <label for="invno" class="control-label col-sm-4">Invoice Date</label>
+                                        <div class="col-sm-8">
+                                            <div class="fg-line">
+                                                <input type='text' class="form-control input-sm" id="inv_date" name="inv_date" value="{{$currentdate}}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group ">
+                                    <div class="col-sm-12">
+                                        <label for="invno" class="control-label col-sm-4">Po Reference</label>
+                                        <div class="col-sm-8">
+                                            <div class="fg-line">
+                                                <input type='text' class="form-control input-sm" id="po_ref" name="po_ref" value="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group ">
+                                    <div class="col-sm-12">
+                                        <label for="invno" class="control-label col-sm-4">No Of Packing</label>
+                                        <div class="col-sm-8">
+                                            <div class="fg-line">
+                                                <input type='text' class="form-control input-sm" id="packing" name="packing" value="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group ">
+                                    <div class="col-sm-12">
+                                        <label for="invno" class="control-label col-sm-4">Dispatch To</label>
+                                        <div class="col-sm-8">
+                                            <div class="fg-line">
+                                                <input type='text' class="form-control input-sm" id="dispatch" name="dispatch" value="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group ">
+                                    <div class="col-sm-12">
+                                        <label for="invno" class="control-label col-sm-4">Remark</label>
+                                        <div class="col-sm-8">
+                                            <div class="fg-line">
+                                                <textarea class="form-control input-sm" cols="20" rows="6" placeholder="Remark" name="dcremark" id="dcremark"  ></textarea>                                        
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>    
+                            <div class="form-row m-t-25">
+                                <div class="col-sm-3 m-t-25">
+                                    <button type="button" id="addoffer" class="dcdataprint btn bgm-cyan"><i>Print</i></button>
+                                </div>
+                            </div>                 
+                        </div>
+                        <div class="modal-footer m-t-25">
+                            <button data-dismiss="modal" class="btn bgm-orange btn-icon waves-effect waves-circle waves-float pull-right"><i class="zmdi zmdi-close"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="dcmodal1">
+            
+        </div>
         <!-- End Offer Modal -->

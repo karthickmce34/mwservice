@@ -39,6 +39,7 @@
             var _site_url = "{{url('/')}}/";
             
             $(".spdet").hide();
+            $(".spdepartment").hide();
             
             $(".invsolve").click(function(){
                 
@@ -74,16 +75,26 @@
                 
                 $("#modal3").find("#completeform").modal();
                 $(".spdet").hide();
+                $(".spdepartment").hide();
                 $("#modal3").find("#comp_status").change(function(){
                     var stat=$(this).val(); 
-                    if(stat==1 || stat==4)
+                    if(stat==1 || stat==4 || stat==5)
                     {
-                        
-                        $(".spdet").show();
+                        if(stat==1 || stat==4)
+                        {
+                            $(".spdet").show();
+                        }
+                        else
+                        {
+                            $(".spdet").hide();
+                        }
+                            
+                        $(".spdepartment").show();
                     }
                     else
                     {
                         $(".spdet").hide();
+                        $(".spdepartment").hide();
                     }
                  });
                  
@@ -128,6 +139,21 @@
                     }
                     
                      
+                 });
+                 
+                 $("#modal3").find("#faultrectification").click(function(){
+                    var faultrectification = $("#modal3").find("#faultrectval").val();
+                    if(faultrectification == 1)
+                    {
+                        $("#modal3").find("#faultrectval").val(0);
+                        $("#modal3").find("#department").attr('required','false');
+                        
+                    }
+                    else
+                    {
+                        $("#modal3").find("#faultrectval").val(1);
+                        $("#modal3").find("#department").attr('required','true');
+                    }
                  });
                  
                  $("#modal3").find("#othersscope").click(function(){
@@ -408,6 +434,7 @@
                     $(this).hide();
                     var comp_status = $("#modal3").find('#comp_status :selected').val();
                     var remark = $("#modal3").find('#remark').val();
+                    
                     if(parseInt(comp_status) == 0)
                     {
                         var datanew = {comp_status : comp_status,
@@ -458,90 +485,174 @@
                     }
                     else
                     {
-                        var comp_stat = $("#comp_status :selected").val(); 
-                        var chkval = [];
-                        $("#modal3").find('.sow :checkbox:checked').each(function(i){
-                          chkval[i] = $(this).val();
-                        });
-                        var scope_of_work = $("#modal3").find("#scope_of_work").val();
-                        var probefailue = $("#modal3").find("#failure_cause").val();
-                        
-                        var department = $("#modal3").find("#department").val();
-
-                        var form_data = $("#modal3").find('form').serializeArray();
-
-                        var formarray={};
-                        $.map(form_data, function(n, i){
-                            var nms = n['name'];
-                            var vl = n['value'];
-
-                            formarray[nms]=vl;
-
-                        });
-                        
-                        if(chkval.length >=1)
+                        if(parseInt(comp_status) == 1)
                         {
-                            /*var dataConfig = {
-                                comp_status: comp_status,
-                                remark:remark,
-                                id:id,
-                                chkval:chkval,
-                                scopeofwork:scope_of_work,
-                                failure_cause:probefailue,
-                                data1:$("#modal3").find('form').serialize() 
+                            var comp_stat = $("#comp_status :selected").val(); 
+                            var chkval = [];
+                            $("#modal3").find('.sow :checkbox:checked').each(function(i){
+                              chkval[i] = $(this).val();
+                            });
+                            var scope_of_work = $("#modal3").find("#scope_of_work").val();
+                            var probefailue = $("#modal3").find("#failure_cause").val();
 
-                            };*/
-                            var datanew = $("#modal3").find('form').serialize() +
-                                        "&comp_status="+comp_status+
-                                        "&remark="+remark+
-                                        "&id="+id+
-                                        "&chkval="+chkval+
-                                        "&scopeofwork="+scope_of_work+
-                                        "&failure_cause="+probefailue+
-                                        "&department="+department;
+                            var department = $("#modal3").find("#department").val();
 
-                            var controller = 'complaintregister/';
-                        //console.log(scope_of_work);
-                            $.ajax({
-                                method: "POST",
-                                url: _site_url + controller + "updatestatus",
-                                data: datanew,
+                            var form_data = $("#modal3").find('form').serializeArray();
 
-                            }).done( function( data, textStatus, jqXHR ) {
-                                console.log( " ajax done " );
-                                if(data.status ==1)
+                            var formarray={};
+                            $.map(form_data, function(n, i){
+                                var nms = n['name'];
+                                var vl = n['value'];
+
+                                formarray[nms]=vl;
+
+                            });
+
+                            if(chkval.length >=1)
+                            {
+                                console.log(chkval.includes('Fault Rectification'));
+                                if(chkval.includes('Fault Rectification') == true)
                                 {
-                                    $("#modal3").find("#completeform").modal('hide');
-                                    if(comp_status == 0)
+                                  
+                                  if(department !="" && department != null)
+                                  {
+                                      var datanew = $("#modal3").find('form').serialize() +
+                                                "&comp_status="+comp_status+
+                                                "&remark="+remark+
+                                                "&id="+id+
+                                                "&chkval="+chkval+
+                                                "&scopeofwork="+scope_of_work+
+                                                "&failure_cause="+probefailue+
+                                                "&department="+department;
+
+                                    var controller = 'complaintregister/';
+                                //console.log(scope_of_work);
+                                    $.ajax({
+                                        method: "POST",
+                                        url: _site_url + controller + "updatestatus",
+                                        data: datanew,
+
+                                    }).done( function( data, textStatus, jqXHR ) {
+                                        console.log( " ajax done " );
+                                        if(data.status ==1)
+                                        {
+                                            $("#modal3").find("#completeform").modal('hide');
+                                            if(comp_status == 0)
+                                            {
+                                                window.location.reload();
+                                            }
+                                            else
+                                            {
+                                                //var newurl= _site_url+"servicespareregister/"+data.cusid+"/edit";
+                                                $(".invsolve").hide();
+                                                $(".invcancel").hide();
+                                                var newurl= _site_url+"servicespareregister/"+data.cusid;
+                                                window.location.href=newurl;
+
+
+                                            }
+
+                                        }
+                                        else
+                                        {
+                                            $("#modal3").find("#completeform").modal('hide');
+                                        }
+
+
+                                    }).fail( function( jqXHR, textStatus, errorThrown ) {
+                                        console.log( " ajax fail " );
+                                        console.log( jqXHR, textStatus, errorThrown );
+                                    }).always ( function( data_jqXHR, textStatus, jqXHR_errorThrown ) {
+                                        console.log( " ajax always " );
+                                        console.log( data_jqXHR, textStatus, jqXHR_errorThrown );
+                                    });
+                                  }
+                                  else
+                                  {
+                                      alert("Choose Department");
+                                      $('.teruser').show();
+                                  }
+                                    
+                                }
+                                
+                                /*var dataConfig = {
+                                    comp_status: comp_status,
+                                    remark:remark,
+                                    id:id,
+                                    chkval:chkval,
+                                    scopeofwork:scope_of_work,
+                                    failure_cause:probefailue,
+                                    data1:$("#modal3").find('form').serialize() 
+
+                                };*/
+                                    
+                            }
+                            else
+                            {
+                                alert("Check Scope Of Work");
+                                
+                            }
+                        }
+                        else
+                        {
+                            var comp_stat = $("#comp_status :selected").val(); 
+                            
+                            var department = $("#modal3").find("#department").val();
+                            
+                            if(department == "")
+                            {
+                                alert("Choose Department");
+                            }
+                            else
+                            {
+                                var datanew = {id:id,comp_status :comp_status,remark :remark,department:department};
+
+                                var controller = 'complaintregister/';
+                            //console.log(scope_of_work);
+                                $.ajax({
+                                    method: "POST",
+                                    url: _site_url + controller + "updatestatus",
+                                    data: datanew,
+
+                                }).done( function( data, textStatus, jqXHR ) {
+                                    console.log( " ajax done " );
+                                    if(data.status ==1)
                                     {
-                                        window.location.reload();
+                                        $("#modal3").find("#completeform").modal('hide');
+                                        if(comp_status == 0)
+                                        {
+                                            window.location.reload();
+                                        }
+                                        else
+                                        {
+                                            //var newurl= _site_url+"servicespareregister/"+data.cusid+"/edit";
+                                            $(".invsolve").hide();
+                                            $(".invcancel").hide();
+                                            var newurl= _site_url+"servicespareregister/"+data.cusid;
+                                            window.location.href=newurl;
+
+
+                                        }
+
                                     }
                                     else
                                     {
-                                        //var newurl= _site_url+"servicespareregister/"+data.cusid+"/edit";
-                                        $(".invsolve").hide();
-                                        $(".invcancel").hide();
-                                        var newurl= _site_url+"servicespareregister/"+data.cusid;
-                                        window.location.href=newurl;
-
-
+                                        $("#modal3").find("#completeform").modal('hide');
                                     }
 
-                                }
-                                else
-                                {
-                                    $("#modal3").find("#completeform").modal('hide');
-                                }
 
-
-                            }).fail( function( jqXHR, textStatus, errorThrown ) {
-                                console.log( " ajax fail " );
-                                console.log( jqXHR, textStatus, errorThrown );
-                            }).always ( function( data_jqXHR, textStatus, jqXHR_errorThrown ) {
-                                console.log( " ajax always " );
-                                console.log( data_jqXHR, textStatus, jqXHR_errorThrown );
-                            });
+                                }).fail( function( jqXHR, textStatus, errorThrown ) {
+                                    console.log( " ajax fail " );
+                                    console.log( jqXHR, textStatus, errorThrown );
+                                }).always ( function( data_jqXHR, textStatus, jqXHR_errorThrown ) {
+                                    console.log( " ajax always " );
+                                    console.log( data_jqXHR, textStatus, jqXHR_errorThrown );
+                                });
+                            }
+                            
+                                
                         }
+                            
                     }
                       
                 });

@@ -157,7 +157,33 @@
                                                             <div class="col-sm-8"><?=nl2br($record->fault_current)?></div>
                                                         </div>
                                                         @endif
-                                                        
+                                                        @if($record->document_status == 1 || $record->document_status == 2)
+                                                        <div class="row" style="    padding: 8px 0 8px 0px;">       
+                                                            <div class="col-sm-4 f-12"><i class="zmdi "></i><b>Probable Cause of Failure</b></div>
+                                                            <?php $failure_cause = $record->servicereg->failure_cause;
+                                                                        $newfailure_cause = wordwrap($failure_cause, 50, "\n", true);?>
+                                                            <div class="col-sm-8">{!! nl2br(e($newfailure_cause)) !!}</div>
+                                                        </div>
+                                                        @if($record->servicereg->department != "" || $record->servicereg->department != null || $record->servicereg->department != "null")
+                                                        <div class="row" style="    padding: 8px 0 8px 0px;">       
+                                                            <div class="col-sm-6 f-12"><i class="zmdi "></i><b>Department</b></div>
+                                                            <div class="col-sm-6 f-14"><?=nl2br($record->servicereg->department)?></div>
+                                                        </div>
+                                                        @endif
+                                                        <div class="row" style="    padding: 8px 0 8px 0px;">       
+                                                            <div class="col-sm-4 f-12"><i class="zmdi "></i><b>Scope of Work</b></div>
+                                                            <?php  if($record->servicereg->scope_of_work == "")
+                                                                    {
+                                                                        $scope ="";
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        $scope = json_decode($record->servicereg->scope_of_work);
+                                                                    }   
+                                                                    ?>
+                                                            <div class="col-sm-8 f-14">{!! $scope !!} </div>
+                                                        </div>
+                                                        @endif
                                                     </div>
                                                 </div>
                                                 <div class="col-sm-6">
@@ -229,9 +255,9 @@
                                                                                 <select class="selectpicker form-control input-sm" placeholder="Type" name="comp_status" id="comp_status">    
                                                                                     <option value="0">Solved By Call/Email</option>
                                                                                     <option value="1">Depute Engineer</option>
-                                                                                    <!--option value="5">Rectified And Return</option>
-                                                                                    <!--option value="3">Spares Only</option>
-                                                                                    <option value="4">Spares With Depute Site Engineer</option-->
+                                                                                    <option value="5">Rectified And Return</option>
+                                                                                    <option value="3">Spares Only</option>
+                                                                                    <option value="4">Spares With Depute Site Engineer</option>
                                                                                 </select>
                                                                             </div>
                                                                         </div>
@@ -244,86 +270,7 @@
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                    
-                                                                        
-                                                                    <div class="spdet m-t-20">
-                                                                        <div class="form-group col-sm-12">
-                                                                            <label for="failure_cause" class="control-label col-sm-5">Probable Cause of Failure</label>
-                                                                            <div class="col-sm-7">
-                                                                                <div class="fg-line">
-                                                                                    <textarea class="form-control input-sm" cols="20" rows="3" placeholder="Probable Cause of Failure" name="failure_cause" id="failure_cause"  ></textarea>                                        
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="form-group col-sm-12 sow">
-                                                                            <label for="scope_of_work" class="control-label col-sm-4">Scope Of Work</label>
-                                                                            <div class="col-sm-2">
-                                                                                <div class="fg-line">
-                                                                                    <div class="checkbox pull-left">
-                                                                                        <label>
-                                                                                            <input type="checkbox" name="scope_of_work[]" value="General Service">
-                                                                                            <i class="input-helper">General Service</i>
-                                                                                        </label>
-                                                                                    </div>
-                                                                                    <div class="checkbox pull-left">
-                                                                                        <label>
-                                                                                            <input type="checkbox" name="scope_of_work[]" value="Assessment">
-                                                                                            <i class="input-helper">Assessment</i>
-                                                                                        </label>
-                                                                                    </div>
-                                                                                    <div class="checkbox pull-left">
-                                                                                        <label>
-                                                                                            <input type="hidden" id="amcval" value='0'>
-                                                                                            <input type="checkbox" name="scope_of_work[]" id="amc" value="AMC">
-                                                                                            <i class="input-helper">AMC</i>
-                                                                                        </label>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="col-sm-2">
-                                                                                <div class="fg-line">
-
-                                                                                    <div class="checkbox pull-left">
-                                                                                         <label>
-                                                                                            <input type="checkbox" name="scope_of_work[]" value="Spares Fixing">
-                                                                                            <i class="input-helper">Spares Fixing</i>
-                                                                                        </label>
-                                                                                    </div>
-                                                                                    <div class="checkbox  pull-left">
-
-                                                                                        <label>
-                                                                                            <input type="checkbox" name="scope_of_work[]" value="Commissioning">
-                                                                                            <i class="input-helper">Commissioning</i>
-                                                                                        </label>
-                                                                                    </div>
-                                                                                    <div class="checkbox  pull-left">
-
-                                                                                        <label>
-                                                                                            <input type="hidden" id="othrval" value='0'>
-                                                                                            <input type="checkbox" name="scope_of_work[]" id="othersscope"  value="Others">
-                                                                                            <i class="input-helper">Others</i>
-                                                                                        </label>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-
-                                                                            <div class="col-sm-2">
-                                                                                <div class="fg-line">
-                                                                                    <div class="checkbox">
-                                                                                        <label>
-                                                                                            <input type="checkbox" name="scope_of_work[]" value="Fault Rectification">
-                                                                                            <i class="input-helper">Fault Rectification</i>
-                                                                                        </label>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="col-sm-3">
-                                                                                <div class="fg-line">
-                                                                                    <textarea class="form-control input-sm" cols="20" rows="3" placeholder="Scope Of Work" name="scope_of_work_o" readonly="true" id="scope_of_work"  ></textarea>                                        
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        
+                                                                    <div class="spdepartment m-t-20 m-t-20">
                                                                         <div class="form-group col-sm-12">
                                                                             <label for="department" class="control-label col-sm-5">Department</label>
                                                                             <div class="col-sm-7">
@@ -342,6 +289,88 @@
                                                                                 </div>
                                                                             </div>
                                                                         </div>
+                                                                    </div>
+                                                                        
+                                                                    <div class="spdet m-t-20">
+                                                                        <div class="form-group col-sm-12">
+                                                                            <label for="failure_cause" class="control-label col-sm-5">Probable Cause of Failure</label>
+                                                                            <div class="col-sm-7">
+                                                                                <div class="fg-line">
+                                                                                    <textarea class="form-control input-sm" cols="20" rows="3" placeholder="Probable Cause of Failure" name="failure_cause" id="failure_cause"  ></textarea>                                        
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-group col-sm-12 sow">
+                                                                            <label for="scope_of_work" class="control-label col-sm-4">Scope Of Work</label>
+                                                                            <div class="col-sm-2">
+                                                                                <div class="fg-line">
+                                                                                    <div class="checkbox pull-left">
+                                                                                        <label>
+                                                                                            <input type="checkbox" name="scope_of_work[]" id="generalservice" value="General Service">
+                                                                                            <i class="input-helper">General Service</i>
+                                                                                        </label>
+                                                                                    </div>
+                                                                                    <div class="checkbox pull-left">
+                                                                                        <label>
+                                                                                            <input type="checkbox" name="scope_of_work[]" id="assessment" value="Assessment">
+                                                                                            <i class="input-helper">Assessment</i>
+                                                                                        </label>
+                                                                                    </div>
+                                                                                    <div class="checkbox pull-left">
+                                                                                        <label>
+                                                                                            <input type="hidden" id="amcval" value='0'>
+                                                                                            <input type="checkbox" name="scope_of_work[]" id="amc" value="AMC">
+                                                                                            <i class="input-helper">AMC</i>
+                                                                                        </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-sm-2">
+                                                                                <div class="fg-line">
+
+                                                                                    <div class="checkbox pull-left">
+                                                                                         <label>
+                                                                                            <input type="checkbox" name="scope_of_work[]" id="sparesfix" value="Spares Fixing">
+                                                                                            <i class="input-helper">Spares Fixing</i>
+                                                                                        </label>
+                                                                                    </div>
+                                                                                    <div class="checkbox  pull-left">
+
+                                                                                        <label>
+                                                                                            <input type="checkbox" name="scope_of_work[]" id="commissioning" value="Commissioning">
+                                                                                            <i class="input-helper">Commissioning</i>
+                                                                                        </label>
+                                                                                    </div>
+                                                                                    <div class="checkbox  pull-left">
+
+                                                                                        <label>
+                                                                                            <input type="hidden" id="othrval" value='0'>
+                                                                                            <input type="checkbox" name="scope_of_work[]" id="othersscope"  value="Others">
+                                                                                            <i class="input-helper">Others</i>
+                                                                                        </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div class="col-sm-2">
+                                                                                <div class="fg-line">
+                                                                                    <div class="checkbox">
+                                                                                        <label>
+                                                                                            <input type="hidden" id="faultrectval" value='0'>
+                                                                                            <input type="checkbox" name="scope_of_work[]" id="faultrectification" value="Fault Rectification">
+                                                                                            <i class="input-helper">Fault Rectification</i>
+                                                                                        </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-sm-3">
+                                                                                <div class="fg-line">
+                                                                                    <textarea class="form-control input-sm" cols="20" rows="3" placeholder="Scope Of Work" name="scope_of_work_o" readonly="true" id="scope_of_work"  ></textarea>                                        
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        
+                                                                        
                                                                         
                                                                         <div class="form-group col-sm-12">
                                                                             <div class="card card-body">
