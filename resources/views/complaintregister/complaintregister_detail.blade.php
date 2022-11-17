@@ -574,6 +574,59 @@
                                   }
                                     
                                 }
+                                else
+                                {
+                                    var datanew = $("#modal3").find('form').serialize() +
+                                                "&comp_status="+comp_status+
+                                                "&remark="+remark+
+                                                "&id="+id+
+                                                "&chkval="+chkval+
+                                                "&scopeofwork="+scope_of_work+
+                                                "&failure_cause="+probefailue+
+                                                "&department="+department;
+
+                                    var controller = 'complaintregister/';
+                                //console.log(scope_of_work);
+                                    $.ajax({
+                                        method: "POST",
+                                        url: _site_url + controller + "updatestatus",
+                                        data: datanew,
+
+                                    }).done( function( data, textStatus, jqXHR ) {
+                                        console.log( " ajax done " );
+                                        if(data.status ==1)
+                                        {
+                                            $("#modal3").find("#completeform").modal('hide');
+                                            if(comp_status == 0)
+                                            {
+                                                window.location.reload();
+                                            }
+                                            else
+                                            {
+                                                //var newurl= _site_url+"servicespareregister/"+data.cusid+"/edit";
+                                                $(".invsolve").hide();
+                                                $(".invcancel").hide();
+                                                var newurl= _site_url+"servicespareregister/"+data.cusid;
+                                                window.location.href=newurl;
+
+
+                                            }
+
+                                        }
+                                        else
+                                        {
+                                            $("#modal3").find("#completeform").modal('hide');
+                                        }
+
+
+                                    }).fail( function( jqXHR, textStatus, errorThrown ) {
+                                        console.log( " ajax fail " );
+                                        console.log( jqXHR, textStatus, errorThrown );
+                                    }).always ( function( data_jqXHR, textStatus, jqXHR_errorThrown ) {
+                                        console.log( " ajax always " );
+                                        console.log( data_jqXHR, textStatus, jqXHR_errorThrown );
+                                    });
+                                }
                                 
                                 /*var dataConfig = {
                                     comp_status: comp_status,
