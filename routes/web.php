@@ -152,6 +152,7 @@ Route::post('servicereport/servicedata', 'ServiceReportController@servicedata');
 
 Route::resource('statusreport', 'StatusReportController');
 Route::post('statusreport/statusdata', 'StatusReportController@statusdata');
+Route::post('statusreport/statusdetails_aja', 'StatusReportController@statusdetails_aja');
 Route::post('statusreport/statusdetails', 'StatusReportController@statusdetails');
 Route::post('statusreport/jb_compltedreport', 'StatusReportController@jb_compltedreport');
 Route::post('statusreport/ex_compltedreport', 'StatusReportController@ex_compltedreport');
@@ -159,6 +160,7 @@ Route::post('statusreport/received_exp_report', 'StatusReportController@received
 Route::post('statusreport/scopeofwork_report', 'StatusReportController@scopeofwork_report');
 Route::post('statusreport/engineer_exp_report', 'StatusReportController@engineer_exp_report');
 Route::post('statusreport/amcstatusdetails', 'StatusReportController@amcstatusdetails');
+Route::post('statusreport/amcstatusdetails_aja', 'StatusReportController@amcstatusdetails_aja');
 
 
 Route::resource('ticket', 'TicketController');

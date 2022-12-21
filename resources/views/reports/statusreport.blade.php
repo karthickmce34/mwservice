@@ -44,7 +44,7 @@
     <div class="card">
         <div class="card col-sm-12 text-center f-18">Total Pending : <b>{{$pendingorder}}</b></div>
         <div class="card col-sm-6">
-            <h5>Process Pending <span class="pr_total pull-right f-16">Total  : {{$processpencnt}}</span></h5>
+            <h5>Process Pending (Before Deputation)<span class="pr_total pull-right f-16">Total  : {{$processpencnt}}</span></h5>
             
             <div id="chart1">
                 
@@ -54,7 +54,7 @@
             </div>
         </div>
         <div class="card col-sm-6">
-            <h5>Job Pending <span class="jb_total pull-right f-16">Total  : {{$jobpencnt}}</span></h5>
+            <h5>Job Pending (After Deputation)<span class="jb_total pull-right f-16">Total  : {{$jobpencnt}}</span></h5>
             <div id="chart2">
                 
             </div>
@@ -557,7 +557,7 @@
                         data: {
                             columns: <?php echo json_encode($job_status); ?>,
                             type : 'donut',
-                            onclick: function (d, i) { statusreport(d, i , ''); },
+                            onclick: function (d, i) { statusreport_2(d, i , ''); },
                            // onmouseover: function (d, i) { console.log("onmouseover", d, i); },
                            // onmouseout: function (d, i) { console.log("onmouseout", d, i); }
                         },
@@ -620,7 +620,7 @@
                         data: {
                             columns: <?php echo json_encode($amcjob_status); ?>,
                             type : 'donut',
-                            onclick: function (d, i) { amcstatusreport(d, i , ''); },
+                            onclick: function (d, i) { amcstatusreport_2(d, i , ''); },
                            // onmouseover: function (d, i) { console.log("onmouseover", d, i); },
                            // onmouseout: function (d, i) { console.log("onmouseout", d, i); }
                         },
@@ -928,7 +928,8 @@
 
                         }).done( function( data, textStatus, jqXHR ) {
                             console.log( " ajax done " );
-                           // alert(data);
+                            
+                            //alert(data);
                             $(".detname").html(" For "+orderstatus);
                             if(data.status ==1)
                             {
@@ -939,7 +940,59 @@
                                 var len = data.servicedata.length;
                                 for (var i=0;i<len;i++)
                                 {
-                                    $("#modalreport").find(".statrep tbody").append("<tr><td class='f-10 text-center'>"+data.servicedata[i].seqno+"</td><td class='f-10 text-center'>"+data.servicedata[i].complaint_date+"</td><td class='f-10 text-center'>"+data.servicedata[i].customer_name+"</td><td class='f-10 text-center'>"+data.servicedata[i].mobileno+"</td><td  class='f-10 text-center'>"+data.servicedata[i].salesorder_no+"</td><td  class='f-10 text-center'>"+data.servicedata[i].scope_of_work+"</td></tr>");
+                                    var serviceurl = _site_url+'servicespareregister/'+data.servicedata[i].serviceid;
+                                    console.log(serviceurl);
+                                    $("#modalreport").find(".statrep tbody").append("<tr><td class='f-10 text-center'><a href='"+serviceurl+"' target='_blank'>"+data.servicedata[i].seqno+"</a></td><td class='f-10 text-center'>"+data.servicedata[i].complaint_date+"</td><td class='f-10 text-center'>"+data.servicedata[i].customer_name+"</td><td class='f-10 text-center'>"+data.servicedata[i].mobileno+"</td><td  class='f-10 text-center'>"+data.servicedata[i].salesorder_no+"</td><td  class='f-10 text-center'>"+data.servicedata[i].scope_of_work+"</td></tr>");
+                                }
+                                $("#modalreport").find(".statrep table").dataTable({autoWidth:true});
+                                $("#modalreport").find("#servicestatus").modal();
+                            }
+
+                        }).fail( function( jqXHR, textStatus, errorThrown ) {
+                            console.log( " ajax fail " );
+                            //console.log( jqXHR, textStatus, errorThrown );
+                        }).always ( function( data_jqXHR, textStatus, jqXHR_errorThrown ) {
+                            console.log( " ajax always " );
+                            //console.log( data_jqXHR, textStatus, jqXHR_errorThrown );
+                        });
+
+
+                //alert(d.id);
+            }
+            
+            function statusreport_2(d, i)
+            {
+                console.log("onclick", d, i);
+
+                var orderstatus = d.id;
+
+                var dataConfig = {
+                        orderstatus: orderstatus
+                        };
+
+                var controller = 'statusreport/';
+
+                $.ajax({
+                            method: "POST",
+                            url: _site_url + controller + "statusdetails_aja",//ajc-after job assigned
+                            data: dataConfig,
+
+                        }).done( function( data, textStatus, jqXHR ) {
+                            console.log( " ajax done " );
+                           // alert(data);
+                            $(".detname").html(" For "+orderstatus);
+                            if(data.status ==1)
+                            {
+                                
+                                $("#modalreport").find(".modal-body div").remove();
+                                $("#modalreport").find(".modal-body").append("<div class='statrep'></div>");
+                                $("#modalreport").find(".modal-body .statrep").append("<table id='data-table-command' class='table table-striped'><thead><th class='f-10 text-center'>Seqno</th><th class='f-10 text-center'>Complaint Date</th><th class='f-10 text-center'>Customer Name</th><th class='f-10 text-center'>Mobileno</th><th class='f-10 text-center'>So No</th><th class='f-10 text-center'>Scope</th><th class='f-10 text-center'>Attended By</th></thead><tbody></tbody></table>");
+                                var len = data.servicedata.length;
+                                
+                                for (var i=0;i<len;i++)
+                                {
+                                    var serviceurl = _site_url+'servicespareregister/'+data.servicedata[i].serviceid;
+                                    $("#modalreport").find(".statrep tbody").append("<tr><td class='f-10 text-center'><a href='"+serviceurl+"' target='_blank'>"+data.servicedata[i].seqno+"</a></td><td class='f-10 text-center'>"+data.servicedata[i].complaint_date+"</td><td class='f-10 text-center'>"+data.servicedata[i].customer_name+"</td><td class='f-10 text-center'>"+data.servicedata[i].mobileno+"</td><td  class='f-10 text-center'>"+data.servicedata[i].salesorder_no+"</td><td  class='f-10 text-center'>"+data.servicedata[i].scope_of_work+"</td><td  class='f-10 text-center'>"+data.servicedata[i].servicename+"</td></tr>");
                                 }
                                 $("#modalreport").find(".statrep table").dataTable({autoWidth:true});
                                 $("#modalreport").find("#servicestatus").modal();
@@ -987,7 +1040,57 @@
                                 var len = data.servicedata.length;
                                 for (var i=0;i<len;i++)
                                 {
-                                    $("#modalreport").find(".statrep tbody").append("<tr><td class='f-10 text-center'>"+data.servicedata[i].seqno+"</td><td class='f-10 text-center'>"+data.servicedata[i].complaint_date+"</td><td class='f-10 text-center'>"+data.servicedata[i].customer_name+"</td><td class='f-10 text-center'>"+data.servicedata[i].mobileno+"</td><td  class='f-10 text-center'>"+data.servicedata[i].salesorder_no+"</td><td  class='f-10 text-center'>"+data.servicedata[i].scope_of_work+"</td></tr>");
+                                    var serviceurl = _site_url+'servicespareregister/'+data.servicedata[i].serviceid;
+                                    $("#modalreport").find(".statrep tbody").append("<tr><td class='f-10 text-center'><a href='"+serviceurl+"' target='_blank'>"+data.servicedata[i].seqno+"</a></td><td class='f-10 text-center'>"+data.servicedata[i].complaint_date+"</td><td class='f-10 text-center'>"+data.servicedata[i].customer_name+"</td><td class='f-10 text-center'>"+data.servicedata[i].mobileno+"</td><td  class='f-10 text-center'>"+data.servicedata[i].salesorder_no+"</td><td  class='f-10 text-center'>"+data.servicedata[i].scope_of_work+"</td></tr>");
+                                }
+                                $("#modalreport").find(".statrep table").dataTable({autoWidth:true});
+                                $("#modalreport").find("#servicestatus").modal();
+                            }
+
+                        }).fail( function( jqXHR, textStatus, errorThrown ) {
+                            console.log( " ajax fail " );
+                            //console.log( jqXHR, textStatus, errorThrown );
+                        }).always ( function( data_jqXHR, textStatus, jqXHR_errorThrown ) {
+                            console.log( " ajax always " );
+                            //console.log( data_jqXHR, textStatus, jqXHR_errorThrown );
+                        });
+
+
+                //alert(d.id);
+            }
+            
+            function amcstatusreport_2(d, i)
+            {
+                console.log("onclick", d, i);
+
+                var orderstatus = d.id;
+
+                var dataConfig = {
+                        orderstatus: orderstatus
+                        };
+
+                var controller = 'statusreport/';
+
+                $.ajax({
+                            method: "POST",
+                            url: _site_url + controller + "amcstatusdetails_aja",
+                            data: dataConfig,
+
+                        }).done( function( data, textStatus, jqXHR ) {
+                            console.log( " ajax done " );
+                           // alert(data);
+                            $(".detname").html(" For "+orderstatus);
+                            if(data.status ==1)
+                            {
+                                
+                                $("#modalreport").find(".modal-body div").remove();
+                                $("#modalreport").find(".modal-body").append("<div class='statrep'></div>");
+                                $("#modalreport").find(".modal-body .statrep").append("<table id='data-table-command' class='table table-striped'><thead><th class='f-10 text-center'>Seqno</th><th class='f-10 text-center'>Complaint Date</th><th class='f-10 text-center'>Customer Name</th><th class='f-10 text-center'>Mobileno</th><th class='f-10 text-center'>So No</th><th class='f-10 text-center'>Scope</th><th class='f-10 text-center'>Attended By</th></thead><tbody></tbody></table>");
+                                var len = data.servicedata.length;
+                                for (var i=0;i<len;i++)
+                                {
+                                    var serviceurl = _site_url+'servicespareregister/'+data.servicedata[i].serviceid;
+                                    $("#modalreport").find(".statrep tbody").append("<tr><td class='f-10 text-center'><a href='"+serviceurl+"' target='_blank'>"+data.servicedata[i].seqno+"</a></td><td class='f-10 text-center'>"+data.servicedata[i].complaint_date+"</td><td class='f-10 text-center'>"+data.servicedata[i].customer_name+"</td><td class='f-10 text-center'>"+data.servicedata[i].mobileno+"</td><td  class='f-10 text-center'>"+data.servicedata[i].salesorder_no+"</td><td  class='f-10 text-center'>"+data.servicedata[i].scope_of_work+"</td><td  class='f-10 text-center'>"+data.servicedata[i].servicename+"</td></tr>");
                                 }
                                 $("#modalreport").find(".statrep table").dataTable({autoWidth:true});
                                 $("#modalreport").find("#servicestatus").modal();
@@ -1033,7 +1136,8 @@
                                 var len = data.servicedata.length;
                                 for (var i=0;i<len;i++)
                                 {
-                                    $("#modalreport").find(".statrep tbody").append("<tr><td>"+data.servicedata[i].seqno+"</td><td>"+data.servicedata[i].complaint_date+"</td><td>"+data.servicedata[i].customer_name+"</td><td>"+data.servicedata[i].mobileno+"</td><td>"+data.servicedata[i].salesorder_no+"</td><td>"+data.servicedata[i].scope_of_work+"</td></tr>");
+                                    var serviceurl = _site_url+'servicespareregister/'+data.servicedata[i].serviceid;
+                                    $("#modalreport").find(".statrep tbody").append("<tr><td><a href='"+serviceurl+"' target='_blank'>"+data.servicedata[i].seqno+"</a></td><td>"+data.servicedata[i].complaint_date+"</td><td>"+data.servicedata[i].customer_name+"</td><td>"+data.servicedata[i].mobileno+"</td><td>"+data.servicedata[i].salesorder_no+"</td><td>"+data.servicedata[i].scope_of_work+"</td></tr>");
                                 }
                                 
                                 $("#modalreport").find("#servicestatus").modal();
@@ -1077,7 +1181,8 @@
                                 var len = data.servicedata.length;
                                 for (var i=0;i<len;i++)
                                 {
-                                    $("#modalreport").find(".statrep tbody").append("<tr><td>"+data.servicedata[i].seqno+"</td><td>"+data.servicedata[i].complaint_date+"</td><td>"+data.servicedata[i].customer_name+"</td><td>"+data.servicedata[i].serviceengineer+"</td><td>"+data.servicedata[i].scope_of_work+"</td><td>"+data.servicedata[i].date_of_attend+"</td><td>"+data.servicedata[i].date_of_complete+"</td><td>"+data.servicedata[i].loading_expenses+"</td><td>"+data.servicedata[i].boarding_expenses+"</td><td>"+data.servicedata[i].travel_expenses+"</td><td>"+data.servicedata[i].local_conveyance+"</td></tr>");
+                                    var serviceurl = _site_url+'servicespareregister/'+data.servicedata[i].serviceid;
+                                    $("#modalreport").find(".statrep tbody").append("<tr><td><a href='"+serviceurl+"' target='_blank'>"+data.servicedata[i].seqno+"</a></td><td>"+data.servicedata[i].complaint_date+"</td><td>"+data.servicedata[i].customer_name+"</td><td>"+data.servicedata[i].serviceengineer+"</td><td>"+data.servicedata[i].scope_of_work+"</td><td>"+data.servicedata[i].date_of_attend+"</td><td>"+data.servicedata[i].date_of_complete+"</td><td>"+data.servicedata[i].loading_expenses+"</td><td>"+data.servicedata[i].boarding_expenses+"</td><td>"+data.servicedata[i].travel_expenses+"</td><td>"+data.servicedata[i].local_conveyance+"</td></tr>");
                                 }
                                 $("#modalreport").find(".statrep .table").dataTable();
                                 $("#modalreport").find("#servicestatus").modal();
@@ -1124,7 +1229,8 @@
                                     var totincomeamt = 0;
                                     for (var i=0;i<len;i++)
                                     {
-                                        $("#modalreport").find(".statrep tbody").append("<tr><td class='f-10'>"+data.servicedata[i].seqno+"</td><td class='f-10'>"+data.servicedata[i].complaint_date+"</td><td class='f-10'>"+data.servicedata[i].customer_name+"</td><td class='f-10'>"+data.servicedata[i].salesorder_no+"</td><td class='f-10'>"+data.servicedata[i].serviceengineer+"</td><td class='f-10'>"+data.servicedata[i].scope_of_work+"</td><td class='f-10'>"+data.servicedata[i].incomeamt+"</td></tr>");
+                                        var serviceurl = _site_url+'servicespareregister/'+data.servicedata[i].serviceid;
+                                        $("#modalreport").find(".statrep tbody").append("<tr><td class='f-10'><a href='"+serviceurl+"' target='_blank'>"+data.servicedata[i].seqno+"</a></td><td class='f-10'>"+data.servicedata[i].complaint_date+"</td><td class='f-10'>"+data.servicedata[i].customer_name+"</td><td class='f-10'>"+data.servicedata[i].salesorder_no+"</td><td class='f-10'>"+data.servicedata[i].serviceengineer+"</td><td class='f-10'>"+data.servicedata[i].scope_of_work+"</td><td class='f-10'>"+data.servicedata[i].incomeamt+"</td></tr>");
                                         totincomeamt = parseInt(totincomeamt)+parseInt(data.servicedata[i].incomeamt);
                                     }
                                     $("#modalreport").find(".statrep tbody").append("<tr><td></td><td></td><td></td><td></td><td></td><td>Total</td><td>"+parseInt(totincomeamt)+"</td></tr>");
@@ -1138,7 +1244,8 @@
                                     var totexpenses = 0;
                                     for (var i=0;i<len;i++)
                                     {
-                                        $("#modalreport").find(".statrep tbody").append("<tr><td class='f-10'>"+data.servicedata[i].seqno+"</td><td class='f-10'>"+data.servicedata[i].complaint_date+"</td><td class='f-10'>"+data.servicedata[i].customer_name+"</td><td class='f-10'>"+data.servicedata[i].salesorder_no+"</td><td class='f-10'>"+data.servicedata[i].serviceengineer+"</td><td class='f-10'>"+data.servicedata[i].scope_of_work+"</td><td class='f-10'>"+data.servicedata[i].date_of_attend+"</td><td class='f-10'>"+data.servicedata[i].date_of_complete+"</td><td class='f-10'>"+data.servicedata[i].expenses+"</td></tr>");
+                                        var serviceurl = _site_url+'servicespareregister/'+data.servicedata[i].serviceid;
+                                        $("#modalreport").find(".statrep tbody").append("<tr><td class='f-10'><a href='"+serviceurl+"' target='_blank'>"+data.servicedata[i].seqno+"</a></td><td class='f-10'>"+data.servicedata[i].complaint_date+"</td><td class='f-10'>"+data.servicedata[i].customer_name+"</td><td class='f-10'>"+data.servicedata[i].salesorder_no+"</td><td class='f-10'>"+data.servicedata[i].serviceengineer+"</td><td class='f-10'>"+data.servicedata[i].scope_of_work+"</td><td class='f-10'>"+data.servicedata[i].date_of_attend+"</td><td class='f-10'>"+data.servicedata[i].date_of_complete+"</td><td class='f-10'>"+data.servicedata[i].expenses+"</td></tr>");
                                         totexpenses = parseInt(totexpenses)+parseInt(data.servicedata[i].expenses);
                                     }
                                     $("#modalreport").find(".statrep tbody").append("<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>Total</td><td>"+parseInt(totexpenses)+"</td></tr>");
@@ -1188,7 +1295,8 @@
                                 
                                 for (var i=0;i<len;i++)
                                 {
-                                    $("#modalreport").find(".statrep tbody").append("<tr><td>"+data.servicedata[i].seqno+"</td><td>"+data.servicedata[i].complaint_date+"</td><td>"+data.servicedata[i].customer_name+"</td><td>"+data.servicedata[i].salesorder_no+"</td><td>"+data.servicedata[i].serviceengineer+"</td><td>"+data.servicedata[i].scope_of_work+"</td><td>"+data.servicedata[i].incomeamt+"</td><td>"+data.servicedata[i].expenses+"</td></tr>");
+                                    var serviceurl = _site_url+'servicespareregister/'+data.servicedata[i].serviceid;
+                                    $("#modalreport").find(".statrep tbody").append("<tr><td><a href='"+serviceurl+"' target='_blank'>"+data.servicedata[i].seqno+"</a></td><td>"+data.servicedata[i].complaint_date+"</td><td>"+data.servicedata[i].customer_name+"</td><td>"+data.servicedata[i].salesorder_no+"</td><td>"+data.servicedata[i].serviceengineer+"</td><td>"+data.servicedata[i].scope_of_work+"</td><td>"+data.servicedata[i].incomeamt+"</td><td>"+data.servicedata[i].expenses+"</td></tr>");
                                     totexpenses = parseInt(totexpenses)+parseInt(data.servicedata[i].expenses);
                                     totincomeamt = parseInt(totincomeamt)+parseInt(data.servicedata[i].incomeamt);
                                 }
@@ -1238,7 +1346,8 @@
                                 var totexpenses = 0;
                                 for (var i=0;i<len;i++)
                                 {
-                                    $("#modalreport").find(".statrep tbody").append("<tr><td class='f-10'>"+data.servicedata[i].seqno+"</td><td class='f-10'>"+data.servicedata[i].complaint_date+"</td><td class='f-10'>"+data.servicedata[i].customer_name+"</td><td class='f-10'>"+data.servicedata[i].salesorder_no+"</td><td class='f-10'>"+data.servicedata[i].serviceengineer+"</td><td class='f-10'>"+data.servicedata[i].scope_of_work+"</td><td class='f-10'>"+data.servicedata[i].date_of_attend+"</td><td class='f-10'>"+data.servicedata[i].date_of_complete+"</td><td class='f-10'>"+data.servicedata[i].expenses+"</td></tr>");
+                                    var serviceurl = _site_url+'servicespareregister/'+data.servicedata[i].serviceid;
+                                    $("#modalreport").find(".statrep tbody").append("<tr><td class='f-10'><a href='"+serviceurl+"' target='_blank'>"+data.servicedata[i].seqno+"</a></td><td class='f-10'>"+data.servicedata[i].complaint_date+"</td><td class='f-10'>"+data.servicedata[i].customer_name+"</td><td class='f-10'>"+data.servicedata[i].salesorder_no+"</td><td class='f-10'>"+data.servicedata[i].serviceengineer+"</td><td class='f-10'>"+data.servicedata[i].scope_of_work+"</td><td class='f-10'>"+data.servicedata[i].date_of_attend+"</td><td class='f-10'>"+data.servicedata[i].date_of_complete+"</td><td class='f-10'>"+data.servicedata[i].expenses+"</td></tr>");
                                     totexpenses = parseInt(totexpenses)+parseInt(data.servicedata[i].expenses);
                                 }
                                 $("#modalreport").find(".statrep tbody").append("<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>Total</td><td>"+parseInt(totexpenses)+"</td></tr>");

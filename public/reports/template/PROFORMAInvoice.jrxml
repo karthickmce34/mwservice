@@ -977,7 +977,7 @@ and service_spares_product.invoicable=0]]></queryString>
 					<reportElement
 						x="0"
 						y="21"
-						width="304"
+						width="300"
 						height="1"
 						key="line-46"/>
 					<graphicElement stretchType="NoStretch"/>
@@ -986,14 +986,14 @@ and service_spares_product.invoicable=0]]></queryString>
 					<reportElement
 						x="0"
 						y="37"
-						width="305"
+						width="300"
 						height="0"
 						key="line-47"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="304"
+						x="300"
 						y="0"
 						width="1"
 						height="189"
@@ -1050,66 +1050,67 @@ and service_spares_product.invoicable=0]]></queryString>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="5"
+						x="6"
 						y="22"
-						width="294"
+						width="293"
 						height="14"
 						key="staticText-124"/>
 					<box leftPadding="2"></box>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font fontName="SansSerif" pdfFontName="Helvetica" size="10" isBold="false"/>
 					</textElement>
-				<text><![CDATA[M/s. State Bank of India - Commercial Branch]]></text>
+				<text><![CDATA[HDFC Bank]]></text>
 				</staticText>
 				<line direction="TopDown">
 					<reportElement
 						x="0"
-						y="54"
-						width="305"
+						y="68"
+						width="300"
 						height="0"
 						key="line-64"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 				<staticText>
 					<reportElement
-						x="5"
+						x="6"
 						y="39"
-						width="294"
-						height="14"
+						width="293"
+						height="28"
 						key="staticText-125"/>
 					<box leftPadding="2"></box>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font fontName="SansSerif" pdfFontName="Helvetica" size="10" isBold="false"/>
 					</textElement>
-				<text><![CDATA[45, Sathy Road, Erode-638 003.  A/c.No : 30039300268]]></text>
+				<text><![CDATA[224/1, Shri Shradha Arcade Aishwaryam, 
+Meyyanoor Main Road, Salem - 636004]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="4"
-						y="58"
-						width="297"
+						x="6"
+						y="71"
+						width="293"
 						height="14"
 						key="staticText-126"/>
 					<box leftPadding="2"></box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
+					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font fontName="SansSerif" pdfFontName="Helvetica-Oblique" size="10" isBold="false" isItalic="true"/>
 					</textElement>
-				<text><![CDATA[RTGS / NEFT, IFSC NO No.SBIN0004061 &  MICR 638002005]]></text>
+				<text><![CDATA[IFSC NO : HDFC 0000 178 ]]></text>
 				</staticText>
 				<line direction="TopDown">
 					<reportElement
 						x="0"
-						y="95"
-						width="305"
+						y="106"
+						width="300"
 						height="0"
 						key="line-65"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 				<staticText>
 					<reportElement
-						x="309"
+						x="320"
 						y="105"
-						width="219"
+						width="208"
 						height="14"
 						key="staticText-128"/>
 					<box leftPadding="2"></box>
@@ -1165,6 +1166,19 @@ and service_spares_product.invoicable=0]]></queryString>
 						key="line-79"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
+				<staticText>
+					<reportElement
+						x="6"
+						y="88"
+						width="293"
+						height="14"
+						key="staticText-137"/>
+					<box leftPadding="2"></box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="SansSerif" pdfFontName="Helvetica-Oblique" size="10" isBold="false" isItalic="true"/>
+					</textElement>
+				<text><![CDATA[Account NO : 5750 0001 1000 49]]></text>
+				</staticText>
 			</band>
 		</summary>
 </jasperReport>

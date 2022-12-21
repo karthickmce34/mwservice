@@ -158,31 +158,39 @@
                                                         </div>
                                                         @endif
                                                         @if($record->document_status == 1 || $record->document_status == 2)
-                                                        <div class="row" style="    padding: 8px 0 8px 0px;">       
-                                                            <div class="col-sm-4 f-12"><i class="zmdi "></i><b>Probable Cause of Failure</b></div>
-                                                            <?php $failure_cause = $record->servicereg->failure_cause;
-                                                                        $newfailure_cause = wordwrap($failure_cause, 50, "\n", true);?>
-                                                            <div class="col-sm-8">{!! nl2br(e($newfailure_cause)) !!}</div>
-                                                        </div>
-                                                        @if($record->servicereg->department != "" || $record->servicereg->department != null || $record->servicereg->department != "null")
-                                                        <div class="row" style="    padding: 8px 0 8px 0px;">       
-                                                            <div class="col-sm-6 f-12"><i class="zmdi "></i><b>Department</b></div>
-                                                            <div class="col-sm-6 f-14"><?=nl2br($record->servicereg->department)?></div>
-                                                        </div>
-                                                        @endif
-                                                        <div class="row" style="    padding: 8px 0 8px 0px;">       
-                                                            <div class="col-sm-4 f-12"><i class="zmdi "></i><b>Scope of Work</b></div>
-                                                            <?php  if($record->servicereg->scope_of_work == "")
-                                                                    {
-                                                                        $scope ="";
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        $scope = json_decode($record->servicereg->scope_of_work);
-                                                                    }   
-                                                                    ?>
-                                                            <div class="col-sm-8 f-14">{!! $scope !!} </div>
-                                                        </div>
+                                                            <div class="row" style="    padding: 8px 0 8px 0px;">       
+                                                                <div class="col-sm-4 f-12"><i class="zmdi "></i><b>Probable Cause of Failure</b></div>
+                                                                <?php $newfailure_cause = '';
+                                                                    if(isset($record->servicereg->failure_cause))
+                                                                    {$failure_cause = $record->servicereg->failure_cause;
+                                                                    $newfailure_cause = wordwrap($failure_cause, 50, "\n", true);}
+
+    ?>
+                                                                <div class="col-sm-8">{!! nl2br(e($newfailure_cause)) !!}</div>
+                                                            </div>
+                                                            @if(isset($record->servicereg->department))
+                                                                @if($record->servicereg->department != "" || $record->servicereg->department != null || $record->servicereg->department != "null")
+                                                                <div class="row" style="    padding: 8px 0 8px 0px;">       
+                                                                    <div class="col-sm-6 f-12"><i class="zmdi "></i><b>Department</b></div>
+                                                                    <div class="col-sm-6 f-14"><?=nl2br($record->servicereg->department)?></div>
+                                                                </div>
+                                                                @endif
+                                                            @endif
+                                                            @if(isset($record->servicereg->scope_of_work))
+                                                                <div class="row" style="    padding: 8px 0 8px 0px;">       
+                                                                    <div class="col-sm-4 f-12"><i class="zmdi "></i><b>Scope of Work</b></div>
+                                                                    <?php  if($record->servicereg->scope_of_work == "")
+                                                                            {
+                                                                                $scope ="";
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                $scope = json_decode($record->servicereg->scope_of_work);
+                                                                            }   
+                                                                            ?>
+                                                                    <div class="col-sm-8 f-14">{!! $scope !!} </div>
+                                                                </div>
+                                                            @endif
                                                         @endif
                                                     </div>
                                                 </div>

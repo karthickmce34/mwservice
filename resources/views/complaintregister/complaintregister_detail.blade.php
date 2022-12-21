@@ -485,7 +485,7 @@
                     }
                     else
                     {
-                        if(parseInt(comp_status) == 1)
+                        if(parseInt(comp_status) == 1 || parseInt(comp_status) == 4)
                         {
                             var comp_stat = $("#comp_status :selected").val(); 
                             var chkval = [];

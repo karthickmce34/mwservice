@@ -775,6 +775,7 @@ class StatusReportController extends Controller
         $servicedata = DB::select("select distinct complaint_register.seqno,complaint_register.customer_name,
                                     complaint_register.complaint_date,
                                     complaint_register.mobileno,
+                                    service_spares_register.id as serviceid,
                                     case when complaint_register.salesorder_no is null then '' else complaint_register.salesorder_no end as salesorder_no,complaint_register.warrenty,
                                     replace(service_spares_register.scope_of_work,'\"','') as scope_of_work
                                     from 
@@ -798,6 +799,49 @@ class StatusReportController extends Controller
         return response()->json($this->data);
     }
     
+    public function statusdetails_aja()
+    {
+        $previousmonthstart= date("Y-m-d", strtotime("first day of previous month"));
+        $previousmonthend =  date("Y-m-d", strtotime("last day of previous month"));
+        $currentmonthstart = date('Y-m-01');
+        $currentmonthend = date('Y-m-t');
+        
+        $inputs = request()->all();
+        
+        $ordervalue = StatusReportController::$ORDER_TYPE_VALUES[$inputs['orderstatus']];
+        
+        $servicedata = DB::select("select distinct complaint_register.seqno,complaint_register.customer_name,
+                                    complaint_register.complaint_date,
+                                    complaint_register.mobileno,
+                                    service_spares_register.id as serviceid,
+                                    GROUP_CONCAT(service_engineer.name) as servicename,
+                                    case when complaint_register.salesorder_no is null then '' else complaint_register.salesorder_no end as salesorder_no,complaint_register.warrenty,
+                                    replace(service_spares_register.scope_of_work,'\"','') as scope_of_work
+                                    from 
+                                        complaint_register,
+                                        service_spares_register
+                                        left join visit_plan on visit_plan.servicespare_id = service_spares_register.id and visit_plan.deleted_at is null
+                                        left join visitplan_engineer on  visit_plan.id = visitplan_engineer.visitplan_id and visitplan_engineer.deleted_at is null
+                                        left join service_engineer on service_engineer.id = visitplan_engineer.engineer_id 
+                                        left join service_agent on service_agent.id = visit_plan.agent_id
+                                        left join visitplan_summary on visitplan_summary.visitplan_id = visit_plan.id
+
+                                    where complaint_register.id = service_spares_register.complaint_register_id
+                                    and service_spares_register.deleted_at is null
+                                    and complaint_register.complaint_type = 0
+                                    and service_spares_register.scope_of_work not like '%AMC%'
+                                    and service_spares_register.order_status = $ordervalue
+                                        
+                                    group by complaint_register.seqno,complaint_register.customer_name, complaint_register.complaint_date,
+                                    complaint_register.mobileno,service_spares_register.id,complaint_register.salesorder_no,complaint_register.warrenty,service_spares_register.scope_of_work
+                                    order by complaint_register.seqno");
+        $this->data['status']=1;
+        $this->data['servicedata']=$servicedata;
+       // print_r($inputs);die;
+        //$this->data['servicedata']=$servicedata;
+        return response()->json($this->data);
+    }
+    
     public function amcstatusdetails()
     {
         $previousmonthstart= date("Y-m-d", strtotime("first day of previous month"));
@@ -812,6 +856,7 @@ class StatusReportController extends Controller
         $servicedata = DB::select("select distinct complaint_register.seqno,complaint_register.customer_name,
                                     complaint_register.complaint_date,
                                     complaint_register.mobileno,
+                                    service_spares_register.id as serviceid,
                                     case when complaint_register.salesorder_no is null then '' else complaint_register.salesorder_no end as salesorder_no,complaint_register.warrenty,
                                     replace(service_spares_register.scope_of_work,'\"','') as scope_of_work
                                     from 
@@ -828,6 +873,50 @@ class StatusReportController extends Controller
                                     and complaint_register.complaint_type = 0
                                     and service_spares_register.scope_of_work like '%AMC%'
                                     and service_spares_register.order_status = $ordervalue order by complaint_register.seqno");
+        $this->data['status']=1;
+        $this->data['servicedata']=$servicedata;
+       // print_r($inputs);die;
+        //$this->data['servicedata']=$servicedata;
+        return response()->json($this->data);
+    }
+    
+    public function amcstatusdetails_aja()
+    {
+        $previousmonthstart= date("Y-m-d", strtotime("first day of previous month"));
+        $previousmonthend =  date("Y-m-d", strtotime("last day of previous month"));
+        $currentmonthstart = date('Y-m-01');
+        $currentmonthend = date('Y-m-t');
+        
+        $inputs = request()->all();
+        
+        $ordervalue = StatusReportController::$ORDER_TYPE_VALUES[$inputs['orderstatus']];
+        
+        $servicedata = DB::select("select distinct complaint_register.seqno,complaint_register.customer_name,
+                                    complaint_register.complaint_date,
+                                    complaint_register.mobileno,
+                                    service_spares_register.id as serviceid,
+                                    GROUP_CONCAT(service_engineer.name) as servicename,
+                                    case when complaint_register.salesorder_no is null then '' else complaint_register.salesorder_no end as salesorder_no,complaint_register.warrenty,
+                                    replace(service_spares_register.scope_of_work,'\"','') as scope_of_work
+                                    from 
+                                        complaint_register,
+                                        service_spares_register
+                                        left join visit_plan on visit_plan.servicespare_id = service_spares_register.id and visit_plan.deleted_at is null
+                                        left join visitplan_engineer on  visit_plan.id = visitplan_engineer.visitplan_id and visitplan_engineer.deleted_at is null
+                                        left join service_engineer on service_engineer.id = visitplan_engineer.engineer_id
+                                        left join service_agent on service_agent.id = visit_plan.agent_id
+                                        left join visitplan_summary on visitplan_summary.visitplan_id = visit_plan.id
+
+                                    where complaint_register.id = service_spares_register.complaint_register_id
+                                    and service_spares_register.deleted_at is null
+                                    and complaint_register.complaint_type = 0
+                                    and service_spares_register.scope_of_work like '%AMC%'
+                                    and service_spares_register.order_status = $ordervalue 
+                                    group by complaint_register.seqno,complaint_register.customer_name,
+                                    complaint_register.complaint_date,complaint_register.mobileno,complaint_register.salesorder_no,
+                                    service_spares_register.scope_of_work,service_spares_register.id,complaint_register.mobileno,complaint_register.salesorder_no,complaint_register.warrenty,service_spares_register.scope_of_work
+                                    
+                                    order by complaint_register.seqno");
         $this->data['status']=1;
         $this->data['servicedata']=$servicedata;
        // print_r($inputs);die;
@@ -877,6 +966,7 @@ class StatusReportController extends Controller
         $servicedata = DB::select("select distinct complaint_register.seqno,complaint_register.customer_name,
                                     complaint_register.complaint_date,
                                     complaint_register.mobileno,
+                                    service_spares_register.id as serviceid,
                                     case when complaint_register.salesorder_no is null then '' else complaint_register.salesorder_no end as salesorder_no,complaint_register.warrenty,
                                     replace(service_spares_register.scope_of_work,'\"','') as scope_of_work
                                     from 
@@ -938,6 +1028,7 @@ class StatusReportController extends Controller
                                     visitplan_summary.date_of_complete,
                                     GROUP_CONCAT(service_engineer.name) as serviceengineer,
                                     replace(service_spares_register.scope_of_work,'\"','') as scope_of_work,
+                                    service_spares_register.id as serviceid,
                                     visitplan_summary.loading_expenses,
                                     visitplan_summary.boarding_expenses,
                                     visitplan_summary.travel_expenses,
@@ -957,6 +1048,7 @@ class StatusReportController extends Controller
                                     complaint_register.seqno,
                                     complaint_register.customer_name,
                                     service_spares_register.scope_of_work,
+                                    service_spares_register.id,
                                     visitplan_summary.date_of_attend,
                                     visitplan_summary.date_of_complete,
                                     visitplan_summary.loading_expenses,
@@ -1008,6 +1100,7 @@ class StatusReportController extends Controller
             
             $servicedata = DB::select("SELECT complaint_register.seqno,complaint_register.customer_name,
                                             complaint_register.complaint_date,
+                                            service_spares_register.id as serviceid,
                                             case when complaint_register.salesorder_no is null then '' else complaint_register.salesorder_no end as salesorder_no,
                                             GROUP_CONCAT(coalesce(service_engineer.name,'')) as serviceengineer,
                                             replace(service_spares_register.scope_of_work,'\"','') as scope_of_work,
@@ -1026,6 +1119,7 @@ class StatusReportController extends Controller
                                             complaint_register.seqno,
                                             complaint_register.customer_name,
                                             complaint_register.salesorder_no,
+                                            service_spares_register.id,
                                             service_spares_register.scope_of_work,
                                             service_spares_register.advance_amt,
                                             service_spares_register.payment_received
@@ -1125,6 +1219,7 @@ class StatusReportController extends Controller
             $servicedata = DB::select("select distinct complaint_register.seqno,complaint_register.customer_name,
                                                         complaint_register.complaint_date,
                                                         complaint_register.mobileno,
+                                                        service_spares_register.id as serviceid,
                                                         GROUP_CONCAT(coalesce(service_engineer.name,'')) as serviceengineer,
                                                         case when complaint_register.salesorder_no is null then '' else complaint_register.salesorder_no end as salesorder_no,
                                                         replace(service_spares_register.scope_of_work,'\"','') as scope_of_work,
@@ -1149,6 +1244,7 @@ class StatusReportController extends Controller
                                                                 complaint_register.complaint_date,
                                                                 complaint_register.mobileno,
                                                                 complaint_register.salesorder_no,
+                                                                service_spares_register.id,
                                                                 service_spares_register.scope_of_work
                                                         order by complaint_register.seqno
                                                             ");
@@ -1198,6 +1294,7 @@ class StatusReportController extends Controller
                                     visitplan_summary.date_of_attend,
                                     visitplan_summary.date_of_complete,
                                     service_engineer.name as serviceengineer,
+                                    service_spares_register.id as serviceid,
                                     replace(service_spares_register.scope_of_work,'\"','') as scope_of_work,
                                     visit_expenses.loading_expenses + visit_expenses.boarding_expenses + visit_expenses.travel_expenses +
                                     visit_expenses.local_expenses as expenses

@@ -316,8 +316,11 @@ class ComplaintRegisterController extends Controller {
         $model = new $this->modelName();
        
         //for($)
-             
-        $depart = str_replace(']','',str_replace('[','',json_encode($inputs['department'])));
+        if(isset($inputs['department']))
+        {
+            $depart = str_replace(']','',str_replace('[','',json_encode($inputs['department'])));
+        }
+            
         
         $modelData = $model->find($inputs['id']);
         $modelData->complaint_status = $inputs['comp_status'];
