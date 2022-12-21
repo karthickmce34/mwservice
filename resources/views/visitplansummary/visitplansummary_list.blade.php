@@ -32,7 +32,9 @@
                                                 {{$item->visitplan->agent->company_name}} 
                                             @else 
                                                 @foreach($item->visitplan->visitengs as $index =>$visiteng)
+                                                @if($visiteng->engineer)
                                                     {{$visiteng->engineer->name}},
+                                                @endif
                                                 @endforeach
                                             @endif
                                         </td>
