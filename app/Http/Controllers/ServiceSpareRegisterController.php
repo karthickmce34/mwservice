@@ -1100,7 +1100,7 @@ class ServiceSpareRegisterController extends Controller
                 'driver' => 'mysql',
                 'username' => env('DB_USERNAME','root'),
                 'host' => env('DB_HOST','localhost'),
-                'password' => env('DB_PASSWORD','12345'),
+                'password' => env('DB_PASSWORD',''),
                 'database' => env('DB_DATABASE','spares'),
                 'port' => env('DB_PORT','3306')
               );

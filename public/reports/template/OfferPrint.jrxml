@@ -212,7 +212,7 @@ and service_spares_product.invoicable=0]]></queryString>
 				<staticText>
 					<reportElement
 						x="6"
-						y="23"
+						y="5"
 						width="293"
 						height="14"
 						key="staticText-81"/>
@@ -225,15 +225,17 @@ and service_spares_product.invoicable=0]]></queryString>
 				<staticText>
 					<reportElement
 						x="5"
-						y="39"
+						y="20"
 						width="371"
-						height="14"
+						height="31"
 						key="staticText-82"/>
 					<box leftPadding="2"></box>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font fontName="SansSerif" pdfFontName="Helvetica" size="8" isBold="false"/>
 					</textElement>
-				<text><![CDATA[SBI,Commercial Branch, Erode-638 003.A/c.No.30039300268, IFSC : SBIN0004061]]></text>
+				<text><![CDATA[HDFC Bank,
+224/1,Shri Shradha Arcade Aishwaryam,Meyyanoor Main Road, Salem - 636004. 
+A/c.No.5750 0001 1000 49    /    IFSC Code : HDFC 0000 178]]></text>
 				</staticText>
 			</band>
 			</groupFooter>
